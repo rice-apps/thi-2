@@ -17,7 +17,7 @@ git clone `https://github.com/rice-apps/thi-2.git`
 To make sure you have all the necessary packages, perform the following commands after every pull:
 
 ```
-cd thi-walk30
+cd thi-2
 npm install
 npx expo start
 ```
