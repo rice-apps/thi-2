@@ -39,3 +39,8 @@ We want to keep our code as clean as possible, so it's important to follow these
 - Make sure there are no warnings in the JavaScript development console
 - Add comments to your files describing what each function does
 - When creating a PR, make sure you describe what the PR does, and how a Team Lead should review and test it!
+
+# Wiki
+
+If you have any questions, check out our wiki first! We have links to documentation for our tech stack 
+https://github.com/rice-apps/thi-2/wiki 
