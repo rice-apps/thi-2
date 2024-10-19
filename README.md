@@ -12,7 +12,7 @@ Follow these steps to get started on developing:
 
 To clone HMNS, create a new directory to store the code, and CD into the directory from your terminal. Enter the following command to clone the directory!
 
-git clone `https://github.com/rice-apps/thi-walk30.git`
+git clone `https://github.com/rice-apps/thi-2.git`
 
 To make sure you have all the necessary packages, perform the following commands after every pull:
 
