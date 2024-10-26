@@ -10,7 +10,7 @@ const uri =
   process.env.MONGO_ADMIN_USERNAME +
   ":" +
   process.env.MONGO_ADMIN_PASSWORD +
-  "@thi-cluster.nkv5u.mongodb.net/?retryWrites=true&w=majority&appName=thi-cluster";
+  "@thi-cluster.nkv5u.mongodb.net/thi-behavior?retryWrites=true&w=majority&appName=thi-cluster";
 
 async function run() {
     try {
@@ -30,7 +30,7 @@ async function run() {
     } catch (error) {
       console.log(error);
     } finally {
-      mongoose.connection.close();
+      // mongoose.connection.close();
     }
   }
   
