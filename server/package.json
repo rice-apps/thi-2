@@ -2,21 +2,26 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "tsc && node ./dist/index.js",
-    "dev": "npx nodemon index.ts"
+    "start": "tsc && node ./dist/app.js",
+    "dev": "npx nodemon app.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "http-status-codes": "^2.3.0",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.7.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/joi": "^17.2.2",
     "@types/node": "^22.7.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
