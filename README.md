@@ -66,3 +66,8 @@ To learn more about our tech stacks, take a look at the following resources:
 - [Expo Tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 - [NativeWind Tutorial](https://www.nativewind.dev/overview/): Learn about NativeWind for React Native styling
 - [Prisma](https://www.prisma.io/docs): Prisma ORM Documentations
+
+# Wiki
+
+If you have any questions, check out our wiki first! We have links to documentation for our tech stack 
+https://github.com/rice-apps/thi-2/wiki 
