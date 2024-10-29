@@ -16,11 +16,29 @@ git clone `https://github.com/rice-apps/thi-2.git`
 
 To make sure you have all the necessary packages, perform the following commands after every pull:
 
-```
-cd thi-2
-npm install
-npx expo start
-```
+1. Install dependencies
+
+   ```bash
+   npm install
+   ```
+
+2. Start the server
+
+   ```bash
+    npm run dev
+   ```
+Open http://localhost:3000 with your browser to see the result.
+
+3. Start the app
+
+    ```bash
+    npx expo start
+    ```
+There are options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [IOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go)
 
 # Contributing
 
@@ -39,3 +57,17 @@ We want to keep our code as clean as possible, so it's important to follow these
 - Make sure there are no warnings in the JavaScript development console
 - Add comments to your files describing what each function does
 - When creating a PR, make sure you describe what the PR does, and how a Team Lead should review and test it!
+
+# Learn More
+
+To learn more about our tech stacks, take a look at the following resources:
+
+- [Express Tutorial](https://expressjs.com/en/starter/hello-world.html): Learn about Express framework for back-end.
+- [Expo Tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- [NativeWind Tutorial](https://www.nativewind.dev/overview/): Learn about NativeWind for React Native styling
+- [Prisma](https://www.prisma.io/docs): Prisma ORM Documentations
+
+# Wiki
+
+If you have any questions, check out our wiki first! We have links to documentation for our tech stack 
+https://github.com/rice-apps/thi-2/wiki 
