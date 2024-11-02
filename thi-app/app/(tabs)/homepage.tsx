@@ -1,4 +1,5 @@
 import * as React from 'react';
+import useEffect from 'react';
 import {
   View,
   Text,
@@ -39,9 +40,11 @@ export default function HomeScreen() {
       <Drawer.Navigator  
       screenOptions={{
         headerStyle: false,
+        drawerType: 'slide',
         drawerStyle: {
           width: Dimensions.get('window').width * 0.25
-        }
+        },
+        overlayColor: 'transparent',
       }}
         initialRouteName="Home" 
         drawerContent={(props) => <CustomDrawerContent {...props} />}
