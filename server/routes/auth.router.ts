@@ -9,7 +9,7 @@ router.post('/sign-up', wrapMiddleware(authValidation.signUp), wrapController(au
 
 router.post('/sign-in', wrapMiddleware(authValidation.signIn), wrapController(authController.signIn));
 
-router.post('/change-password', wrapMiddleware(authValidation.signIn), wrapController(authController.signIn));
+router.post('/change-password', jwtAuthen, wrapMiddleware(authValidation.changePassword), wrapController(authController.changePassword));
 
 
 module.exports = router;

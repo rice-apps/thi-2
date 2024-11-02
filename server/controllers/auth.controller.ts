@@ -22,7 +22,6 @@ class AuthController {
             first_name: "test",
             last_name: "test",
             is_admin: true,
-            is_active: true,
             is_deleted: true,
             authorization_token: "test"
         });
@@ -46,12 +45,17 @@ class AuthController {
                     id: account._id, is_admin: account.is_admin
                 }, process.env.JWT_PRIVATE_KEY, {expiresIn: '1h'})}
             }
+            await Account.findBy()
         } catch (error) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
                 message: error,
             })
         }
+    }
+
+    async changePassword(req: Request, res: Response, next: NextFunction) {
+        
     }
 }
 
