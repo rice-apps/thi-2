@@ -1,6 +1,7 @@
 import {View, StyleSheet, Text, Image, TextInput, TouchableOpacity  } from 'react-native';
 import React, { useState } from 'react';
 
+
 const styles = StyleSheet.create({
     container:{
         flex: 1,
@@ -63,19 +64,29 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-
-    
-
     const handleLogin = () => {
         console.log('Email:', username);
-    
       };
+
+    const handleGoogleLogin = () => {
+        console.log('Google Login');
+
+    }
+
+    const handleAppleLogin = () => {
+        console.log('Apple Login');
+    }
+
+    const handleFacebookLogin = () => {
+        console.log('Facebook Login');
+    }
 
     return (
         <View style={styles.container}>
             <Image 
             style ={styles.image} 
-            source = {{uri:'https://wp04-media.cdn.ihealthspot.com/wp-content/uploads/sites/151/2021/07/logo.png.webp'}}
+            source={require('../../assets/images/logo.png.png')}
+
             />
             <Text style ={styles.title}>Welcome Back!</Text>
             <TextInput style={styles.subTitle} editable={false} value="Please login to your account to continue."/>
@@ -94,9 +105,21 @@ const Login = () => {
             />
 
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                <Text style={styles.buttonText}>Submit</Text>
+                <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity onPress={handleGoogleLogin} style={styles.button}>    
+                <Text style={styles.buttonText}>Login with Google</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleAppleLogin} style={styles.button}>
+                <Text style={styles.buttonText}>Login with Apple</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleFacebookLogin} style={styles.button}>
+                <Text style={styles.buttonText}>Login with Facebook</Text>
+            </TouchableOpacity>
+        
         </View>
         
 );
