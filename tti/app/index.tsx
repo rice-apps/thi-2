@@ -1,6 +1,8 @@
 import { Text, View, Image } from "react-native";
 import Login from "./login-componets/login";
 
+
+
 export default function Index() {
   return (
     <View
@@ -10,7 +12,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Login></Login>
+      <Login />
     </View>
   );
 }
