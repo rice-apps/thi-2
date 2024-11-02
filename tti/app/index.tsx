@@ -12,6 +12,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
+
       <Login />
     </View>
   );
