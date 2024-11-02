@@ -20,7 +20,6 @@ module.exports = (controller: any) => {
             })
         }).catch((error: any) => {
             const { isError, ...rest } = error;
-            console.log(error);
             if (error.isError) {
                 res.send({
                     success: false,

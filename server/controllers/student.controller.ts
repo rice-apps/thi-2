@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 const Student = require("../models/student")
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("../helper");
@@ -17,7 +18,8 @@ class StudentController {
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.id;
+            const id = getId(req)
+
             const newData = req.body;
             const updatedStudent = await Student.findByIdAndUpdate(id, newData);
 
@@ -36,11 +38,18 @@ class StudentController {
 
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.id;
+            const id = getId(req)
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+                    message: `Invalid ID format for student: ${id}.`,
+                });
+            }
+
             const deletedStudent = await Student.findByIdAndDelete(id);
 
             if (!deletedStudent) {
-                console.log("did not delete student")
                 throw new ErrorResponse({
                     statusCode: HttpStatus.StatusCodes.NOT_FOUND,
                     message: `Student with id ${id} not found.`,
@@ -55,7 +64,8 @@ class StudentController {
 
     async findById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.id;
+            const id = getId(req)
+
             const student = await Student.findById(id);
 
             if (!student) {
@@ -70,6 +80,19 @@ class StudentController {
             throw err;
         }
     }
+}
+
+const getId = (req: Request) => {
+    const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ErrorResponse({
+            statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+            message: `Invalid ID format for student: ${id}.`,
+        });
+    }
+
+    return id;
 }
 
 module.exports = new StudentController();
