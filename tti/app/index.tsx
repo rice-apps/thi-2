@@ -1,5 +1,5 @@
 import { Text, View, Image } from "react-native";
-import Login from "./login-componets/login";
+import Login from "../components/login";
 
 
 
