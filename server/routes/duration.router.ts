@@ -8,7 +8,11 @@ router.post("/create", wrapMiddleware(durationValidation.create), wrapController
 router.put("/:student_id", wrapMiddleware(durationValidation.update), wrapController(durationController.update));
 router.delete("/:student_id", wrapMiddleware(durationValidation.delete), wrapController(durationController.delete));
 router.get("/all", wrapMiddleware(durationValidation.findAll), wrapController(durationController.findAll));
+<<<<<<< HEAD
 router.get("/:student_id", wrapMiddleware(durationValidation.findByStudentId), wrapController(durationController.findByStudentId));
 router.get("/staff/:staff_id", wrapMiddleware(durationValidation.findByStaffId), wrapController(durationController.findByStaffId));
+=======
+router.get("/:student_id", wrapMiddleware(durationValidation.findById, wrapController(durationValidation.findById)));
+>>>>>>> 2f3c096 (Added routers, controllers, validation structure for duration)
 
 module.exports = router;

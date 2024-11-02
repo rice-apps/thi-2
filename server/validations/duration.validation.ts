@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { CustomHelpers } from "joi";
 
 const Joi = require('joi');
@@ -92,4 +93,24 @@ module.exports = {
             })
             .required(),
     }),
+=======
+import Joi from "joi"
+
+module.exports = {
+    create: Joi.object({
+
+    }),
+    update: Joi.object({
+
+    }),
+    delete: Joi.object({
+
+    }),
+    findAll: Joi.object({
+
+    }),
+    findById: Joi.object({
+
+    })
+>>>>>>> 2f3c096 (Added routers, controllers, validation structure for duration)
 };
