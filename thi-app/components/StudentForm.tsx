@@ -3,12 +3,15 @@ import {
   Modal,
   View,
   Text,
+  ScrollView,
   TouchableOpacity,
   StyleSheet,
   TextInput,
   Image,
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
+import { styles } from './StudentForm'; // Adjust the path as necessary
+
 
 interface StudentFormProps {
   visible: boolean;
@@ -16,11 +19,21 @@ interface StudentFormProps {
 }
 
 export function StudentForm({ visible, onClose }: StudentFormProps) {
+  const [whichBehavior, setWhichBehavior]= useState('');
+  const [whichForm, setWhichForm]= useState('');
+
+
+  
+  const [setting, setSetting] = useState('');
   const [preIncident, setPreIncident] = useState('');
   const [postIncident, setPostIncident] = useState('');
   const [behavior, setBehavior] = useState('');
-  const [length, setLength] = useState('');
+  const [consequence, setConsequence] = useState('');
+
   const [notes, setNotes] = useState('');
+  const [step, setStep] = useState(0); // State to track the current step in the form
+
+
 
 
 
@@ -30,12 +43,152 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
     onClose(); // Close the modal after submission
   };
 
-  const chooseImage = () => {
-    // Handle form submission logic here
-    console.log('Image Chosen:');
-    onClose(); // Close the modal after submission
+
+  const handleNext = () => {
+    if (step === 0) {
+      handleBehavior();
+    }
+    setStep((prevStep) => prevStep + 1);
+
   };
-  
+
+  const handlePrevious = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    }
+  };
+
+
+  const handleBehavior= () =>{
+    setWhichForm(whichBehavior === 'ABC Behavior' ? 'A' : 'B');
+  }
+
+
+
+
+
+
+  const renderFirstStep = () => (
+    <View style={styles.mcqContainer}>
+      <ThemedText style={{ fontWeight: 'bold' }}>What type of data do you want to record?</ThemedText>
+            <TouchableOpacity onPress={() => { setWhichBehavior('ABC Behavior'); handleBehavior(); }}>
+                <View style= {styles.mcqOption}>
+                    <View style = {[styles.bubble, whichBehavior === 'ABC Behavior' && styles.filledBubble]}></View>
+                    <ThemedText>ABC Behavior Data</ThemedText>
+                </View>
+            </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setWhichBehavior('Duration Data'); handleBehavior(); }}>
+                    <View style= {styles.mcqOption}>
+                        <View style = {[styles.bubble, whichBehavior === 'Duration Data' && styles.filledBubble]}></View>
+                        <ThemedText> Duration Data</ThemedText>
+                    </View>
+              </TouchableOpacity>
+    </View>
+  );
+
+
+
+
+  const renderFormA = () => (
+    <ScrollView>
+      <View style={styles.inputContainer}>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Setting</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={setting}
+            onChangeText={setSetting}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Antecedent</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={preIncident}
+            onChangeText={setPreIncident}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Behavior</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={behavior}
+            onChangeText={setBehavior}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Consequence</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={consequence}
+            onChangeText={setConsequence}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Notes</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={notes}
+            onChangeText={setNotes}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Insert Any Pictures Here</ThemedText>
+          <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('Image chosen')}>
+            <Image
+              source={require('../assets/images/upload-image.png')}
+              style={styles.image}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+  const renderFormB = () => (
+    <ScrollView>
+      <View style={styles.inputContainer}>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Time Started</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={setting}
+            onChangeText={setSetting}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Time Ended</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={preIncident}
+            onChangeText={setPreIncident}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Activity</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={postIncident}
+            onChangeText={setPostIncident}
+          />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={{ fontWeight: 'bold' }}>Notes</ThemedText>
+          <TextInput
+            style={styles.input}
+            value={notes}
+            onChangeText={setNotes}
+          />
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+
+
+
+
+
 
   return (
     
@@ -48,94 +201,34 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           </View>
 
 
-        <View style= {styles.inputContainer}>
-
-
-          <View style= {styles.inputGroup}>
-          <ThemedText style={{fontWeight: 'bold' }}>What happened before the incident?</ThemedText>
-          <TextInput
-            style={styles.input}
-            // placeholder="What happened before the incident?"
-            value={preIncident}
-            onChangeText={setPreIncident}
-          />
-          </View>
-
-
-          <View style= {styles.inputGroup}>
-
-          <ThemedText style={{fontWeight: 'bold' }}>What happened after the incident?</ThemedText>
-          <TextInput
-            style={styles.input}
-            // placeholder="What happened after the incident?"
-            value={postIncident}
-            onChangeText={setPostIncident}
-          />
-          </View>
-
-
-          <View style= {styles.inputGroup}>
-          <ThemedText style={{fontWeight: 'bold' }}>What was the behavior?</ThemedText>
-          <TextInput
-            style={styles.input}
-            // placeholder="What was the behavior?"
-            value={behavior}
-            onChangeText={setBehavior}
-          />
-          </View>
-
-          <View style= {styles.inputGroup}>
-          <ThemedText style={{fontWeight: 'bold' }}>How long did this behavior occur?</ThemedText>
-          <TextInput
-            style={styles.input}
-            // placeholder="How long did this behavior occur?"
-            value={length}
-            onChangeText={setLength}
-          />
-          </View>
-
-
-
-        <View style= {styles.inputGroup}>
-          <ThemedText style={{fontWeight: 'bold' }}>Notes</ThemedText>
-          <TextInput
-            style={styles.input}
-            // placeholder="Notes"
-            value={notes}
-            onChangeText={setNotes}
-          />
-        </View>
-
-
-        <View style= {styles.inputGroup}>
-        <ThemedText style={{fontWeight: 'bold' }}> Insert Any Pictures Here </ThemedText>
-        {/* <View style={styles.imageContainer}>
-            <Image
-              source={require('../assets/images/upload-image.png')} // Use require for local image
-              style={styles.image}
-            />
-        </View> */}
-
-        <TouchableOpacity style={styles.imageContainer} onPress={chooseImage}>
-          <Image
-              source={require('../assets/images/upload-image.png')} // Use require for local image
-              style={styles.image}
-            />
-        </TouchableOpacity>
-      
-      
-      </View>
-      </View>
+        
+          {step === 0 && renderFirstStep()}
+          {step===1 && whichForm === 'A' && renderFormA()}
+          {step=== 1 && whichForm === 'B' && renderFormB()}
 
 
 
 
+      <View style={styles.buttonContainer}>
+            {step > 0 && (
+              <TouchableOpacity style={styles.navButton} onPress={handlePrevious}>
+                <ThemedText style={styles.navButtonText}>Previous</ThemedText>
+              </TouchableOpacity>
+            )}
+            {step < 1 ? (
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+                <ThemedText style={styles.navButtonText}>Next</ThemedText>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.navButton} onPress={handleSubmit}>
+                <ThemedText style={styles.navButtonText}>Save</ThemedText>
+              </TouchableOpacity>
+            )}
+          </View> 
 
 
 
-
-
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
             <ThemedText style={styles.cancelButtonText}> Cancel </ThemedText>
           </TouchableOpacity>
@@ -145,126 +238,12 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           </TouchableOpacity>
           
 
-          </View>
+          </View> */}
 
         </View>
       </View>
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-  },
-  modalContainer: {
-    width: '80%',
-    padding: 0,
-    backgroundColor: 'white',
-    borderRadius: 0,
-    alignItems: 'flex-start',
-    elevation: 5, // For Android shadow
-  },
-
-  titleContainer: {
-    width: '100%',
-    backgroundColor: '#17468F', // Blue background
-    padding: 15,
-    marginBottom: 10,
-  
-  },
-
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-    color: 'white',
-  },
-
-  inputContainer: {
-    flexDirection: 'row', // Align inputs in a row
-    flexWrap: 'wrap', // Allow wrapping to next line
-    justifyContent: 'space-around', // Space between input groups
-    width: '90%', // Ensure container takes full width
-    margin: 20,
-
-    marginBottom: 15, // Space between inputs and buttons
-  },
-  input: {
-    width: '100%',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    padding: 10,
-    paddingBottom: 70, //FIX TIHS 
-    borderRadius: 0,
-    marginBottom: 15,
-  },
-
-
-  inputGroup: {
-    width: '48%', // Set input group width to allow two in a row
-    marginBottom: 15, // Space below each input group
-  },
-
-
-
-  imageContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: '50%', // Width of the image
-    height: 100, // Height of the image
-  },
-
-
-  buttonContainer: {
-    flexDirection: 'row', // Align buttons side by side
-    justifyContent: 'flex-end', // Space buttons evenly
-    margin: 10,
-    width: '95%', // Ensure container takes full width
-  },
-
-  startButton: {
-    backgroundColor: '#17468F',
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 5,
-    marginHorizontal: 5,
-    width: '20%',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1.41,    
-  },
-  cancelButton: {
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 5,
-    marginHorizontal: 5,
-    width: '20%',
-    
-  },
-  startButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  cancelButtonText: {
-    color: '#17468F',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
-
-
-
-
-
 
 
