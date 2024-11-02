@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 import { CustomHelpers } from "joi";
-
-const Joi = require('joi');
-const mongoose = require('mongoose');
+const Joi = require("joi");
+const mongoose = require("mongoose");
 
 // Define the schema for each route validation
 module.exports = {
@@ -10,7 +8,7 @@ module.exports = {
         student_id: Joi.string()
             .custom((value: string, helpers: CustomHelpers) => {
                 if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.error('Invalid student ID');
+                    return helpers.error("Invalid student ID");
                 }
                 return value;
             })
@@ -18,26 +16,23 @@ module.exports = {
         date: Joi.date().required(),
         time_started: Joi.date().required(),
         time_ended: Joi.date()
-            .greater(Joi.ref('time_started'))
+            .greater(Joi.ref("time_started"))
             .required()
             .messages({
                 "date.greater": "time_ended must be later than time_started",
             }),
-        time_total: Joi.number()
-            .positive()
-            .required()
-            .messages({
-                "number.positive": "time_total must be a positive number",
-            }),
+        time_total: Joi.number().positive().required().messages({
+            "number.positive": "time_total must be a positive number",
+        }),
         activity: Joi.string().required(),
-        notes: Joi.string().required().allow(null, ''),
+        notes: Joi.string().required().allow(null, ""),
     }),
 
     update: Joi.object({
         student_id: Joi.string()
             .custom((value: string, helpers: CustomHelpers) => {
                 if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.error('Invalid student ID');
+                    return helpers.error("Invalid student ID");
                 }
                 return value;
             })
@@ -45,26 +40,23 @@ module.exports = {
         date: Joi.date().required(),
         time_started: Joi.date().required(),
         time_ended: Joi.date()
-            .greater(Joi.ref('time_started'))
+            .greater(Joi.ref("time_started"))
             .required()
             .messages({
                 "date.greater": "time_ended must be later than time_started",
             }),
-        time_total: Joi.number()
-            .positive()
-            .required()
-            .messages({
-                "number.positive": "time_total must be a positive number",
-            }),
+        time_total: Joi.number().positive().required().messages({
+            "number.positive": "time_total must be a positive number",
+        }),
         activity: Joi.string().required(),
-        notes: Joi.string().required().allow(null, ''),
+        notes: Joi.string().required().allow(null, ""),
     }),
 
     delete: Joi.object({
         student_id: Joi.string()
             .custom((value: string, helpers: CustomHelpers) => {
                 if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.error('Invalid student ID');
+                    return helpers.error("Invalid student ID");
                 }
                 return value;
             })
@@ -77,40 +69,11 @@ module.exports = {
         student_id: Joi.string()
             .custom((value: string, helpers: CustomHelpers) => {
                 if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.error('Invalid student ID');
+                    return helpers.error("Invalid student ID");
                 }
                 return value;
             })
             .required(),
     }),
-    findByStaffId: Joi.object({
-        staff_id: Joi.string()
-            .custom((value: string, helpers: CustomHelpers) => {
-                if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.error('Invalid staff ID');
-                }
-                return value;
-            })
-            .required(),
-    }),
-=======
-import Joi from "joi"
-
-module.exports = {
-    create: Joi.object({
-
-    }),
-    update: Joi.object({
-
-    }),
-    delete: Joi.object({
-
-    }),
-    findAll: Joi.object({
-
-    }),
-    findById: Joi.object({
-
-    })
->>>>>>> 2f3c096 (Added routers, controllers, validation structure for duration)
+    findById: Joi.object({}),
 };
