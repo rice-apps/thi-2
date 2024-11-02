@@ -1,17 +1,53 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Dimensions,
+} from 'react-native';
 import Sidebar from '../../components/Sidebar';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function HomePage() {
+function HomePage() {
   return (
     <View style={styles.container}>
-      <View>
-        <Sidebar />
-      </View>
       <View style={styles.mainContent}>
         <Text>Placeholder home page content</Text>
       </View>
     </View>
+  );
+}
+
+const Drawer = createDrawerNavigator();
+
+function CustomDrawerContent(props: DrawerContentComponentProps) {
+  return (
+    <View{...props} style={{ flex: 1 }}>
+      <Sidebar navigation={props.navigation} />
+    </View>
+  );
+}
+      
+export default function HomeScreen() {
+  return (
+      <Drawer.Navigator  
+      screenOptions={{
+        headerStyle: false,
+        drawerStyle: {
+          width: Dimensions.get('window').width * 0.25
+        }
+      }}
+        initialRouteName="Home" 
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen name="Home" component={HomePage} />
+      </Drawer.Navigator> 
   );
 }
 
