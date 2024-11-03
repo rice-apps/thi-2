@@ -23,11 +23,11 @@ module.exports = (schema: any) => {
                         errors[name] = message;
                     }
                 });
-                return res.send(optError(errors));
+                return res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY).json(optError(errors));
             }
             return next();
         } catch (error) {
-            res.send(optError(error));
+            res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).json(optError(error));
         }
 
     }
