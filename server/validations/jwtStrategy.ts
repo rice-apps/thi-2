@@ -13,13 +13,13 @@ const strategy = new JwtStrategy({
     secretOrKey: process.env.JWT_SECRET_KEY
     }, async function(jwtPayload: any, done: any) {
         let account = await Account.findById(jwtPayload.id);
-        if (!account) {
-            return done(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNAUTHORIZED, message: "ACCOUNT REMOVED"}));
+        if (!account || account.is_deleted) {
+            return done(null, false);
         }
-        if (account.is_deleted) {
-            return done(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNAUTHORIZED, message: "ACCESS REVOKED"}));
+        const user = {
+            id: account._id, is_admin: account.is_admin
         }
-        return done(null, jwtPayload, null);
+        return done(null, user);
 });
 
 module.exports = strategy; 

@@ -40,9 +40,8 @@ class AuthController {
         try {
             const account = await Account.findOne({email: email}, "_id password is_admin").exec();
             if (account.password == password) {
-                return {message: "Signed in!", token: jwt.sign({
-                    id: account._id, is_admin: account.is_admin
-                    }, process.env.JWT_SECRET_KEY, {expiresIn: 86400})}
+                return {message: "Signed in!", token: jwt.sign({id: account._id}, 
+                    process.env.JWT_SECRET_KEY, {expiresIn: 86400})}
             } else {
                 throw new ErrorResponse({
                     statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
