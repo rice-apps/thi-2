@@ -4,6 +4,7 @@ const {Account} = require("../models");
 const HttpStatus = require("http-status-codes");
 const {ErrorResponse} = require("../helper");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 class AuthController {
     // For reference purposes only, NOT actual implementation
@@ -19,11 +20,9 @@ class AuthController {
         const account = new Account({
             email: email,
             password: password,
-            first_name: "test",
-            last_name: "test",
-            is_admin: true,
-            is_deleted: true,
-            authorization_token: "test"
+            first_name: "John",
+            last_name: "Doe",
+            is_deleted: true
         });
         try {
             await account.save();
@@ -43,19 +42,23 @@ class AuthController {
             if (account.password == password) {
                 return {message: "Signed in!", token: jwt.sign({
                     id: account._id, is_admin: account.is_admin
-                }, process.env.JWT_PRIVATE_KEY, {expiresIn: '1h'})}
+                    }, process.env.JWT_SECRET_KEY, {expiresIn: 86400})}
+            } else {
+                throw new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+                    message: "WRONG PASSWORD",
+                })
             }
-            await Account.findBy()
-        } catch (error) {
+        } catch (error: any) {
             throw new ErrorResponse({
-                statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-                message: error,
+                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                message: error.message,
             })
         }
     }
 
-    async changePassword(req: Request, res: Response, next: NextFunction) {
-        
+    async changePassword(req: any, res: Response, next: NextFunction) {
+        return {message: "Success", ...req.user};
     }
 }
 
