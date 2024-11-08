@@ -13,7 +13,7 @@ class AuthController {
         if (email.length > 20) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-                message: "Email too long",
+                message: "Email too long (20 char limit)",
             })
         }
 
@@ -37,21 +37,21 @@ class AuthController {
 
     async signIn(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
-        try {
-            const account = await Account.findOne({email: email}, "_id password is_admin").exec();
-            if (account.password == password) {
-                return {message: "Signed in!", token: jwt.sign({id: account._id}, 
-                    process.env.JWT_SECRET_KEY, {expiresIn: 86400})}
-            } else {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-                    message: "WRONG PASSWORD",
-                })
-            }
-        } catch (error: any) {
+        const account = await Account.findOne({email: email}, "_id password is_admin is_deleted").exec();
+        console.log(account.is_deleted)
+        if (!account || account.is_deleted) {
             throw new ErrorResponse({
-                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
-                message: error.message,
+                statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+                message: "ACCOUNT NOT FOUND",
+            })
+        }
+        if (account.password == password) {
+            return {message: "Signed in!", token: jwt.sign({id: account._id}, 
+                process.env.JWT_SECRET_KEY, {expiresIn: 86400})}
+        } else {
+            throw new ErrorResponse({
+                statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+                message: "WRONG PASSWORD",
             })
         }
     }

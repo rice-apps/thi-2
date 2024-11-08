@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+const HttpStatus = require("http-status-codes");
 require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
@@ -25,7 +26,7 @@ async function run() {
         app.use(express.json());
         app.use('/api', require("./routes"));
         
-        app.use(errorHandle);
+        app.use([notFoundHandle, responseHandle]);
 
         app.listen(port, () => {
             console.log(`App listening at http://localhost:${port}`);
@@ -35,11 +36,26 @@ async function run() {
     }
 }
 
-const errorHandle = (error: any, req: Request, res: Response, next: NextFunction) => {
-    res.status(error.statusCode || 401).json({
+const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
+    next({
         success: false,
-        statusCode: error.statusCode || 401,
-        message: error.message,
+        statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+        message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.NOT_FOUND),
     })
+}
+
+const responseHandle = (output: any, req: Request, res: Response, next: NextFunction) => {
+    const { success, statusCode, status, message, ...rest } = output;
+    const code = statusCode || status || HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR;
+    if (success) {
+        res.status(HttpStatus.StatusCodes.OK).json({ ...output });
+        return;
+    }
+    res.status(code).json({
+        success: success,
+        statusCode,
+        message,
+        ...rest
+    });
 }
 run().catch(console.dir);

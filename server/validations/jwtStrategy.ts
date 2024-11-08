@@ -14,7 +14,7 @@ const strategy = new JwtStrategy({
     }, async function(jwtPayload: any, done: any) {
         let account = await Account.findById(jwtPayload.id);
         if (!account || account.is_deleted) {
-            return done(null, false);
+            return done(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNAUTHORIZED, message: "ACCOUNT REMOVED"}), false);
         }
         const user = {
             id: account._id, is_admin: account.is_admin
