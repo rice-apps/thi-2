@@ -10,7 +10,7 @@ class DurationController {
             const duration = new Duration(req.body);
             const savedDuration = await duration.save();
 
-            return savedDuration;
+            return savedDuration._doc;
         } catch (err: any) {
             throw err;
         }
@@ -32,7 +32,7 @@ class DurationController {
                 })
             }
 
-            return updatedDuration;
+            return updatedDuration._doc;
         } catch (err: any) {
             throw err;
         }
@@ -43,13 +43,6 @@ class DurationController {
         try {
             const studentId = req.params.student_id;
             
-            if (!mongoose.Types.ObjectId.isValid(studentId)) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-                    message: `Invalid studentId format: ${studentId}.`
-                });
-            }
-
             const deletedDuration = await Duration.findOneAndDelete({ student_id: studentId });
 
             if (!deletedDuration) {
@@ -59,18 +52,46 @@ class DurationController {
                 });
             }
 
-            return deletedDuration;
+            return deletedDuration._doc;
         } catch (err: any) {
-
+            throw err;
         }
     }
 
     async findAll(req: Request, res: Response, next: NextFunction) {
+        try {
+            const students = await Duration.findAll();
 
+            if (!students) {
+                throw new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+                    message: `Students not found.`
+                });
+            }
+
+            return students._doc;
+        } catch (err) {
+            throw err;
+        }
     }
 
     async findByStudentId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const studentId = req.params.student_id;
+            
+            const student = await Duration.findOne({ student_id: studentId })
 
+            if (!student) {
+                throw new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+                    message: `Student with id ${studentId} not found.`
+                });
+            }
+
+            return student._doc;
+        } catch (err) {
+            throw err;
+        }
     }
 }
 
