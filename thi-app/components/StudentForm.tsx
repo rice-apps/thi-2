@@ -104,30 +104,39 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
             style={styles.input}
             value={setting}
             onChangeText={setSetting}
+            placeholder= "Classroom, hallway"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
-          <Text style={{ fontWeight: 'bold' }}>Antecedent</Text>
+          <Text style={{ fontWeight: 'bold' }}>Antecedent: Description of what, where, who, and how right before the behavior</Text>
           <TextInput
             style={styles.input}
             value={preIncident}
             onChangeText={setPreIncident}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
-          <Text style={{ fontWeight: 'bold' }}>Behavior</Text>
+          <Text style={{ fontWeight: 'bold' }}>Behavior: Description of what behaviors occurred, intensity of behavior, duration of behavior, etc. </Text>
           <TextInput
             style={styles.input}
             value={behavior}
             onChangeText={setBehavior}
+            placeholder= "Running, jumping, yelling, etc"
+            placeholderTextColor="gray"
+
           />
         </View>
         <View style={styles.inputGroup}>
-          <Text style={{ fontWeight: 'bold' }}>Consequence</Text>
+          <Text style={{ fontWeight: 'bold' }}>Consequence: Description of what occurred immediately following the behavior, what did you do, what changed in the environment, what were others responses</Text>
           <TextInput
             style={styles.input}
             value={consequence}
             onChangeText={setConsequence}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
@@ -136,6 +145,8 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
             style={styles.input}
             value={notes}
             onChangeText={setNotes}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
@@ -160,6 +171,8 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
             style={styles.input}
             value={setting}
             onChangeText={setSetting}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
@@ -168,6 +181,8 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
             style={styles.input}
             value={preIncident}
             onChangeText={setPreIncident}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
@@ -176,6 +191,8 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
             style={styles.input}
             value={postIncident}
             onChangeText={setPostIncident}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
         <View style={styles.inputGroup}>
@@ -184,6 +201,8 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
             style={styles.input}
             value={notes}
             onChangeText={setNotes}
+            placeholder= "Placeholder text"
+            placeholderTextColor="gray"
           />
         </View>
       </View>
@@ -195,7 +214,6 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
 
     return (
       
-        // visible={visible} onRequestClose={onClose}
     <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
     <View style={styles.overlay}>
       <View style={styles.modalContainer}>
