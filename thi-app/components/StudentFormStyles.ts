@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     elevation: 5, // For Android shadow
   },
   titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: '100%',
     backgroundColor: '#17468F', // Blue background
     padding: 15,

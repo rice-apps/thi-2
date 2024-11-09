@@ -1,3 +1,25 @@
+// {
+//   "extends": "expo/tsconfig.base",
+//   "compilerOptions": {
+//     "strict": true,
+//     "jsx": "preserve",
+//     "types": ["react", "react-native"],
+//     "paths": {
+//       "@/*": [
+//         "./*"
+//       ]
+//     }
+    
+//   },
+//   "include": [
+//     "**/*.ts",
+//     "**/*.tsx",
+//     ".expo/types/**/*.ts",
+//     "expo-env.d.ts",
+//     "nativewind-env.d.ts"
+// , "index.js"  ]
+// }
+
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
@@ -8,14 +30,16 @@
       "@/*": [
         "./*"
       ]
-    }
-    
+    },
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
-, "index.js"  ]
+    "nativewind-env.d.ts",
+    "index.js"
+  ]
 }

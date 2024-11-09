@@ -11,7 +11,11 @@ import {
   Image,
 } from 'react-native';
 import { MonoText } from './StyledText';
-import { styles } from './StudentForm';
+import { styles } from './StudentFormStyles';
+
+
+
+
 
 
 interface StudentFormProps {
@@ -21,12 +25,10 @@ interface StudentFormProps {
 
 
 
-
-const StudentForm = () => {
-const [whichBehavior, setWhichBehavior]= useState('');
+export default function StudentForm({ visible, onClose }: StudentFormProps){
+    
+  const [whichBehavior, setWhichBehavior]= useState('');
   const [whichForm, setWhichForm]= useState('');
-
-
   
   const [setting, setSetting] = useState('');
   const [preIncident, setPreIncident] = useState('');
@@ -37,6 +39,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
   const [notes, setNotes] = useState('');
   const [step, setStep] = useState(0); // State to track the current step in the form
 
+ 
 
 
 
@@ -44,7 +47,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
   const handleSubmit = () => {
     // Handle form submission logic here
     console.log('Form submitted:', { preIncident, postIncident, behavior, length, notes });
-    // onClose(); // Close the modal after submission
+    onClose(); // Close the modal after submission
   };
 
 
@@ -71,20 +74,19 @@ const [whichBehavior, setWhichBehavior]= useState('');
 
 
 
-
   const renderFirstStep = () => (
     <View style={styles.mcqContainer}>
-      <MonoText style={{ fontWeight: 'bold' }}>What type of data do you want to record?</MonoText>
+      <Text style={{ fontWeight: 'bold' }}>What type of data do you want to record?</Text>
             <TouchableOpacity onPress={() => { setWhichBehavior('ABC Behavior'); handleBehavior(); }}>
                 <View style= {styles.mcqOption}>
                     <View style = {[styles.bubble, whichBehavior === 'ABC Behavior' && styles.filledBubble]}></View>
-                    <MonoText>ABC Behavior Data</MonoText>
+                    <Text>ABC Behavior Data</Text>
                 </View>
             </TouchableOpacity>
               <TouchableOpacity onPress={() => { setWhichBehavior('Duration Data'); handleBehavior(); }}>
                     <View style= {styles.mcqOption}>
                         <View style = {[styles.bubble, whichBehavior === 'Duration Data' && styles.filledBubble]}></View>
-                        <MonoText> Duration Data</MonoText>
+                        <Text> Duration Data</Text>
                     </View>
               </TouchableOpacity>
     </View>
@@ -97,7 +99,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
     <ScrollView>
       <View style={styles.inputContainer}>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Setting</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Setting</Text>
           <TextInput
             style={styles.input}
             value={setting}
@@ -105,7 +107,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Antecedent</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Antecedent</Text>
           <TextInput
             style={styles.input}
             value={preIncident}
@@ -113,7 +115,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Behavior</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Behavior</Text>
           <TextInput
             style={styles.input}
             value={behavior}
@@ -121,7 +123,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Consequence</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Consequence</Text>
           <TextInput
             style={styles.input}
             value={consequence}
@@ -129,7 +131,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Notes</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Notes</Text>
           <TextInput
             style={styles.input}
             value={notes}
@@ -137,7 +139,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Insert Any Pictures Here</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Insert Any Pictures Here</Text>
           <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('Image chosen')}>
             <Image
               source={require('../assets/images/upload-image.png')}
@@ -153,7 +155,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
     <ScrollView>
       <View style={styles.inputContainer}>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Time Started</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Time Started</Text>
           <TextInput
             style={styles.input}
             value={setting}
@@ -161,7 +163,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Time Ended</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Time Ended</Text>
           <TextInput
             style={styles.input}
             value={preIncident}
@@ -169,7 +171,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Activity</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Activity</Text>
           <TextInput
             style={styles.input}
             value={postIncident}
@@ -177,7 +179,7 @@ const [whichBehavior, setWhichBehavior]= useState('');
           />
         </View>
         <View style={styles.inputGroup}>
-          <MonoText style={{ fontWeight: 'bold' }}>Notes</MonoText>
+          <Text style={{ fontWeight: 'bold' }}>Notes</Text>
           <TextInput
             style={styles.input}
             value={notes}
@@ -194,12 +196,16 @@ const [whichBehavior, setWhichBehavior]= useState('');
     return (
       
         // visible={visible} onRequestClose={onClose}
-    <Modal animationType="slide" transparent={true}>
+    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
     <View style={styles.overlay}>
       <View style={styles.modalContainer}>
+      
 
       <View style={styles.titleContainer}>
-          <MonoText style={styles.title}>Student Data</MonoText>
+          <Text style={styles.title}>Student Data</Text>
+          <TouchableOpacity onPress={onClose}>
+            <Text style= {{color: 'white'}}>x</Text>
+         </TouchableOpacity>
         </View>
 
 
@@ -214,16 +220,16 @@ const [whichBehavior, setWhichBehavior]= useState('');
     <View style={styles.buttonContainer}>
           {step > 0 && (
             <TouchableOpacity style={styles.navButton} onPress={handlePrevious}>
-              <MonoText style={styles.navButtonText}>Previous</MonoText>
+              <Text style={styles.navButtonText}>Previous</Text>
             </TouchableOpacity>
           )}
           {step < 1 ? (
             <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-              <MonoText style={styles.navButtonText}>Next</MonoText>
+              <Text style={styles.navButtonText}>Next</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.navButton} onPress={handleSubmit}>
-              <MonoText style={styles.navButtonText}>Save</MonoText>
+              <Text style={styles.navButtonText}>Save</Text>
             </TouchableOpacity>
           )}
         </View> 
@@ -246,6 +252,8 @@ const [whichBehavior, setWhichBehavior]= useState('');
     </View>
   </Modal>
     );
-};
+  };
+  
+  
 
-export default StudentForm;
+
