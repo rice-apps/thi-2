@@ -37,7 +37,6 @@ async function run() {
             console.log(`App listening at http://localhost:${port}`);
         });
     } catch (error) {
-        console.log("test");
         console.log(error);
     }
 }

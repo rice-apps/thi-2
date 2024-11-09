@@ -40,7 +40,6 @@ class AuthController {
             { email: email },
             "_id password is_admin is_deleted"
         ).exec();
-        console.log(account.is_deleted);
         if (!account || account.is_deleted) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
