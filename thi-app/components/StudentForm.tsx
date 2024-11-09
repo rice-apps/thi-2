@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 
 import {
   Modal,
@@ -9,6 +9,8 @@ import {
   StyleSheet,
   TextInput,
   Image,
+  Animated,
+  Easing
 } from 'react-native';
 import { MonoText } from './StyledText';
 import { styles } from './StudentFormStyles';
@@ -39,7 +41,9 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
   const [notes, setNotes] = useState('');
   const [step, setStep] = useState(0); // State to track the current step in the form
 
- 
+
+
+
 
 
 
@@ -219,6 +223,7 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
       <View style={styles.modalContainer}>
       
 
+
       <View style={styles.titleContainer}>
           <Text style={styles.title}>Student Data</Text>
           <TouchableOpacity onPress={onClose}>
@@ -270,7 +275,7 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
     </View>
   </Modal>
     );
-  };
+  }
   
   
 
