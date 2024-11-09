@@ -84,6 +84,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 }
 
 export default function DrawerLayout() {
+  
     
     return (
     <Drawer.Navigator
@@ -92,6 +93,7 @@ export default function DrawerLayout() {
         drawerStyle: {
           width: Dimensions.get('window').width * 0.25,
         },
+        swipeEnabled: false,
         overlayColor: 'transparent',
         headerShown: false,
       }}

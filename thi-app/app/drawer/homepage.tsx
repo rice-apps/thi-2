@@ -18,7 +18,7 @@
 //   },
 // });
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import useEffect from 'react';
 import {
   View,
@@ -33,7 +33,7 @@ import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation, NavigationContainer } from '@react-navigation/native';
 
 function HomePage() {
   return (
@@ -55,18 +55,32 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   );
 }
       
-export default function HomeScreen() {
+export default function HomeScreen(props: DrawerContentComponentProps) {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Toggle the drawer open/close
+  const toggleDrawer = () => {
+    if (isDrawerOpen) {
+      navigation.closeDrawer();
+    } else {
+      navigation.openDrawer();
+    }
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+  
   return (
       <Drawer.Navigator  
       screenOptions={{
         headerStyle: false,
         drawerType: 'slide',
         drawerStyle: {
-          width: Dimensions.get('window').width * 0.25
+          // width: Dimensions.get('window').width * 0.25
+          width: isDrawerOpen ? Dimensions.get('window').width * 0.25 : Dimensions.get('window').width * 0.05,
         },
+        swipeEnabled: false,
         overlayColor: 'transparent',
       }}
-        initialRouteName="Home" 
+        initialRouteName="Home"
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Home" component={HomePage} />
