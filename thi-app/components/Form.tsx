@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   Modal,
   View,
@@ -9,8 +10,8 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import { ThemedText } from './ThemedText';
-import { styles } from './StudentForm'; // Adjust the path as necessary
+import { MonoText } from './StyledText';
+import { styles } from './Form';
 
 
 interface StudentFormProps {
@@ -18,8 +19,13 @@ interface StudentFormProps {
   onClose: () => void;
 }
 
-export function StudentForm({ visible, onClose }: StudentFormProps) {
-  const [whichBehavior, setWhichBehavior]= useState('');
+
+
+
+// export function StudentForm({ visible, onClose }: StudentFormProps) 
+
+const Form = () => {
+    const [whichBehavior, setWhichBehavior]= useState('');
   const [whichForm, setWhichForm]= useState('');
 
 
@@ -70,17 +76,17 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
 
   const renderFirstStep = () => (
     <View style={styles.mcqContainer}>
-      <ThemedText style={{ fontWeight: 'bold' }}>What type of data do you want to record?</ThemedText>
+      <MonoText style={{ fontWeight: 'bold' }}>What type of data do you want to record?</MonoText>
             <TouchableOpacity onPress={() => { setWhichBehavior('ABC Behavior'); handleBehavior(); }}>
                 <View style= {styles.mcqOption}>
                     <View style = {[styles.bubble, whichBehavior === 'ABC Behavior' && styles.filledBubble]}></View>
-                    <ThemedText>ABC Behavior Data</ThemedText>
+                    <MonoText>ABC Behavior Data</MonoText>
                 </View>
             </TouchableOpacity>
               <TouchableOpacity onPress={() => { setWhichBehavior('Duration Data'); handleBehavior(); }}>
                     <View style= {styles.mcqOption}>
                         <View style = {[styles.bubble, whichBehavior === 'Duration Data' && styles.filledBubble]}></View>
-                        <ThemedText> Duration Data</ThemedText>
+                        <MonoText> Duration Data</MonoText>
                     </View>
               </TouchableOpacity>
     </View>
@@ -93,7 +99,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
     <ScrollView>
       <View style={styles.inputContainer}>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Setting</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Setting</MonoText>
           <TextInput
             style={styles.input}
             value={setting}
@@ -101,7 +107,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Antecedent</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Antecedent</MonoText>
           <TextInput
             style={styles.input}
             value={preIncident}
@@ -109,7 +115,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Behavior</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Behavior</MonoText>
           <TextInput
             style={styles.input}
             value={behavior}
@@ -117,7 +123,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Consequence</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Consequence</MonoText>
           <TextInput
             style={styles.input}
             value={consequence}
@@ -125,7 +131,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Notes</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Notes</MonoText>
           <TextInput
             style={styles.input}
             value={notes}
@@ -133,7 +139,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Insert Any Pictures Here</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Insert Any Pictures Here</MonoText>
           <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('Image chosen')}>
             <Image
               source={require('../assets/images/upload-image.png')}
@@ -149,7 +155,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
     <ScrollView>
       <View style={styles.inputContainer}>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Time Started</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Time Started</MonoText>
           <TextInput
             style={styles.input}
             value={setting}
@@ -157,7 +163,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Time Ended</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Time Ended</MonoText>
           <TextInput
             style={styles.input}
             value={preIncident}
@@ -165,7 +171,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Activity</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Activity</MonoText>
           <TextInput
             style={styles.input}
             value={postIncident}
@@ -173,7 +179,7 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
           />
         </View>
         <View style={styles.inputGroup}>
-          <ThemedText style={{ fontWeight: 'bold' }}>Notes</ThemedText>
+          <MonoText style={{ fontWeight: 'bold' }}>Notes</MonoText>
           <TextInput
             style={styles.input}
             value={notes}
@@ -187,63 +193,61 @@ export function StudentForm({ visible, onClose }: StudentFormProps) {
 
 
 
-
-
-
-  return (
-    
+    return (
+      
     <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
+    <View style={styles.overlay}>
+      <View style={styles.modalContainer}>
 
-        <View style={styles.titleContainer}>
-            <ThemedText style={styles.title}>Student Data</ThemedText>
-          </View>
-
-
-        
-          {step === 0 && renderFirstStep()}
-          {step===1 && whichForm === 'A' && renderFormA()}
-          {step=== 1 && whichForm === 'B' && renderFormB()}
-
-
-
-
-      <View style={styles.buttonContainer}>
-            {step > 0 && (
-              <TouchableOpacity style={styles.navButton} onPress={handlePrevious}>
-                <ThemedText style={styles.navButtonText}>Previous</ThemedText>
-              </TouchableOpacity>
-            )}
-            {step < 1 ? (
-              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-                <ThemedText style={styles.navButtonText}>Next</ThemedText>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.navButton} onPress={handleSubmit}>
-                <ThemedText style={styles.navButtonText}>Save</ThemedText>
-              </TouchableOpacity>
-            )}
-          </View> 
-
-
-
-        {/* <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <ThemedText style={styles.cancelButtonText}> Cancel </ThemedText>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.startButton} onPress={handleSubmit}>
-            <ThemedText style={styles.startButtonText}> Save </ThemedText>
-          </TouchableOpacity>
-          
-
-          </View> */}
-
+      <View style={styles.titleContainer}>
+          <MonoText style={styles.title}>Student Data</MonoText>
         </View>
-      </View>
-    </Modal>
-  );
-}
 
+
+      
+        {step === 0 && renderFirstStep()}
+        {step===1 && whichForm === 'A' && renderFormA()}
+        {step=== 1 && whichForm === 'B' && renderFormB()}
+
+
+
+
+    <View style={styles.buttonContainer}>
+          {step > 0 && (
+            <TouchableOpacity style={styles.navButton} onPress={handlePrevious}>
+              <MonoText style={styles.navButtonText}>Previous</MonoText>
+            </TouchableOpacity>
+          )}
+          {step < 1 ? (
+            <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+              <MonoText style={styles.navButtonText}>Next</MonoText>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.navButton} onPress={handleSubmit}>
+              <MonoText style={styles.navButtonText}>Save</MonoText>
+            </TouchableOpacity>
+          )}
+        </View> 
+
+
+
+      {/* <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+          <ThemedText style={styles.cancelButtonText}> Cancel </ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.startButton} onPress={handleSubmit}>
+          <ThemedText style={styles.startButtonText}> Save </ThemedText>
+        </TouchableOpacity>
+        
+
+        </View> */}
+
+      </View>
+    </View>
+  </Modal>
+    );
+};
+
+export default Form;
 
