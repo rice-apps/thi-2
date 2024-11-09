@@ -8,6 +8,6 @@ router.post("/create", wrapMiddleware(durationValidation.create), wrapController
 router.put("/:student_id", wrapMiddleware(durationValidation.update), wrapController(durationController.update));
 router.delete("/:student_id", wrapMiddleware(durationValidation.delete), wrapController(durationController.delete));
 router.get("/all", wrapMiddleware(durationValidation.findAll), wrapController(durationController.findAll));
-router.get("/:student_id", wrapMiddleware(durationValidation.findById, wrapController(durationValidation.findById)));
+router.get("/:student_id", wrapMiddleware(durationValidation.findByStudentId, wrapController(durationValidation.findById)));
 
 module.exports = router;
