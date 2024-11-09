@@ -1,6 +1,6 @@
+import { NextFunction, Request, Response } from "express";
 const HttpStatus = require("http-status-codes");
 const ErrorResponse = require("./error.response");
-import { NextFunction, Request, Response } from "express";
 
 module.exports = (controller: any) => {
     return (req: Request, res: Response, next: NextFunction) => {

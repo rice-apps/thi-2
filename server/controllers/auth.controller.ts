@@ -1,5 +1,5 @@
 
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 const {Account} = require("../models");
 const HttpStatus = require("http-status-codes");
 const {ErrorResponse} = require("../helper");
@@ -8,7 +8,7 @@ require("dotenv").config();
 
 class AuthController {
     // For reference purposes only, NOT actual implementation
-    async signUp(req: Request, res: Response, next: NextFunction) {
+    async signUp(req: Request) {
         const { email, password } = req.body;
         if (email.length > 20) {
             throw new ErrorResponse({
@@ -35,7 +35,7 @@ class AuthController {
         }
     }
 
-    async signIn(req: Request, res: Response, next: NextFunction) {
+    async signIn(req: Request) {
         const { email, password } = req.body;
         const account = await Account.findOne({email: email}, "_id password is_admin is_deleted").exec();
         console.log(account.is_deleted)
@@ -45,7 +45,7 @@ class AuthController {
                 message: "ACCOUNT NOT FOUND",
             })
         }
-        if (account.password == password) {
+        if (account.password === password) {
             return {message: "Signed in!", token: jwt.sign({id: account._id}, 
                 process.env.JWT_SECRET_KEY, {expiresIn: 86400})}
         } else {
@@ -56,7 +56,7 @@ class AuthController {
         }
     }
 
-    async changePassword(req: any, res: Response, next: NextFunction) {
+    async changePassword(req: any) {
         return {message: "Success", ...req.user};
     }
 }

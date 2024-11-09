@@ -36,7 +36,7 @@ async function run() {
     }
 }
 
-const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
+const notFoundHandle = (next: NextFunction) => {
     next({
         success: false,
         statusCode: HttpStatus.StatusCodes.NOT_FOUND,
@@ -44,7 +44,7 @@ const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
     })
 }
 
-const responseHandle = (output: any, req: Request, res: Response, next: NextFunction) => {
+const responseHandle = (output: any, req: Request, res: Response) => {
     const { success, statusCode, status, message, ...rest } = output;
     const code = statusCode || status || HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR;
     if (success) {
