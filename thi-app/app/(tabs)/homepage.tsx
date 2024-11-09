@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Sidebar from '../../components/Sidebar';
+import StudentForm from '../../components/StudentForm'
+
 
 export default function HomePage() {
   return (
+    
     <View style={styles.container}>
       <View>
         <Sidebar />
+
+        <StudentForm/>
+
+
       </View>
       <View style={styles.mainContent}>
         <Text>Placeholder home page content</Text>

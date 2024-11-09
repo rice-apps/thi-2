@@ -11,7 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { MonoText } from './StyledText';
-import { styles } from './Form';
+import { styles } from './StudentForm';
 
 
 interface StudentFormProps {
@@ -22,10 +22,8 @@ interface StudentFormProps {
 
 
 
-// export function StudentForm({ visible, onClose }: StudentFormProps) 
-
-const Form = () => {
-    const [whichBehavior, setWhichBehavior]= useState('');
+const StudentForm = () => {
+const [whichBehavior, setWhichBehavior]= useState('');
   const [whichForm, setWhichForm]= useState('');
 
 
@@ -46,7 +44,7 @@ const Form = () => {
   const handleSubmit = () => {
     // Handle form submission logic here
     console.log('Form submitted:', { preIncident, postIncident, behavior, length, notes });
-    onClose(); // Close the modal after submission
+    // onClose(); // Close the modal after submission
   };
 
 
@@ -195,7 +193,8 @@ const Form = () => {
 
     return (
       
-    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
+        // visible={visible} onRequestClose={onClose}
+    <Modal animationType="slide" transparent={true}>
     <View style={styles.overlay}>
       <View style={styles.modalContainer}>
 
@@ -249,5 +248,4 @@ const Form = () => {
     );
 };
 
-export default Form;
-
+export default StudentForm;
