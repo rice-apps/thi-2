@@ -13,5 +13,4 @@ const abcSchema = new Schema({
         comments: {type: String, required: true}, 
 });
       
-      // `UserModel` will have `name: string`, etc.
-      module.exports = mongoose.model('abc', abcSchema);
+module.exports = mongoose.model('abc', abcSchema);
