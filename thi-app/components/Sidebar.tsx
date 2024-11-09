@@ -7,34 +7,33 @@ import {
 } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
-export default function Sidebar({ navigation }, props: DrawerContentComponentProps) {
+export default function Sidebar(props: DrawerContentComponentProps) {
     return(
         <View className="flex-1 justify-center bg-[#17468F] ">
             <View className="flex-1 w-[267px] h-[706px] self-center justify-evenly items-start flex-col">
                 <View className="flex-row justify-between items-center">
-                    <Image 
-                        style={{ width: 44, height: 45 }}
-                        source={require('../assets/images/thi_logo.png')}
-                    />
-                    <Text className="text-[#3BB4E4] font-sans font-bold text-[20px]">Texas Hearing Institute</Text>
+                    <Text className="text-[#3BB4E4] font-sans font-bold text-[32px]">THI Behaviors</Text>
+                    <TouchableOpacity className="flex-row items-center space-around" onPress={() => props.navigation.closeDrawer()}>
+                    <Image source={require('../assets/images/drawer_icon.png')} className="w-6 h-6 ml-9" />
+                </TouchableOpacity>
                 </View>
-                <TouchableOpacity className="flex-row items-center">
+                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('HomePage')}>
                     <Image source={require('../assets/images/home_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center">
+                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('Students')}> 
                     <Image source={require('../assets/images/students_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Students</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center">
+                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('Games')}>
                     <Image source={require('../assets/images/games_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Games</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center">
+                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('Timer')}>
                     <Image source={require('../assets/images/timer_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Timer</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center">
+                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('Settings')}>
                     <Image source={require('../assets/images/settings_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Settings</Text>
                 </TouchableOpacity>
@@ -42,7 +41,7 @@ export default function Sidebar({ navigation }, props: DrawerContentComponentPro
                 {/* Spacer */}
                 <View className="h-[130px]" />
 
-                <TouchableOpacity className="flex-row items-center">
+                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('SignOut')}>
                     <Image source={require('../assets/images/sign_out_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Sign out</Text>
                 </TouchableOpacity>

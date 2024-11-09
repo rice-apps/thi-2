@@ -2,7 +2,7 @@ import "../global.css";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 
 export {
@@ -46,9 +46,9 @@ function RootLayoutNav() {
   return (
     <View style={StyleSheet.absoluteFill}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="modal" options={{ presentation: "modal" }} /> */}
+        <Stack.Screen name="drawer" options={{ headerShown: false }} />
       </Stack>
     </View>
   );
 }
+

@@ -1,3 +1,23 @@
+// import React from 'react';
+// import { View, Text, StyleSheet } from 'react-native';
+
+// export default function HomePage() {
+//   return (
+//     <View style={styles.container}>
+//       <Text>Welcome to the Home Page!</Text>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: '#f5f5f5',
+//   },
+// });
+
 import * as React from 'react';
 import useEffect from 'react';
 import {
