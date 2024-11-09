@@ -9,7 +9,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from './ThemedText';
 import { styles } from './StudentForm'; // Adjust the path as necessary
 
 

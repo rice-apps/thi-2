@@ -4,7 +4,7 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { StudentForm } from '@/components/StudentForm';
+// import { StudentForm } from '@/components/StudentForm';
 
 
 
@@ -23,7 +23,7 @@ export default function HomeScreen() {
         <ThemedText type="title">Welcome!!</ThemedText>
         {/* <HelloWave /> */}
 
-        {<StudentForm/>}
+        {/* {<StudentForm/>} */}
 
 
 
