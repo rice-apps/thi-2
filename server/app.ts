@@ -37,11 +37,12 @@ async function run() {
             console.log(`App listening at http://localhost:${port}`);
         });
     } catch (error) {
+        console.log("test");
         console.log(error);
     }
 }
 
-const notFoundHandle = (next: NextFunction) => {
+const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
     next({
         success: false,
         statusCode: HttpStatus.StatusCodes.NOT_FOUND,
@@ -49,7 +50,12 @@ const notFoundHandle = (next: NextFunction) => {
     });
 };
 
-const responseHandle = (output: any, req: Request, res: Response) => {
+const responseHandle = (
+    output: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const { success, statusCode, status, message, ...rest } = output;
     const code =
         statusCode || status || HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR;

@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 const { Account } = require("../models");
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("../helper");
@@ -7,7 +7,7 @@ require("dotenv").config();
 
 class AuthController {
     // For reference purposes only, NOT actual implementation
-    async signUp(req: Request) {
+    async signUp(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
         if (email.length > 20) {
             throw new ErrorResponse({
@@ -34,7 +34,7 @@ class AuthController {
         }
     }
 
-    async signIn(req: Request) {
+    async signIn(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
         const account = await Account.findOne(
             { email: email },
