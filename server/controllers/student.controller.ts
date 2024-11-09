@@ -10,7 +10,7 @@ class StudentController {
             const student = new Student(req.body);
             const savedStudent = await student.save();
 
-            return savedStudent;
+            return savedStudent._doc;
         } catch (err: any) {
             throw err;
         }
@@ -30,7 +30,7 @@ class StudentController {
                 })
             }
 
-            return updatedStudent;
+            return updatedStudent._doc;
         } catch (err: any) {
             throw err;
         }
@@ -56,7 +56,7 @@ class StudentController {
                 });
             }
 
-            return deletedStudent;
+            return deletedStudent._doc;
         } catch (err: any) {
             throw err;
         }
@@ -75,7 +75,7 @@ class StudentController {
                 })
             }
 
-            return student;
+            return student._doc;
         } catch (err: any) {
             throw err;
         }
