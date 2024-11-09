@@ -5,6 +5,5 @@ const jwtAuthenStrategy = require("./jwtStrategy");
 module.exports = {
     AuthValidation,
     jwtAuthen,
-    jwtAuthenStrategy
-
-}
+    jwtAuthenStrategy,
+};

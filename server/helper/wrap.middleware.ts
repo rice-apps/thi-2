@@ -17,15 +17,26 @@ module.exports = (schema: any) => {
                         errors[name] = message;
                     }
                 });
-                return next(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY, 
-                                               message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY),
-                                               errors}));
+                return next(
+                    new ErrorResponse({
+                        statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY,
+                        message: HttpStatus.getReasonPhrase(
+                            HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY
+                        ),
+                        errors,
+                    })
+                );
             }
             return next();
         } catch {
-            next(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY, 
-                                    message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)}));
+            next(
+                new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY,
+                    message: HttpStatus.getReasonPhrase(
+                        HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY
+                    ),
+                })
+            );
         }
-
-    }
-}
+    };
+};
