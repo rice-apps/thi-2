@@ -1,4 +1,5 @@
 const HttpStatus = require("http-status-codes");
+const ErrorResponse = require("./error.response");
 import { NextFunction, Request, Response } from "express";
 
 const optError = (error: any) => ({
@@ -23,11 +24,14 @@ module.exports = (schema: any) => {
                         errors[name] = message;
                     }
                 });
-                return res.send(optError(errors));
+                return next(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY, 
+                                               message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY),
+                                               errors}));
             }
             return next();
         } catch (error) {
-            res.send(optError(error));
+            next(new ErrorResponse({statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY, 
+                                    message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)}));
         }
 
     }
