@@ -5,23 +5,26 @@ import {
     Image,
     Dimensions,
 } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useRouter } from 'expo-router';
+import { useDrawerContext } from '../app/(drawer)/_layout';
 
 export default function Sidebar(props: DrawerContentComponentProps) {
-    const router = useRouter();
+  
+  const router = useRouter();
+  const { toggleSidebar } = useDrawerContext();
 
-    return(
-        <View className="flex-1 justify-center bg-[#17468F] ">
+  return (
+    <View className="flex-1 justify-center bg-[#17468F] ">
             <View className="flex-1 w-[267px] h-[706px] self-center justify-evenly items-start flex-col">
                 <View className="flex-row justify-between items-center">
                     <Text className="text-[#3BB4E4] font-sans font-bold text-[32px]">THI Behaviors</Text>
-                    <TouchableOpacity className="flex-row items-center space-around" onPress={() => props.navigation.closeDrawer()}>
+                    <TouchableOpacity className="flex-row items-center space-around" onPress={toggleSidebar}>
                     <Image source={require('../assets/images/drawer_icon.png')} className="w-6 h-6 ml-9" />
                 </TouchableOpacity>
                 </View>
-                <TouchableOpacity className="flex-row items-center" onPress={() => router.push('/home')}>
+                <TouchableOpacity className="flex-row items-center" onPress={() => router.push('/(drawer)')}>
                     <Image source={require('../assets/images/home_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Home</Text>
                 </TouchableOpacity>
@@ -45,82 +48,11 @@ export default function Sidebar(props: DrawerContentComponentProps) {
                 {/* Spacer */}
                 <View className="h-[130px]" />
 
-                <TouchableOpacity className="flex-row items-center" onPress={() => props.navigation.navigate('SignOut')}>
+                <TouchableOpacity className="flex-row items-center" onPress={() => router.push('/')}>
                     <Image source={require('../assets/images/sign_out_icon.png')} className="w-6 h-6" />
                     <Text className="text-white font-sans font-bold text-[20px] pl-2">Sign out</Text>
                 </TouchableOpacity>
             </View>
         </View>
-        // <View className="flex-1 justify-center bg-[#17468F]">
-        //     {/* Spacer */}
-
-        //     <View className="flex-1 self-center justify-evenly items-start flex-col pt-10">
-        //         <View className="flex-row justify-between items-center">
-        //             <Image 
-        //                 style={{ width: 44, height: 45 }}
-        //                 source={require('../assets/images/thi_logo.png')}
-        //             />
-        //             <Text className="text-[#3BB4E4] font-sans font-bold text-[20px]">Texas Hearing Institute</Text>
-        //         </View>
-                
-        //         {/* Spacer */}
-        //         <View style={{ flex: 1}} />
-
-        //         { /* buttons */ }
-        //         <TouchableOpacity
-        //         className="flex-row items-center pt-10"
-        //         onPress={() => props.navigation.navigate('Home')}
-        //         >
-        //             <Image source={require('../assets/images/home_icon.png')} className="w-6 h-6" />
-        //             <Text className="text-white font-sans font-bold text-[20px] pl-2">Home</Text>
-        //         </TouchableOpacity>
-
-        //         <TouchableOpacity
-        //         className="flex-row items-center pt-4"
-        //         onPress={() => props.navigation.navigate('Students')}
-        //         >
-        //             <Image source={require('../assets/images/students_icon.png')} className="w-6 h-6" />
-        //             <Text className="text-white font-sans font-bold text-[20px] pl-2">Students</Text>
-        //         </TouchableOpacity>
-
-        //         <TouchableOpacity
-        //         className="flex-row items-center pt-4"
-        //         onPress={() => props.navigation.navigate('Games')}
-        //         >
-        //             <Image source={require('../assets/images/games_icon.png')} className="w-6 h-6" />
-        //             <Text className="text-white font-sans font-bold text-[20px] pl-2">Games</Text>
-        //         </TouchableOpacity>
-
-        //         <TouchableOpacity
-        //         className="flex-row items-center pt-4"
-        //         onPress={() => props.navigation.navigate('Timer')}
-        //         >
-        //             <Image source={require('../assets/images/timer_icon.png')} className="w-6 h-6" />
-        //             <Text className="text-white font-sans font-bold text-[20px] pl-2">Timer</Text>
-        //         </TouchableOpacity>
-
-        //         <TouchableOpacity
-        //         className="flex-row items-center pt-4"
-        //         onPress={() => props.navigation.navigate('Settings')}
-        //         >
-        //             <Image source={require('../assets/images/settings_icon.png')} className="w-6 h-6" />
-        //             <Text className="text-white font-sans font-bold text-[20px] pl-2">Settings</Text>
-        //         </TouchableOpacity>
-
-        //         {/* Spacer */}
-        //         <View style={{ flex: 1, padding: 100}} />
-
-        //         <TouchableOpacity
-        //             className="flex-row items-center py-3" // Keep spacing consistent
-        //             onPress={() => props.navigation.navigate('SignOut')}
-        //         >
-        //             <Image source={require('../assets/images/sign_out_icon.png')} className="w-6 h-6" />
-        //             <Text className="text-white font-sans font-bold text-[20px] pl-2">Sign out</Text>
-        //         </TouchableOpacity>
-
-        //         {/* Spacer */}
-        //         <View style={{ flex: 1}} />
-        //     </View>
-        // </View>
-    );
+  );
 }

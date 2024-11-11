@@ -1,26 +1,17 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function LoginPage() {
   const router = useRouter();
-
+  
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center justify-center bg-gray-100">
       <Text>Placeholder login page</Text>
       <Button
-        title="Go to Home page"
-        onPress={() => router.push('/drawer/homepage')}
-        // onPress={() => navigation.navigate('drawer/homepage')}
+        title="Go to home page"
+        onPress={() => router.push('/(drawer)/home')}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

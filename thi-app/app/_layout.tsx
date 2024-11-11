@@ -12,7 +12,7 @@ export {
 
 // export const unstable_settings = {
 //   // Ensure that reloading on `/modal` keeps a back button present.
-//   initialRouteName: "(tabs)",
+//   initialRouteName: "(drawer)",
 // };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -44,11 +44,11 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <View style={StyleSheet.absoluteFill}>
+    <View style={StyleSheet.absoluteFill} >
       <Stack>
-        <Stack.Screen name="drawer" options={{ headerShown: false }} />
+        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </View>
   );
 }
-
