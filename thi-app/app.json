@@ -3,7 +3,7 @@
     "name": "thi-app",
     "slug": "thi-app",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "landscape", // locked to landscape mode
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",

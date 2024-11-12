@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -44,11 +45,13 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <View style={StyleSheet.absoluteFill} >
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={StyleSheet.absoluteFill}>
+        <Stack>
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+        </Stack>
+      </View>
+    </GestureHandlerRootView>
   );
 }
