@@ -1,134 +1,99 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
-import { View, Dimensions, TouchableOpacity, SafeAreaView, Animated, Easing } from 'react-native';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { DrawerContentComponentProps } from '@react-navigation/drawer';
-import { Drawer } from 'expo-router/drawer';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import { View, Dimensions, SafeAreaView, Animated, Easing } from 'react-native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import { useSegments, Slot } from 'expo-router';
 import Sidebar from '../../components/Sidebar';
 
-// Context for managing sidebar state across ./(drawer)/*
-const DrawerContext = createContext({
-  isSidebarOpen: false,
+// Context for managing sidebar state and interaction
+const SidebarContext = createContext({
+  isSidebarOpen: true,
   toggleSidebar: () => {},
+  transitionSidebar: (duration: number) => {},
+  openSidebarWidth: Dimensions.get('window').width * 0.18,
+  closedSidebarWidth: Dimensions.get('window').width * 0.02,
 });
 
-export const useDrawerContext = () => useContext(DrawerContext);
+export const useSidebarContext = () => useContext(SidebarContext);
 
-/*
- * Construct animated sliding segment anchored off the main
- * sidebar that stays visible when the 'drawer' is closed
- */
-function PartialSidebarSegment({ animatedValue }: { animatedValue: Animated.Value }) {
-  const { toggleSidebar } = useDrawerContext();
-
-  // Interpolate sliding segment
-  const translatePSS = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-(Dimensions.get('window').width * 0.18), 0],
-  });
-
-  // Interpolate button rotation (point right when closed, left when open)
-  const rotateButton = animatedValue.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: ['0deg', '-90deg', '-180deg'],
-  });
-
-  return(
-    <Animated.View style={{
-      position: 'absolute',
-      zIndex: 0, // Below main sidebar layer-wise
-      transform:[{ translateX: translatePSS}]}}>
-
-      {/* Sidebar 'overflow' segment */}
-      <View className="flex-column bg-white" style={{
-      height: Dimensions.get('window').height,
-      width: Dimensions.get('window').width * 0.20,
-      }}>
-
-        {/* Spacer */}
-        <View style={{
-          height: Dimensions.get('window').height * 0.1
-          }}/>
-
-        {/* Open/collapse sidebar button */}
-        <View className="items-center justify-center w-10 h-10 rounded-full shadow-lg bg-[#105366]" style={{
-          right:-Dimensions.get('window').width * 0.19,
-          }}>
-          <TouchableOpacity onPress={toggleSidebar}>
-            <Animated.View style={{ transform: [{ rotate: rotateButton }]}}>
-              <MaterialIcons name="keyboard-arrow-right" size={26} color="white"/>
-            </Animated.View>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-
-    </Animated.View>
-  );
-}
-
-export default function Layout(props: DrawerContentComponentProps) {
-  
-  // Track sidebar state
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const navigation = useNavigation();
-
-  // Base animation on sidebar state
+export default function Layout() {
+  // Sidebar state, details
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { openSidebarWidth, closedSidebarWidth } = useSidebarContext();
+  // Tie transitions to sidebar state
   const animatedValue = useRef(new Animated.Value(isSidebarOpen ? 1 : 0)).current;
+  // To check ./(drawer)/* screens
+  const segments: string[] = useSegments();
   
   // Toggle sidebar state and animate slide
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-    if (isSidebarOpen) {
-      navigation.dispatch(DrawerActions.closeDrawer());
-    } else {
-      navigation.dispatch(DrawerActions.openDrawer());
-    }
+    transitionSidebar();
+  };
+
+  /*
+   * Transitions the sidebar, button, and main content according to the current
+   * sidebar state given by isSidebarOpen at input duration or the default 400ms.
+   */
+  const transitionSidebar = (duration: number = 400) => {
     Animated.timing(animatedValue, {
       toValue: isSidebarOpen ? 0 : 1,
-      duration: 400,
+      duration,
       easing: Easing.out(Easing.cubic),
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   };
 
-  // // For ensuring the sidebar is correctly opened/closed according to its state
-  // const ensureSidebarState = () => {
-  //   if (isSidebarOpen) {
-  //     navigation.dispatch(DrawerActions.openDrawer());
-  //   } else {
-  //     navigation.dispatch(DrawerActions.closeDrawer());
-  //   }
-  // };
+  // Interpolate main content width (fill screen except sidebar)
+  const mainContentWidth = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [Dimensions.get('window').width - closedSidebarWidth,
+      Dimensions.get('window').width + openSidebarWidth]
+  });
 
-  // // Ensure sidebar state at every ./drawer/* page load
+  // Instantly trigger correct transition when a `(drawer)` screen is focused / page load
+  useFocusEffect(
+    React.useCallback(() => {
+      if (segments.includes('(drawer)')) {
+        transitionSidebar(0);
+      }
+    }, [segments])
+  );
+
+  // // Load saved sidebar state on mount
   // useEffect(() => {
-  //   ensureSidebarState();
-  // }, [isSidebarOpen, navigation]);  // Triggers upon sidebar state change or navigation
+  //   const loadSidebarState = async () => {
+  //     const storedState = await AsyncStorage.getItem('sidebarState');
+  //     if (storedState !== null) {
+  //       setIsSidebarOpen(storedState === 'open');
+  //       animatedValue.setValue(storedState === 'open' ? 1 : 0);
+  //     }
+  //   };
+  //   loadSidebarState();
+  // }, []);
 
   return (
     <SafeAreaView>
-      <DrawerContext.Provider value={{ isSidebarOpen, toggleSidebar }}>
-        <View className="flex-1 items-end">
-          <PartialSidebarSegment animatedValue={animatedValue} />
-          <Drawer
-            screenOptions={{
-              headerStyle: false,
-              drawerType: 'slide',
-              drawerStyle: {
-                height: Dimensions.get('window').height,
-                width: Dimensions.get('window').width * 0.18,
-                zIndex: 2, // On top of PartialSidebarSegment layer-wise
-              },
-              swipeEnabled: false,
-              overlayColor: 'transparent',
-              headerShown: false, // Hides expo header including its default open/collapse sidebar button
-            }}
-            drawerContent={(props) => <Sidebar {...props} />}
-          >
-          </Drawer>
+      <SidebarContext.Provider value={{
+        isSidebarOpen, toggleSidebar, transitionSidebar, openSidebarWidth, closedSidebarWidth
+      }}>
+        <View className="flex-1 flex-row">
+          
+          {/* Sidebar */}
+          <Sidebar animatedValue={animatedValue} />
+          
+          {/* Main screen in ./(drawer)/* */}
+          <Animated.View style={{
+            position: 'absolute',
+            width: mainContentWidth,
+            height: Dimensions.get('window').height,
+            zIndex: 0, // Covered by sidebar layer
+          }}>
+            <Slot />
+          </Animated.View>
+
         </View>
-      </DrawerContext.Provider>
+      </SidebarContext.Provider>
     </SafeAreaView>
   );
 }
