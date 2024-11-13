@@ -45,23 +45,23 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
     });
 
     // Set current screen's name when a new screen is focused
-  useFocusEffect(
-    React.useCallback(() => {
-      if (segments.length > 0) {
-        // Set screen name to last segment of URL
-        const screenName = segments[segments.length - 1];
-        setCurrentScreen(screenName);
-        // console.log(screenName);
-      }
-    }, [segments])
-  );
+    useFocusEffect(
+        React.useCallback(() => {
+        if (segments.length > 0) {
+            // Set screen name to last segment of URL
+            const screenName = segments[segments.length - 1];
+            setCurrentScreen(screenName);
+            // console.log(screenName);
+        }
+        }, [segments])
+    );
 
     return (
         // Animated sidebar container
         <Animated.View style={{
             height: Dimensions.get('window').height,
             zIndex: 1, // Overlays over main content
-            transform:[{ translateX: translateSidebar}]}}>
+            transform:[{ translateX: translateSidebar }]}}>
         <View className="flex-1 justify-center bg-white" style={{
             height: Dimensions.get('window').height,
             width: openSidebarWidth + closedSidebarWidth,
@@ -69,11 +69,11 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
 
             {/* Open/collapse button */}
             <View className="absolute top-[10%] items-center justify-center w-10 h-10 rounded-full shadow-lg bg-[#105366]" style={{
-            left: openSidebarWidth + (Dimensions.get('window').width * 0.01)
+                left: openSidebarWidth + closedSidebarWidth - 20 // anchored on edge of sidebar
             }}>
             <TouchableOpacity onPress={toggleSidebar}>
-                <Animated.View style={{ transform: [{ rotate: rotateButton }]}}>
-                <MaterialIcons name="keyboard-arrow-right" size={26} color="white"/>
+                <Animated.View style={{ transform: [{ rotate: rotateButton }] }}>
+                    <MaterialIcons name="keyboard-arrow-right" size={26} color="white"/>
                 </Animated.View>
             </TouchableOpacity>
             </View>
@@ -91,7 +91,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
                 </View>
                 
                 {/* Navigable screens */}
-                <Animated.View style={{ transform:[{ translateX: hideCurrentColor}]}}>
+                <Animated.View style={{ transform:[{ translateX: hideCurrentColor }] }}>
                     <View className="flex-col items-start justify-between" style={{
                         height: Dimensions.get('window').height * 0.45,
                         width: openSidebarWidth
@@ -201,7 +201,6 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
             </View>
 
         </View>
-
         </Animated.View>
     );
 }

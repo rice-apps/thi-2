@@ -7,7 +7,6 @@ import Sidebar from '../../components/Sidebar';
 const SidebarContext = createContext({
   isSidebarOpen: true,
   toggleSidebar: () => {},
-  transitionSidebar: (duration: number) => {},
   openSidebarWidth: Dimensions.get('window').width * 0.18,
   closedSidebarWidth: Dimensions.get('window').width * 0.02,
 });
@@ -36,7 +35,7 @@ export default function Layout() {
       toValue: isSidebarOpen ? 0 : 1,
       duration,
       easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
+      useNativeDriver: false, //TODO: ideally true, redo main content screen fill
     }).start();
   };
 
@@ -47,10 +46,24 @@ export default function Layout() {
       Dimensions.get('window').width + openSidebarWidth]
   });
 
+  // /* Below animations adjust main content to fill screen except sidebar */
+
+  // // Interpolate main content width scaling
+  // const scaleMainContent = animatedValue.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [(Dimensions.get('window').width + openSidebarWidth)/
+  //     (Dimensions.get('window').width - closedSidebarWidth), 1]
+  // });
+  // // Interpolate main content translation
+  // const translateMainContent = animatedValue.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [0, openSidebarWidth / 2],
+  // });
+
   return (
     <SafeAreaView>
       <SidebarContext.Provider value={{
-        isSidebarOpen, toggleSidebar, transitionSidebar, openSidebarWidth, closedSidebarWidth
+        isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth
       }}>
         <View className="flex-1 flex-row">
           
@@ -61,10 +74,16 @@ export default function Layout() {
           <Animated.View style={{
             position: 'absolute',
             width: mainContentWidth,
+            // width: Dimensions.get('window').width - closedSidebarWidth,
             height: Dimensions.get('window').height,
             zIndex: 0, // Covered by sidebar layer
-          }}>
-            <Slot />
+            overflow: 'hidden',
+            // transform:[
+              // { scaleX: scaleMainContent },
+              // { translateX: translateMainContent },
+            // ]
+            }}>
+              <Slot />
           </Animated.View>
 
         </View>
