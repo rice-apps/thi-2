@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 
 const Login = () => {
@@ -33,6 +33,10 @@ const Login = () => {
             <Image 
                 className="w-68 h-32 self-center my-12"
                 source={require('../assets/images/logo.png')}
+                style={{
+                    height: Dimensions.get('window').height * 0.3,
+                    width: Dimensions.get('window').width * 0.4,
+                }}
             />
             <Text className="text-2xl font-bold text-center text-black mb-5">Welcome Back!</Text>
             <TextInput 

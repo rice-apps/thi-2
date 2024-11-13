@@ -1,8 +1,6 @@
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import React, { createContext, useContext, useState, useRef } from 'react';
 import { View, Dimensions, SafeAreaView, Animated, Easing } from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import { useSegments, Slot } from 'expo-router';
+import { Slot } from 'expo-router';
 import Sidebar from '../../components/Sidebar';
 
 // Context for managing sidebar state and interaction
@@ -22,8 +20,6 @@ export default function Layout() {
   const { openSidebarWidth, closedSidebarWidth } = useSidebarContext();
   // Tie transitions to sidebar state
   const animatedValue = useRef(new Animated.Value(isSidebarOpen ? 1 : 0)).current;
-  // To check ./(drawer)/* screens
-  const segments: string[] = useSegments();
   
   // Toggle sidebar state and animate slide
   const toggleSidebar = () => {
@@ -50,27 +46,6 @@ export default function Layout() {
     outputRange: [Dimensions.get('window').width - closedSidebarWidth,
       Dimensions.get('window').width + openSidebarWidth]
   });
-
-  // Instantly trigger correct transition when a `(drawer)` screen is focused / page load
-  useFocusEffect(
-    React.useCallback(() => {
-      if (segments.includes('(drawer)')) {
-        transitionSidebar(0);
-      }
-    }, [segments])
-  );
-
-  // // Load saved sidebar state on mount
-  // useEffect(() => {
-  //   const loadSidebarState = async () => {
-  //     const storedState = await AsyncStorage.getItem('sidebarState');
-  //     if (storedState !== null) {
-  //       setIsSidebarOpen(storedState === 'open');
-  //       animatedValue.setValue(storedState === 'open' ? 1 : 0);
-  //     }
-  //   };
-  //   loadSidebarState();
-  // }, []);
 
   return (
     <SafeAreaView>
