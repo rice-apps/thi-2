@@ -3,7 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
@@ -45,8 +45,8 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={StyleSheet.absoluteFill}>
+    <GestureHandlerRootView className="flex-1">
+      <View className="absolute inset-0">
         <Stack>
           <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
           <Stack.Screen name="index" options={{ headerShown: false }} />
