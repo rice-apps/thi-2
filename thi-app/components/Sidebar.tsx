@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, Dimensions, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
+import Animated, { SharedValue, useAnimatedStyle, interpolate } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter, useSegments } from 'expo-router';
 import { Entypo, FontAwesome, FontAwesome6, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -33,7 +34,7 @@ export const useScreenContext = () => useContext(ScreenContext);
 export const useSidebarContext = () => useContext(SidebarContext);
 export const useSidebarCustomization = () => useContext(SidebarCustomization);
 
-export default function Sidebar({ animatedValue }: { animatedValue: Animated.Value }) {
+export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<number> }) {
     // Sidebar state and screen details
     const router = useRouter();
     const { toggleSidebar, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
@@ -52,20 +53,23 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
     /* Animation interpolations */
 
     // Sidebar slide
-    const translateSidebar = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-openSidebarWidth, 0],
-    });
+    const sidebarStyle = useAnimatedStyle(() => ({
+        transform: [
+            { translateX: interpolate(animatedValue.value, [0, 1], [-openSidebarWidth, 0]) }
+        ],
+    }));
     // Button rotation (> when closed, < when open)
-    const rotateButton = animatedValue.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: ['0deg', '-90deg', '-180deg'],
-    });
+    const buttonStyle = useAnimatedStyle(() => ({
+        transform: [
+            { rotate: `${interpolate(animatedValue.value, [0, 0.5, 1], [0, -90, -180])}deg` }
+        ],
+    }));
     // Move current screen highlight off-screen when closed
-    const hideCurrentColor = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-closedSidebarWidth * 0.5, 0]
-    });
+    const currentHighlightStyle = useAnimatedStyle(() => ({
+        transform: [
+            { translateX: interpolate(animatedValue.value, [0, 1], [-closedSidebarWidth * 0.5, 0]) }
+        ],
+    }));
 
     // Set current screen name (e.g. "students" for (drawer)/students)
     useFocusEffect(
@@ -80,11 +84,12 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
 
     return (
         // Animated sidebar container
-        <Animated.View style={{
-            height: Dimensions.get('window').height,
-            zIndex: 1, // Overlays over main content
-            transform:[{ translateX: translateSidebar }]
-            }}>
+        <Animated.View style={[
+            sidebarStyle,
+            {
+                height: Dimensions.get('window').height,
+                zIndex: 1, // Overlays over main content
+            }]}>
             <View className="flex-1 justify-center bg-white" style={{
                 height: Dimensions.get('window').height,
                 width: openSidebarWidth + closedSidebarWidth,
@@ -97,7 +102,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
                     left: openSidebarWidth + closedSidebarWidth - (buttonSize * 16 / 2)
                 }}>
                 <TouchableOpacity onPress={toggleSidebar}>
-                    <Animated.View style={{ transform: [{ rotate: rotateButton }] }}>
+                    <Animated.View style={buttonStyle}>
                         <MaterialIcons name="keyboard-arrow-right" size={26} color="white"/>
                     </Animated.View>
                 </TouchableOpacity>
@@ -116,7 +121,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
                     </View>
                     
                     {/* Navigable screens */}
-                    <Animated.View style={{ transform:[{ translateX: hideCurrentColor }] }}>
+                    <Animated.View style={currentHighlightStyle}>
                         <View className="flex-col items-start justify-between" style={{
                             height: Dimensions.get('window').height * 0.45,
                             width: openSidebarWidth
