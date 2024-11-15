@@ -103,7 +103,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                 }}>
                 <TouchableOpacity onPress={toggleSidebar}>
                     <Animated.View style={buttonStyle}>
-                        <MaterialIcons name="keyboard-arrow-right" size={26} color="white"/>
+                        <MaterialIcons name="keyboard-arrow-right" size={buttonSize * 10.4} color="white"/>
                     </Animated.View>
                 </TouchableOpacity>
                 </View>
@@ -112,7 +112,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                 <View className="flex-1 self-center justify-center items-center flex-col">
 
                     {/* App icon */}
-                    <View className="self-center justify-center items-center" style={{ height: openSidebarWidth * .70 }}>
+                    <View style={{ height: openSidebarWidth * .70 }}>
                         <Image className="flex-row justify-between self-center pt-5"
                         source={require('../assets/images/bb_icon.png')} style={{
                             height: openSidebarWidth * .65,
@@ -137,7 +137,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                                         <Entypo name="home" size={26} style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1" style={{ height: closedSidebarWidth }}>
-                                        <Text className="text-black font-sans font-bold text-[23px]"
+                                        <Text className="font-sans font-bold text-[23px]"
                                         style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}>Home</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -153,7 +153,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                                         <FontAwesome6 name="user-large" size={23} style={{ color: currentScreen.includes('students') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="text-black font-sans font-bold text-[23px]"
+                                        <Text className="font-sans font-bold text-[23px]"
                                         style={{ color: currentScreen.includes('students') ? currentIconTextColor : defaultIconTextColor }}>Students</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -169,7 +169,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                                         <MaterialCommunityIcons name="gamepad-square-outline" size={26} style={{ color: currentScreen.includes('games') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="text-black font-sans font-bold text-[23px]"
+                                        <Text className="font-sans font-bold text-[23px]"
                                         style={{ color: currentScreen.includes('games') ? currentIconTextColor : defaultIconTextColor }}>Games</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -185,7 +185,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                                         <MaterialCommunityIcons name="timer-sand" size={26} style={{ color: currentScreen.includes('timer') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="text-black font-sans font-bold text-[23px]"
+                                        <Text className="font-sans font-bold text-[23px]"
                                         style={{ color: currentScreen.includes('timer') ? currentIconTextColor : defaultIconTextColor }}>Timer</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -201,7 +201,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                                         <FontAwesome name="gear" size={26} style={{ color: currentScreen.includes('settings') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="text-black font-sans font-bold text-[23px]" 
+                                        <Text className="font-sans font-bold text-[23px]" 
                                         style={{ color: currentScreen.includes('settings') ? currentIconTextColor : defaultIconTextColor }}>Settings</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -211,7 +211,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                     </Animated.View>
                         
                         {/* Sign out */}
-                        <View className="flex-1 flex-shrink-0" style={{ width: openSidebarWidth }}>
+                        <View className="flex-1 flex-shrink-1" style={{ width: openSidebarWidth }}>
                             <View className="flex-1 absolute bottom-0" style={{ height: Dimensions.get('window').height * 0.16 }}>
                                 <TouchableOpacity className="flex-1 flex-row justify-start items-center pl-6" style={{
                                     height: Dimensions.get('window').height * 0.08,
