@@ -1,7 +1,7 @@
-import React , { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Dimensions, Animated } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useRouter , useSegments } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 import { Entypo, FontAwesome, FontAwesome6, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Context for current screen
