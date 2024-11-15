@@ -1,4 +1,4 @@
 module.exports = function (errors: any) {
-    const { statusCode = 400, message, ...rest } = errors; 
-    return { isError: true, statusCode, message, ...rest };
+    const { statusCode, message, ...rest } = errors; 
+    return { success: false, statusCode, message, ...rest };
 };
