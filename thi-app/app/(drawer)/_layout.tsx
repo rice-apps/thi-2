@@ -27,21 +27,19 @@ export default function Layout() {
   // Tie animations to initial sidebar state (currently set to open)
   const sidebarAnimatedValue = useSharedValue(isSidebarOpen ? 1 : 0);
   const mainScreenWidth = useSharedValue(
-    Dimensions.get('window').width - openSidebarWidth + closedSidebarWidth);
+    Dimensions.get('window').width - (openSidebarWidth + closedSidebarWidth));
   // Transition settings
   const { transitionEasing, transitionDuration } = useTransitionCustomization();
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   // Toggle sidebar state
   const toggleSidebar = async () => {
-    // Ignore swipes mid-transition
-    if (isTransitioning) return;
     // Perform transitions
     setIsTransitioning(true);
     setIsSidebarOpen(!isSidebarOpen);
     transitionMainScreen();
     transitionSidebar();
-    // End transition after 400ms duration
+    // Allow swipes after 400ms duration
     await delay(transitionDuration);
     setIsTransitioning(false);
   };
@@ -54,19 +52,20 @@ export default function Layout() {
   // Transitions main screen for 400ms duration
   const transitionMainScreen = () => {
     mainScreenWidth.value = withTiming(
-      Dimensions.get('window').width - (isSidebarOpen ? closedSidebarWidth : (
-        openSidebarWidth + closedSidebarWidth)),
+      (mainScreenWidth.value === Dimensions.get('window').width - (openSidebarWidth + closedSidebarWidth) && isSidebarOpen) ?
+      Dimensions.get('window').width - closedSidebarWidth : 
+      Dimensions.get('window').width - (openSidebarWidth + closedSidebarWidth),
         {
           duration: transitionDuration,
           easing: transitionEasing,
         }
-      );
-    };
+    );
+  };
 
   // Transitions sidebar for 400ms duration
   const transitionSidebar = () => {
     sidebarAnimatedValue.value = withTiming(
-      sidebarAnimatedValue.value === 0 ? 1 : 0, {
+      sidebarAnimatedValue.value === 1 && isSidebarOpen ? 0 : 1, {
         duration: transitionDuration,
         easing: transitionEasing,
       }
@@ -90,9 +89,9 @@ export default function Layout() {
 
   return (
     <SafeAreaView>
-      <GestureDetector gesture={swipeGesture}>
-        <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth }}>
-          <View className="flex-1 flex-row">
+      <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth }}>
+        <GestureDetector gesture={swipeGesture}>
+          <View className="flex-1 flex-row" collapsable={false}>
             
             {/* Sidebar */}
             <Sidebar animatedValue={sidebarAnimatedValue} />
@@ -111,8 +110,8 @@ export default function Layout() {
             </Animated.View>
 
           </View>
-        </SidebarContext.Provider>
-      </GestureDetector>
+          </GestureDetector>
+      </SidebarContext.Provider>
     </SafeAreaView>
   );
 }
