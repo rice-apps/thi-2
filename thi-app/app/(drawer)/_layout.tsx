@@ -51,6 +51,13 @@ export default function Layout() {
     }).start();
   };
 
+  // // Main content fills remaining screen (requires useNativeDriver: false)
+  // const mainScreenWidth = animatedValue.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [Dimensions.get('window').width - closedSidebarWidth,
+  //     Dimensions.get('window').width + openSidebarWidth]
+  // });
+
   return (
     <SafeAreaView>
       <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth }}>
