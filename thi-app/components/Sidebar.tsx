@@ -127,7 +127,7 @@ export default function Sidebar({ animatedValue }: { animatedValue: Animated.Val
                                 <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
                                     height: Dimensions.get('window').height * 0.08,
                                     backgroundColor: currentScreen.includes('home') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/(drawer)')}>
+                                }} onPress={() => router.push('/(drawer)/home')}>
                                     <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
                                         <Entypo name="home" size={26} style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>

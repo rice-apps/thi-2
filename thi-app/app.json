@@ -3,10 +3,11 @@
     "name": "thi-app",
     "slug": "thi-app",
     "version": "1.0.0",
-    "orientation": "landscape", // locked to landscape mode
+    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -40,7 +41,8 @@
         {
           "initialOrientation": "DEFAULT"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "tsconfigPaths": true,

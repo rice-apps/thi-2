@@ -20,9 +20,11 @@ export default function Layout() {
   };
 
   /*
-  * Transitions main screen for input duration or default 400ms.
-  */
+   * Transitions main screen for input duration or default 400ms.
+   */
   const transitionMainScreen = (duration: number = 400) => {
+    setMainScreenWidth(isSidebarOpen ? Dimensions.get('window').width - closedSidebarWidth :
+    Dimensions.get('window').width - openSidebarWidth);
     LayoutAnimation.configureNext({
       duration,
       create: {
@@ -34,15 +36,12 @@ export default function Layout() {
           springDamping: 0.7,
       },
     });
-    // Adjust width based on sidebar state
-    setMainScreenWidth(isSidebarOpen ? Dimensions.get('window').width - closedSidebarWidth :
-    Dimensions.get('window').width - openSidebarWidth);
   };
 
   /*
-  * Transitions sidebar according to current sidebar state
-  * 'isSidebarOpen' for input duration or default 400ms.
-  */
+   * Transitions sidebar according to current sidebar state
+   * 'isSidebarOpen' for input duration or default 400ms.
+   */
   const transitionSidebar = (duration: number = 400) => {
     Animated.timing(animatedValue, {
     toValue: isSidebarOpen ? 0 : 1,
