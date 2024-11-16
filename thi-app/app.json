@@ -36,6 +36,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-font",
       [
         "expo-screen-orientation",
         {

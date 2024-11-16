@@ -10,13 +10,6 @@ import { Button } from 'react-native';
 
 
 export default function HomePage() {
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  // Function to close the modal
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
 
   return (
     
@@ -26,21 +19,12 @@ export default function HomePage() {
         <StudentCard/>
 
       </View>
-
       
-      
-
-
+  
 
       <View style={styles.mainContent}>
         <Text>Placeholder home page content</Text>
 
-
-
-        <View>
-              <Button title="+ Add Data" onPress={() => setModalVisible(true)} />
-              <StudentForm visible={isModalVisible} onClose={closeModal} />
-      </View>
       </View>
 
 
