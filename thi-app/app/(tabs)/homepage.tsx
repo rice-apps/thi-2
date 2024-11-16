@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Sidebar from '../../components/Sidebar';
 import StudentForm from '../../components/StudentForm';
+import StudentCard from '../../components/StudentCard';
+
 import { Button } from 'react-native';
 
 
@@ -20,7 +22,8 @@ export default function HomePage() {
     
     <View style={styles.container}>
       <View>
-        <Sidebar />
+        {/* <Sidebar /> */}
+        <StudentCard/>
 
       </View>
 

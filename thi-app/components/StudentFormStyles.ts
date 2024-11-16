@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: '#17468F', // Blue background
+    backgroundColor: '#105366', // Green background
     padding: 15,
     marginBottom: 10,
   },
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     marginRight: 10,
   },
   filledBubble: {
-    backgroundColor: '#17468F',
+    backgroundColor: '#105366',
   },
 
   inputContainer: {
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
     height: 100, // Height of the image
   },
   navButton: {
-    backgroundColor: '#17468F',
+    backgroundColor: '#105366',
     padding: 10,
     borderRadius: 5,
     marginVertical: 5,
