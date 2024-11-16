@@ -110,7 +110,7 @@ export default function Layout() {
             </Animated.View>
 
           </View>
-          </GestureDetector>
+        </GestureDetector>
       </SidebarContext.Provider>
     </SafeAreaView>
   );
