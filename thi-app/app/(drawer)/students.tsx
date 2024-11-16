@@ -1,13 +1,22 @@
 import {useState} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import StudentForm from '../../components/StudentForm';
 import StudentCard from '../../components/StudentCard';
+import AddStudentModal from '../../components/AddStudentModal';
+
 import { TouchableOpacity, Button } from 'react-native';
 
 
 
 export default function StudentsPage() {
+  const [isAddStudentVisible, setAddStudentVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+
+
+
+  const closeAddStudent = () => {
+    setAddStudentVisible(false);
+  };
 
   // Function to close the modal
   const closeModal = () => {
@@ -27,7 +36,7 @@ export default function StudentsPage() {
       
 
 
-      <View style={styles.mainContent}>
+      <ScrollView contentContainerStyle = {styles.mainContent}>
         <Text className="text-3xl font-bold mb-[30px]"> Students </Text>
 
 
@@ -41,8 +50,14 @@ export default function StudentsPage() {
 
 
 
-        <TouchableOpacity style= {styles.button}>
+
+
+
+
+
+        <TouchableOpacity style= {styles.button} onPress={() => setAddStudentVisible(true)}>
             <Text style={{ color: 'white' }}>+ Add Student </Text>
+            <AddStudentModal visible = {isAddStudentVisible} onClose = {closeAddStudent} />
         </TouchableOpacity>
 
 
@@ -52,14 +67,40 @@ export default function StudentsPage() {
             <StudentForm visible={isModalVisible} onClose={closeModal} />
 
         </TouchableOpacity>
-    
+
+
+
+        </View>
+        
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 50}}>
+        <StudentCard ></StudentCard>
+        <StudentCard ></StudentCard>
+
+        <StudentCard ></StudentCard>
+        <StudentCard ></StudentCard>
+        <StudentCard ></StudentCard>
+        <StudentCard ></StudentCard>
+
+
         </View>
 
-        <StudentCard></StudentCard>
+      
 
 
 
-      </View>
+
+
+
+
+        
+        
+        
+
+
+
+
+
+      </ScrollView>
       
     </View>
   );
@@ -95,7 +136,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 5,
     width: '17%',
-    height: '15%',
+    height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
 

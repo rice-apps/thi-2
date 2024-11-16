@@ -12,7 +12,7 @@ export default function StudentCard(){
         
         <View style= {styles.container}>
             <View style = {styles.whiteContainer}>
-            <Text> name </Text>
+            <Text> Steven Brown </Text>
             <Text> ABC Behavioral Reports </Text>
             <Text> Duration Reports </Text>
         </View>
@@ -27,17 +27,23 @@ const styles= StyleSheet.create({
     container:{
         width: 250,
         height: 250,
-        backgroundColor: '#105366',
+        backgroundColor: 'rgba(16, 83, 102, 0.6)',
         borderRadius: 10,
-        fontSize: 30
+        fontSize: 30,
+        margin: 20
     },
     whiteContainer: {
         width: 250,
-        height: 200,
+        height: 180,
         backgroundColor: "white",
         borderRadius: 10,
+        borderTopLeftRadius: 0, 
+        borderTopRightRadius: 0,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        position: 'absolute', 
+        bottom: 0,
+        left: 0,
 
     }
 
