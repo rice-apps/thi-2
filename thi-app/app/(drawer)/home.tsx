@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -5,6 +6,14 @@ import { StudentCard } from "@/components/StudentCard";
 import { Student } from "@/types";
 import SmallTimer from "@/components/TimerSmallComponent";
 import { TimerContext } from "@/context/TimerContext"; 
+=======
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Student } from '@/types';
+import { sampleStudents } from './students';
+import { StudentCard } from '@/components/StudentCard';
+>>>>>>> 8f8c2ab (Feat: display students on home page)
 
 export const teacherName = "Jane Summers";
 
@@ -24,6 +33,7 @@ const homePage = () => {
     setStudents(sampleStudents); // Load the sample students
   }, []);
 
+<<<<<<< HEAD
   const {
     timeLeft,
     isRunning,
@@ -34,6 +44,8 @@ const homePage = () => {
     resetTimer,
   } = useContext(TimerContext);
 
+=======
+>>>>>>> 8f8c2ab (Feat: display students on home page)
   return (
     <SafeAreaView className="flex-1 scrollabale">
       <ScrollView className="px-12 py-8">
@@ -63,6 +75,7 @@ const homePage = () => {
 
         <View className="mb-5">
           <Text className="text-lg font-bold mb-8">Students</Text>
+<<<<<<< HEAD
           <View className="flex-row flex-wrap justify-center gap-x-32 gap-y-8 mb-8">
           {students.map((student) => (
               <View
@@ -75,6 +88,20 @@ const homePage = () => {
               </View>
             ))}
             </View>
+=======
+          <View className="flex-row flex-wrap justify-between gap-y-4">
+          {students.map((student) => (
+            <View
+            key={student.id}
+            style={{
+              width: "28%",
+            }}
+          >
+              <StudentCard student={student} />
+            </View>
+          ))}
+        </View>
+>>>>>>> 8f8c2ab (Feat: display students on home page)
         </View>
       </ScrollView>
     </SafeAreaView>
