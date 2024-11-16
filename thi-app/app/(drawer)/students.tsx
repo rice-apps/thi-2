@@ -4,8 +4,6 @@ import { StudentCard } from "@/components/StudentCard";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Student } from "@/types";
-import { SidebarContext } from "../../components/Sidebar"; // Adjust the path
-
 
 export const sampleStudents: Student[] = [
   { id: "1", name: "Alice Johnson", age: "20", abcReports: 1, durationReports: 2 },
@@ -17,8 +15,6 @@ export const sampleStudents: Student[] = [
 ];
 
 const StudentsPage = () => {
-  const { isSidebarOpen } = useContext(SidebarContext); // Access sidebar state
-  const cardWidth = isSidebarOpen ? "33%" : "25%"; // Set fixed width for cards
   const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
@@ -29,9 +25,9 @@ const StudentsPage = () => {
     <SafeAreaView>
       <ScrollView className="px-16">
         {/* Title Section */}
-        <Text className="text-3xl font-bold mb-8">Students</Text>
+        <Text className="text-3xl font-bold mb-8 mt-8">Students</Text>
         <View className="flex-row justify-between items-center mb-5">
-          <Text className="text-lg font-bold">Current Students</Text>
+          <Text className="text-lg font-bold mb-8 mt-8">Current Students</Text>
           <View className="flex-row">
             <TouchableOpacity className="bg-[rgba(16,83,102,0.6)] p-2 rounded mr-2 flex-row items-center">              
               <MaterialIcons name="edit" size={16} color="white" />
@@ -45,7 +41,7 @@ const StudentsPage = () => {
         </View>
 
         {/* Student Cards Grid */}
-        <View className="flex-row flex-wrap justify-start gap-x-24 gap-y-8">
+        <View className="flex-row flex-wrap justify-start gap-x-24 gap-y-8 mb-8">
           {students.map((student) => (
             <View
             key={student.id}
