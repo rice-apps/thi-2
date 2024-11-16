@@ -2,7 +2,7 @@
 import { NextFunction, Request, Response } from "express";
 const {Account} = require("../models");
 const HttpStatus = require("http-status-codes");
-const {ErrorResponse} = require("../helper");
+const {ErrorResponse, resendService, emailFormat} = require("../helper");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -10,7 +10,7 @@ class AuthController {
     // For reference purposes only, NOT actual implementation
     async signUp(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
-        if (email.length > 20) {
+        if (email.length > 30) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
                 message: "Email too long (20 char limit)",
@@ -26,6 +26,7 @@ class AuthController {
         });
         try {
             await account.save();
+            resendService.emails.send(emailFormat("tmc15@rice.edu"));
             return {message: "Request processed!", id: account._id};
         } catch (error) {
             throw new ErrorResponse({

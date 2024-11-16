@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-const Student = require("../models/student")
+const Student = require("../models/student");
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("../helper");
 
@@ -10,7 +10,7 @@ class StudentController {
             const student = new Student(req.body);
             const savedStudent = await student.save();
 
-            return savedStudent;
+            return { id: student._id };
         } catch (err: any) {
             throw err;
         }
@@ -18,7 +18,8 @@ class StudentController {
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = getId(req)
+            const id = getId(req);
+            console.log(id);
 
             const newData = req.body;
             const updatedStudent = await Student.findByIdAndUpdate(id, newData);
@@ -26,8 +27,8 @@ class StudentController {
             if (!updatedStudent) {
                 throw new ErrorResponse({
                     statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Student with id ${id} not found.`
-                })
+                    message: `Student with id ${id} not found.`,
+                });
             }
 
             return updatedStudent;
@@ -38,7 +39,7 @@ class StudentController {
 
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = getId(req)
+            const id = getId(req);
 
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 throw new ErrorResponse({
@@ -64,15 +65,15 @@ class StudentController {
 
     async findById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = getId(req)
+            const id = getId(req);
 
             const student = await Student.findById(id);
 
             if (!student) {
                 throw new ErrorResponse({
                     statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Student with id ${id} not found.`
-                })
+                    message: `Student with id ${id} not found.`,
+                });
             }
 
             return student;
@@ -93,6 +94,6 @@ const getId = (req: Request) => {
     }
 
     return id;
-}
+};
 
 module.exports = new StudentController();
