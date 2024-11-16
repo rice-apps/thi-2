@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 const Abc = require("../models/abc");
+const fileUpload = require('express-fileupload');
+const excelToJson = require('convert-excel-to-json');
 const HttpStatus = require("http-status-codes");
 const {ErrorResponse} = require("../helper");
 
@@ -92,6 +94,24 @@ class AbcController {
         }
         async exportRecord(req: Request, res: Response, next: NextFunction) {
                 // TODO: Implement
+                if (!req.files || Object.keys(req.files).length === 0) {
+                    return res.status(400).send('No files were uploaded.');
+                  }
+                
+                  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+                    let record : File = req.files.record;
+                    
+
+                    // Process your file
+                    const result:JSON = excelToJson({
+                        sourceFile: record.name
+                    });
+
+                    // for (const key in result) {
+                    //     console.log(`${key}: ${result[key]}`);
+                    // }
+                    
+                    
         }
         async importRecord(req: Request, res: Response, next: NextFunction) {
                 // TODO: Implement

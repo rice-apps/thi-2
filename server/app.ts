@@ -3,6 +3,7 @@ const HttpStatus = require("http-status-codes");
 require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
+const fileUpload = require('express-fileupload');
 const port = process.env.PORT;
 
 const { default: mongoose } = require("mongoose");
@@ -25,6 +26,7 @@ async function run() {
         app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms'));
         app.use(express.json());
         app.use('/api', require("./routes"));
+        app.use(fileUpload());
         
         app.use([notFoundHandle, responseHandle]);
 
