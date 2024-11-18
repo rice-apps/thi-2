@@ -178,7 +178,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                         style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1" style={{ height: closedSidebarWidth }}>
-                                        <Text className="font-sans font-bold lg:text-2xl"
+                                        <Text className="font-jost font-bold lg:text-2xl"
                                         style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}>Home</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -195,7 +195,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                         style={{ color: currentScreen.includes('students') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-sans font-bold lg:text-2xl"
+                                        <Text className="font-jost font-bold lg:text-2xl"
                                         style={{ color: currentScreen.includes('students') ? currentIconTextColor : defaultIconTextColor }}>Students</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -212,7 +212,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                         style={{ color: currentScreen.includes('schedule') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-sans font-bold lg:text-2xl"
+                                        <Text className="font-jost font-bold lg:text-2xl"
                                         style={{ color: currentScreen.includes('schedule') ? currentIconTextColor : defaultIconTextColor }}>Schedule</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -229,7 +229,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                         style={{ color: currentScreen.includes('games') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-sans font-bold lg:text-2xl"
+                                        <Text className="font-jost font-bold lg:text-2xl"
                                         style={{ color: currentScreen.includes('games') ? currentIconTextColor : defaultIconTextColor }}>Games</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -246,7 +246,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                         style={{ color: currentScreen.includes('timer') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-sans font-bold lg:text-2xl"
+                                        <Text className="font-jost font-bold lg:text-2xl"
                                         style={{ color: currentScreen.includes('timer') ? currentIconTextColor : defaultIconTextColor }}>Timer</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -263,7 +263,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                         style={{ color: currentScreen.includes('settings') ? currentIconTextColor : defaultIconTextColor }}/>
                                     </View>
                                     <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-sans font-bold lg:text-2xl" 
+                                        <Text className="font-jost font-bold lg:text-2xl" 
                                         style={{ color: currentScreen.includes('settings') ? currentIconTextColor : defaultIconTextColor }}>Settings</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -294,7 +294,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                                 <Entypo name="log-out" size={ dynamicIconSize() - 1 } style={{ color: defaultIconTextColor }}/>
                                             </View>
                                             <View className="justify-items-center items-center pl-2 pb-1">
-                                                <Text className="font-sans font-bold lg:text-2xl" style={{ color: defaultIconTextColor}}>Sign Out</Text>
+                                                <Text className="font-jost font-bold lg:text-2xl" style={{ color: defaultIconTextColor}}>Sign Out</Text>
                                             </View>
                                         </View>
                                     </Animated.View>)}
