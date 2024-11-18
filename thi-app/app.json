@@ -4,7 +4,7 @@
     "slug": "thi-app",
     "version": "1.0.0",
     "orientation": "landscape",
-    "icon": "@/assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -40,7 +40,7 @@
       [
         "expo-screen-orientation",
         {
-          "initialOrientation": "DEFAULT"
+          "initialOrientation": "LANDSCAPE_LEFT"
         }
       ],
       "expo-font"

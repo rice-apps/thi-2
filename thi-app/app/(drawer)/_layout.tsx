@@ -1,25 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Dimensions, SafeAreaView } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { Slot } from 'expo-router';
-import Sidebar, { SidebarContext, useSidebarContext } from '@/components/Sidebar';
+import Sidebar, { SidebarContext, useSidebarContext, useTransitionCustomization } from '@/components/Sidebar';
 
-// Customize transition settings
-const TransitionCustomization = createContext({
-  transitionEasing: Easing.out(Easing.cubic),
-  transitionDuration: 400, // in ms
-  // Add more
-})
-
-export const useTransitionCustomization = () => useContext(TransitionCustomization);
-
-function DrawerLayout() {
+const DrawerLayout = () => {
   // Sidebar state, dimensions
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -32,16 +18,17 @@ function DrawerLayout() {
   const { transitionEasing, transitionDuration } = useTransitionCustomization();
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // Toggle sidebar state
   const toggleSidebar = async () => {
-    // Perform transitions
-    setIsTransitioning(true);
-    setIsSidebarOpen(!isSidebarOpen);
-    transitionMainScreen();
-    transitionSidebar();
-    // Allow swipes after 400ms duration
-    await delay(transitionDuration);
-    setIsTransitioning(false);
+    if ((sidebarAnimatedValue.value === 1 && isSidebarOpen) ||
+    (sidebarAnimatedValue.value === 0 && !isSidebarOpen)) {
+      setIsTransitioning(true);
+      setIsSidebarOpen(!isSidebarOpen);
+      transitionSidebar();
+      transitionMainScreen();
+      // Allow swipes after complete transition
+      await delay(transitionDuration);
+      setIsTransitioning(false);
+    }
   };
 
   // Set main screen dynamic width
@@ -49,10 +36,18 @@ function DrawerLayout() {
     return { width: mainScreenWidth.value };
   });
 
+  // Transitions sidebar for 400ms duration
+  const transitionSidebar = () => {
+    sidebarAnimatedValue.value = withTiming(isSidebarOpen ? 0 : 1, {
+        duration: transitionDuration,
+        easing: transitionEasing,
+      }
+    );
+  };
+
   // Transitions main screen for 400ms duration
   const transitionMainScreen = () => {
-    mainScreenWidth.value = withTiming(
-      (mainScreenWidth.value === Dimensions.get('window').width - (openSidebarWidth + closedSidebarWidth) && isSidebarOpen) ?
+    mainScreenWidth.value = withTiming(isSidebarOpen ?
       Dimensions.get('window').width - closedSidebarWidth : 
       Dimensions.get('window').width - (openSidebarWidth + closedSidebarWidth),
         {
@@ -62,24 +57,13 @@ function DrawerLayout() {
     );
   };
 
-  // Transitions sidebar for 400ms duration
-  const transitionSidebar = () => {
-    sidebarAnimatedValue.value = withTiming(
-      sidebarAnimatedValue.value === 1 && isSidebarOpen ? 0 : 1, {
-        duration: transitionDuration,
-        easing: transitionEasing,
-      }
-    );
-  };
-
-  // Horizontal swipe trigger toggles sidebar
+  // Horizontal swipe triggers sidebar toggle
   const swipeGesture = Gesture.Pan()
   .onUpdate((event) => {
     // Ignore swipes mid-transition
     if (isTransitioning) return;
-    // Threshold horizontal distance in px for swipe to trigger
+    // Threshold horizontal distance is 50 px to trigger
     if ((event.translationX > 50 && !isSidebarOpen)||(event.translationX < -50 && isSidebarOpen)) {
-      // Swipe right opens sidebar, left closes sidebar
       toggleSidebar();
     }
   });
@@ -88,7 +72,8 @@ function DrawerLayout() {
     <SafeAreaView>
       <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth }}>
         <GestureDetector gesture={swipeGesture}>
-          <View className="flex-1 flex-row" collapsable={false}>
+          <View className="flex-1 flex-row" //collapsable={false}
+          >
             
             {/* Sidebar */}
             <Sidebar animatedValue={sidebarAnimatedValue} />
