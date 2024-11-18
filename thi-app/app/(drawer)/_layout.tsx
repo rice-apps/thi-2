@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { Slot } from 'expo-router';
-import Sidebar, { SidebarContext, useSidebarContext } from '../../components/Sidebar';
+import Sidebar, { SidebarContext, useSidebarContext } from '@/components/Sidebar';
 
 // Customize transition settings
 const TransitionCustomization = createContext({
@@ -19,7 +19,7 @@ const TransitionCustomization = createContext({
 
 export const useTransitionCustomization = () => useContext(TransitionCustomization);
 
-export default function Layout() {
+function DrawerLayout() {
   // Sidebar state, dimensions
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -72,17 +72,14 @@ export default function Layout() {
     );
   };
 
-  // Horizontal swipes trigger
+  // Horizontal swipe trigger toggles sidebar
   const swipeGesture = Gesture.Pan()
   .onUpdate((event) => {
     // Ignore swipes mid-transition
     if (isTransitioning) return;
     // Threshold horizontal distance in px for swipe to trigger
-    if (event.translationX > 50 && !isSidebarOpen) {
-      // Swipe right opens sidebar
-      toggleSidebar();
-    } else if (event.translationX < -50 && isSidebarOpen) {
-      // Swipe left closes sidebar
+    if ((event.translationX > 50 && !isSidebarOpen)||(event.translationX < -50 && isSidebarOpen)) {
+      // Swipe right opens sidebar, left closes sidebar
       toggleSidebar();
     }
   });
@@ -114,4 +111,5 @@ export default function Layout() {
       </SidebarContext.Provider>
     </SafeAreaView>
   );
-}
+};
+export default DrawerLayout;

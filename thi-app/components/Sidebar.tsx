@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
-import Animated, { SharedValue, useAnimatedStyle, interpolate } from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedStyle, interpolate, FadeIn, FadeOut } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter, useSegments } from 'expo-router';
 import { Entypo, FontAwesome, FontAwesome6, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTransitionCustomization } from '@/app/(drawer)/_layout';
 
 // Context for current screen
 export const ScreenContext = createContext({
@@ -37,7 +38,8 @@ export const useSidebarCustomization = () => useContext(SidebarCustomization);
 export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<number> }) {
     // Sidebar state and screen details
     const router = useRouter();
-    const { toggleSidebar, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
+    const { isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
+    const { transitionDuration, transitionEasing } = useTransitionCustomization();
     const [currentScreen, setCurrentScreen] = useState<string>("");
     const segments: string[] = useSegments();
     // Sidebar customizations
@@ -121,7 +123,8 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                     </View>
                     
                     {/* Navigable screens */}
-                    <Animated.View style={currentHighlightStyle}>
+                    <Animated.View style={currentHighlightStyle}
+                    entering={FadeIn.duration(transitionDuration).easing(transitionEasing)} exiting={FadeOut.duration(transitionDuration).easing(transitionEasing)}>
                         <View className="flex-col items-start justify-between" style={{
                             height: Dimensions.get('window').height * 0.45,
                             width: openSidebarWidth
@@ -229,7 +232,6 @@ export default function Sidebar({ animatedValue }: { animatedValue: SharedValue<
                         </View>
 
                 </View>
-
             </View>
         </Animated.View>
     );
