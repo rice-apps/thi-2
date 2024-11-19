@@ -118,6 +118,7 @@ function dynamicIconSize(): number {
     let size;
     const height = Dimensions.get('window').height;
     const outerContainerHeight = closedSidebarWidth;
+    
     if ((height >= 800) && (height > outerContainerHeight)) {
         size = 32; // lg:text-2xl
     } else if ((height >= 600) && (height > outerContainerHeight)) {
@@ -132,6 +133,8 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
     // Sidebar and transition details
     const { transitionDuration, transitionEasing } = useTransitionCustomization();
     const { isSidebarOpen, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
+    const enteringAnimation = FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing);
+    const exitingAnimation = FadeOutLeft.duration(transitionDuration).easing(transitionEasing);
 
     // Sidebar slide interpolation
     const sidebarStyle = useAnimatedStyle(() => ({
@@ -139,6 +142,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
             { translateX: interpolate(animatedValue.value, [0, 1], [-openSidebarWidth, 0]) }
         ],
     }));
+    
     // Button rotation interpolation (> when closed, < when open)
     const buttonStyle = useAnimatedStyle(() => ({
         transform: [
@@ -147,7 +151,6 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
     }));
 
     return (
-        // Animated sidebar container
         <Animated.View style={[
             sidebarStyle,
             {
@@ -162,14 +165,12 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 {/* Open/collapse button */}
                 <SidebarButton animatedStyle={buttonStyle}/>
                 
-                {/* Sidebar */}
+                {/* Sidebar contents */}
                 <View className="flex-1 self-center justify-center items-center flex-col">
-
-                    {/* App icon */}
                     {isSidebarOpen &&
-                    (<Animated.View
-                        entering={FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing)}
-                        exiting={FadeOutLeft.duration(transitionDuration).easing(transitionEasing)}>
+                    (<Animated.View style={{ position:'relative', zIndex: 2}} entering={enteringAnimation} exiting={exitingAnimation}>
+
+                        {/* App icon */}
                         <View className="justify-end" style={{ height: openSidebarWidth * .65 }}>
                             <Image className="flex-row justify-between self-center pt-5"
                             source={require('../assets/images/bb_icon.png')} style={{
@@ -177,13 +178,8 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                                 width: openSidebarWidth * .60,
                             }} />
                         </View>
-                    </Animated.View>)}
                     
-                    {/* Navigable screens */}
-                    {isSidebarOpen &&
-                    (<Animated.View style={{ position:'relative', zIndex: 2}}
-                        entering={FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing)}
-                        exiting={FadeOutLeft.duration(transitionDuration).easing(transitionEasing)}>
+                        {/* Navigable screens */}
                         <View className="flex-col items-start justify-between" style={{
                             height: Dimensions.get('window').height * 0.45,
                             width: openSidebarWidth,
@@ -208,23 +204,22 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                             <SidebarTab iconSet={FontAwesome} iconName="gear" label="Settings"/>
                         
                         </View>
+
                     </Animated.View>)}
                         
-                        {/* Spacer */}
-                        <View className="flex-1 flex-shrink-2 relative justify-end items-start" style={{ width: openSidebarWidth, zIndex: 1 }}>
-                            {isSidebarOpen &&
-                            (<Animated.View
-                                entering={FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing)}
-                                exiting={FadeOutLeft.duration(transitionDuration).easing(transitionEasing)}>
+                    {/* Spacer */}
+                    <View className="flex-1 flex-shrink-2 relative justify-end items-start" style={{ width: openSidebarWidth, zIndex: 1 }}>
+                        {isSidebarOpen &&
+                        (<Animated.View entering={enteringAnimation} exiting={exitingAnimation}>
 
-                                {/* Sign out */}
-                                <SidebarTab iconSet={Entypo} iconName="log-out" iconSize={ dynamicIconSize() - 1 } label="Sign out" useActiveColor={false} tabWidth={openSidebarWidth * .7}/>
-                                
-                            </Animated.View>)}
-                        </View>
+                            {/* Sign out */}
+                            <SidebarTab iconSet={Entypo} iconName="log-out" iconSize={ dynamicIconSize() - 1 } label="Sign out" useActiveColor={false} tabWidth={openSidebarWidth * .7}/>
 
-                        {/* Bottom padding */}
-                        <View className="flex-1 flex-shrink-1" style={{ maxHeight: Dimensions.get('window').height * 0.06 }}/>
+                        </Animated.View>)}
+                    </View>
+
+                    {/* Bottom padding */}
+                    <View className="flex-1 flex-shrink-1" style={{ maxHeight: Dimensions.get('window').height * 0.06 }}/>
                         
                 </View>
             </View>
