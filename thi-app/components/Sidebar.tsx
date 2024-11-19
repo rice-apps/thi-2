@@ -1,53 +1,23 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useRouter, useSegments } from 'expo-router';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    Dimensions,
-    Pressable,
-} from 'react-native';
-import Animated, {
-    SharedValue,
-    useAnimatedStyle,
-    interpolate,
-    FadeInLeft,
-    FadeOutLeft,
-    Easing,
-} from 'react-native-reanimated';
-import {
-    Entypo,
-    FontAwesome,
-    FontAwesome6,
-    MaterialIcons,
-    MaterialCommunityIcons
-} from '@expo/vector-icons';
+import { RelativePathString, useRouter, useSegments } from 'expo-router';
+import { View, Text, TouchableOpacity, Image, Dimensions, Pressable, ViewStyle, DimensionValue } from 'react-native';
+import Animated, { SharedValue, useAnimatedStyle, interpolate, FadeInLeft, FadeOutLeft, Easing, AnimatedStyle } from 'react-native-reanimated';
+import { Entypo, FontAwesome, FontAwesome6, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-// Context for current screen
-export const ScreenContext = createContext({
-    currentScreen: "",
-    setCurrentScreen: () => {},
-});
-
-// Context for sidebar state and dimensions
+// Sidebar state, dimensions, and customization
 export const SidebarContext = createContext({
     isSidebarOpen: true,
     toggleSidebar: () => {},
     openSidebarWidth: Dimensions.get('window').width * 0.18,
     closedSidebarWidth: Dimensions.get('window').width * 0.02,
-});
-
-// Customize sidebar
-const SidebarCustomization = createContext({
-    currentIconTextColor: 'white',
+    activeIconTextColor: 'white',
     defaultIconTextColor: 'black',
-    currentDrawerColor: '#10536699',
-    defaultDrawerColor: 'transparent',
+    activeTabColor: '#10536699',
+    defaultTabColor: 'transparent',
     buttonColor: '#105366',
     buttonSize: 2.3, // in rem (1 rem = 16px)
-})
+});
 
 // Customize transition settings
 const TransitionCustomization = createContext({
@@ -55,27 +25,113 @@ const TransitionCustomization = createContext({
     transitionDuration: 400, // in ms
 })
 
-export const useScreenContext = () => useContext(ScreenContext);
 export const useSidebarContext = () => useContext(SidebarContext);
-export const useSidebarCustomization = () => useContext(SidebarCustomization);
 export const useTransitionCustomization = () => useContext(TransitionCustomization);
 
-const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
-    // Sidebar state and screen details
-    const router = useRouter();
-    const { isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
-    const { transitionDuration, transitionEasing } = useTransitionCustomization();
-    const [currentScreen, setCurrentScreen] = useState<string>("");
-    const segments: string[] = useSegments();
-    // Sidebar customizations
+// Open/close sidebar button
+const SidebarButton = ({ animatedStyle }: { animatedStyle: AnimatedStyle<ViewStyle> }) => {
     const {
-        currentIconTextColor,
-        defaultIconTextColor,
-        currentDrawerColor,
-        defaultDrawerColor,
+        toggleSidebar,
+        openSidebarWidth,
+        closedSidebarWidth,
         buttonColor,
         buttonSize,
-    } = useSidebarCustomization();
+    } = useSidebarContext();
+
+    return (
+        <Pressable className="absolute top-[8%] items-center justify-center aspect-square rounded-full shadow-lg" style={{
+            width: buttonSize * 16,
+            backgroundColor: buttonColor,
+            left: openSidebarWidth + closedSidebarWidth - (buttonSize * 16 / 2)
+        }} onPress={toggleSidebar}>
+            <Animated.View style={animatedStyle}>
+                <MaterialIcons name="keyboard-arrow-right" size={buttonSize * 10.4} color="white"/>
+            </Animated.View>
+        </Pressable>
+    );
+}
+
+// Define props for sidebar tab
+interface SidebarTabProps {
+    iconSet: typeof Entypo | typeof FontAwesome | typeof FontAwesome6 | typeof MaterialIcons | typeof MaterialCommunityIcons;
+    iconName: string;
+    iconSize?: number;
+    label: string;
+    useActiveColor?: boolean;
+    tabWidth?: DimensionValue;
+}
+
+// Sidebar navigation tab
+const SidebarTab = ({ iconSet: Icon, iconName, iconSize = dynamicIconSize(), label, useActiveColor = true, tabWidth = '100%' }: SidebarTabProps) => {
+    // Sidebar details
+    const {
+        closedSidebarWidth,
+        activeIconTextColor,
+        defaultIconTextColor,
+        activeTabColor,
+        defaultTabColor,
+    } = useSidebarContext();
+    // Screen routing details
+    const router = useRouter();
+    const [currentScreen, setCurrentScreen] = useState<string>("");
+    const segments: string[] = useSegments();
+    const tabName = label === 'Sign out' ? '' : label.toLowerCase();
+    const directory = '/' + tabName;
+    const isActive = currentScreen.includes(tabName);
+    // Sidebar tab details
+    const tabHeight = Dimensions.get('window').height * 0.08;
+    const tabIconTextColor = useActiveColor && isActive ? activeIconTextColor : defaultIconTextColor;
+    const tabButtonColor = useActiveColor && isActive ? activeTabColor : defaultTabColor;
+
+    // Set current screen name (e.g. "students" for (drawer)/students)
+    useFocusEffect(
+        React.useCallback(() => {
+            if (segments.length > 0) {
+                // Set screen name to last segment of URL
+                const screenName = segments[segments.length - 1];
+                setCurrentScreen(screenName);
+            }
+        }, [segments])
+    );
+
+    return (
+        <View className="w-full items-start" style={{ height: tabHeight }}>
+            <TouchableOpacity
+                className="flex-row justify-start items-center rounded-xl pl-6"
+                style={{ height: tabHeight, backgroundColor: tabButtonColor, width: tabWidth }}
+                //TODO: Temporary login page redirect for 'Sign out', impl sign out feature
+                onPress={() => router.push(directory as RelativePathString)}>
+                <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
+                    <Icon name={iconName} size={iconSize} style={{ color: tabIconTextColor }}/>
+                </View>
+                <View className="justify-items-center items-center pl-2 pb-1">
+                    <Text className="font-jost font-bold lg:text-2xl" style={{ color: tabIconTextColor }}>{label}</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+    );
+};
+
+// Dynamic icon resizing
+function dynamicIconSize(): number {
+    const { closedSidebarWidth } = useSidebarContext();
+    let size;
+    const height = Dimensions.get('window').height;
+    const outerContainerHeight = closedSidebarWidth;
+    if ((height >= 800) && (height > outerContainerHeight)) {
+        size = 32; // lg:text-2xl
+    } else if ((height >= 600) && (height > outerContainerHeight)) {
+        size = 24; // md:text-xl
+    } else {
+        size = 16; // default for small phones
+    }
+    return size;
+}
+
+const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
+    // Sidebar and transition details
+    const { transitionDuration, transitionEasing } = useTransitionCustomization();
+    const { isSidebarOpen, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
 
     // Sidebar slide interpolation
     const sidebarStyle = useAnimatedStyle(() => ({
@@ -89,32 +145,6 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
             { rotate: `${interpolate(animatedValue.value, [0, 0.5, 1], [0, -90, -180])}deg` }
         ],
     }));
-
-    // Dynamic icon resizing
-    function dynamicIconSize(): number {
-        let size;
-        const height = Dimensions.get('window').height;
-        const outerContainerHeight = closedSidebarWidth;
-        if ((height >= 800) && (height > outerContainerHeight)) {
-            size = 32; // lg:text-2xl
-        } else if ((height >= 600) && (height > outerContainerHeight)) {
-            size = 24; // md:text-xl
-        } else {
-            size = 16; // default for small phones
-        }
-        return size;
-    }
-
-    // Set current screen name (e.g. "students" for (drawer)/students)
-    useFocusEffect(
-        React.useCallback(() => {
-            if (segments.length > 0) {
-                // Set screen name to last segment of URL
-                const screenName = segments[segments.length - 1];
-                setCurrentScreen(screenName);
-            }
-        }, [segments])
-    );
 
     return (
         // Animated sidebar container
@@ -130,15 +160,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
             }}>
 
                 {/* Open/collapse button */}
-                <Pressable className="absolute top-[8%] items-center justify-center aspect-square rounded-full shadow-lg" style={{
-                    width: buttonSize * 16,
-                    backgroundColor: buttonColor,
-                    left: openSidebarWidth + closedSidebarWidth - (buttonSize * 16 / 2)
-                }} onPress={toggleSidebar}>
-                    <Animated.View style={buttonStyle}>
-                        <MaterialIcons name="keyboard-arrow-right" size={buttonSize * 10.4} color="white"/>
-                    </Animated.View>
-                </Pressable>
+                <SidebarButton animatedStyle={buttonStyle}/>
                 
                 {/* Sidebar */}
                 <View className="flex-1 self-center justify-center items-center flex-col">
@@ -159,7 +181,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                     
                     {/* Navigable screens */}
                     {isSidebarOpen &&
-                    (<Animated.View style={{ zIndex: 2}}
+                    (<Animated.View style={{ position:'relative', zIndex: 2}}
                         entering={FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing)}
                         exiting={FadeOutLeft.duration(transitionDuration).easing(transitionEasing)}>
                         <View className="flex-col items-start justify-between" style={{
@@ -168,140 +190,42 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                             }}>
 
                             {/* Home */}
-                            <View className="w-full items-start" style={{ height: Dimensions.get('window').height * 0.08 }}>
-                                <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    backgroundColor: currentScreen.includes('home') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/(drawer)/home')}>
-                                    <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                        <Entypo name="home" size={ dynamicIconSize() }
-                                        style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}/>
-                                    </View>
-                                    <View className="justify-items-center items-center pl-2 pb-1" style={{ height: closedSidebarWidth }}>
-                                        <Text className="font-jost font-bold lg:text-2xl"
-                                        style={{ color: currentScreen.includes('home') ? currentIconTextColor : defaultIconTextColor }}>Home</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <SidebarTab iconSet={Entypo} iconName="home" label="Home"/>
 
                             {/* Students */}
-                            <View className="w-full items-start" style={{ height: Dimensions.get('window').height * 0.08 }}>
-                                <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    backgroundColor: currentScreen.includes('students') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/students')}>
-                                    <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                        <FontAwesome6 name="user-large" size={ dynamicIconSize() - 3 }
-                                        style={{ color: currentScreen.includes('students') ? currentIconTextColor : defaultIconTextColor }}/>
-                                    </View>
-                                    <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-jost font-bold lg:text-2xl"
-                                        style={{ color: currentScreen.includes('students') ? currentIconTextColor : defaultIconTextColor }}>Students</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <SidebarTab iconSet={FontAwesome6} iconName="user-large" iconSize={ dynamicIconSize() - 3 } label="Students"/>
 
                             {/* Schedule */}
-                            <View className="w-full items-start" style={{ height: Dimensions.get('window').height * 0.08 }}>
-                                <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    backgroundColor: currentScreen.includes('schedule') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/schedule')}>
-                                    <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                        <MaterialCommunityIcons name="calendar-multiple" size={ dynamicIconSize() }
-                                        style={{ color: currentScreen.includes('schedule') ? currentIconTextColor : defaultIconTextColor }}/>
-                                    </View>
-                                    <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-jost font-bold lg:text-2xl"
-                                        style={{ color: currentScreen.includes('schedule') ? currentIconTextColor : defaultIconTextColor }}>Schedule</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <SidebarTab iconSet={MaterialCommunityIcons} iconName="calendar-multiple" label="Schedule"/>
 
                             {/* Games */}
-                            <View className="w-full items-start" style={{ height: Dimensions.get('window').height * 0.08 }}>
-                                <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    backgroundColor: currentScreen.includes('games') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/games')}>
-                                    <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                        <MaterialCommunityIcons name="gamepad-square-outline" size={ dynamicIconSize() }
-                                        style={{ color: currentScreen.includes('games') ? currentIconTextColor : defaultIconTextColor }}/>
-                                    </View>
-                                    <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-jost font-bold lg:text-2xl"
-                                        style={{ color: currentScreen.includes('games') ? currentIconTextColor : defaultIconTextColor }}>Games</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <SidebarTab iconSet={MaterialCommunityIcons} iconName="gamepad-square-outline" label="Games"/>
 
                             {/* Timer */}
-                            <View className="w-full items-start" style={{ height: Dimensions.get('window').height * 0.08 }}>
-                                <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    backgroundColor: currentScreen.includes('timer') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/timer')}>
-                                    <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                        <MaterialCommunityIcons name="timer-sand" size={ dynamicIconSize() }
-                                        style={{ color: currentScreen.includes('timer') ? currentIconTextColor : defaultIconTextColor }}/>
-                                    </View>
-                                    <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-jost font-bold lg:text-2xl"
-                                        style={{ color: currentScreen.includes('timer') ? currentIconTextColor : defaultIconTextColor }}>Timer</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <SidebarTab iconSet={MaterialCommunityIcons} iconName="timer-sand" label="Timer"/>
 
                             {/* Settings */}
-                            <View className="w-full items-start" style={{ height: Dimensions.get('window').height * 0.08 }}>
-                                <TouchableOpacity className="w-full flex-row justify-start items-center rounded-xl pl-6" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    backgroundColor: currentScreen.includes('settings') ? currentDrawerColor : defaultDrawerColor,
-                                }} onPress={() => router.push('/settings')}>
-                                    <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                        <FontAwesome name="gear" size={ dynamicIconSize() }
-                                        style={{ color: currentScreen.includes('settings') ? currentIconTextColor : defaultIconTextColor }}/>
-                                    </View>
-                                    <View className="justify-items-center items-center pl-2 pb-1">
-                                        <Text className="font-jost font-bold lg:text-2xl" 
-                                        style={{ color: currentScreen.includes('settings') ? currentIconTextColor : defaultIconTextColor }}>Settings</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <SidebarTab iconSet={FontAwesome} iconName="gear" label="Settings"/>
                         
                         </View>
                     </Animated.View>)}
                         
-                        {/* Sign out */}
-                        <View className="flex-1 flex-shrink-1" style={{
-                            width: openSidebarWidth,
-                            position:'relative',
-                            zIndex: 1
-                            }}>
-                            <View className="flex-1 absolute bottom-0 justify-center items-center" style={{ height: Dimensions.get('window').height * 0.16 }}>
-                                <TouchableOpacity className="flex-row" style={{
-                                    height: Dimensions.get('window').height * 0.08,
-                                    width: openSidebarWidth * .7,
-                                }}
-                                //TODO: Temporary login page redirect, impl sign out feature
-                                onPress={() => router.push('/')}>
-                                    {isSidebarOpen &&
-                                    (<Animated.View
-                                        entering={FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing)}
-                                        exiting={FadeOutLeft.duration(transitionDuration).easing(transitionEasing)}>
-                                        <View className="flex-row justify-start-items-center pl-6" style={{width: openSidebarWidth * .7}}>
-                                            <View className="justify-items-center items-center aspect-square" style={{ height: closedSidebarWidth }}>
-                                                <Entypo name="log-out" size={ dynamicIconSize() - 1 } style={{ color: defaultIconTextColor }}/>
-                                            </View>
-                                            <View className="justify-items-center items-center pl-2 pb-1">
-                                                <Text className="font-jost font-bold lg:text-2xl" style={{ color: defaultIconTextColor}}>Sign Out</Text>
-                                            </View>
-                                        </View>
-                                    </Animated.View>)}
-                                </TouchableOpacity>
-                            </View>
+                        {/* Spacer */}
+                        <View className="flex-1 flex-shrink-2 relative justify-end items-start" style={{ width: openSidebarWidth, zIndex: 1 }}>
+                            {isSidebarOpen &&
+                            (<Animated.View
+                                entering={FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing)}
+                                exiting={FadeOutLeft.duration(transitionDuration).easing(transitionEasing)}>
+
+                                {/* Sign out */}
+                                <SidebarTab iconSet={Entypo} iconName="log-out" iconSize={ dynamicIconSize() - 1 } label="Sign out" useActiveColor={false} tabWidth={openSidebarWidth * .7}/>
+                                
+                            </Animated.View>)}
                         </View>
 
+                        {/* Bottom padding */}
+                        <View className="flex-1 flex-shrink-1" style={{ maxHeight: Dimensions.get('window').height * 0.06 }}/>
+                        
                 </View>
             </View>
         </Animated.View>

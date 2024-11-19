@@ -6,17 +6,25 @@ import { Slot } from 'expo-router';
 import Sidebar, { SidebarContext, useSidebarContext, useTransitionCustomization } from '@/components/Sidebar';
 
 const DrawerLayout = () => {
-  // Sidebar state, dimensions
+  // Sidebar state, dimensions, and transition settings
+  const { transitionEasing, transitionDuration } = useTransitionCustomization();
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const { openSidebarWidth, closedSidebarWidth } = useSidebarContext();
+  const {
+    openSidebarWidth,
+    closedSidebarWidth,
+    activeIconTextColor,
+    defaultIconTextColor,
+    activeTabColor,
+    defaultTabColor,
+    buttonColor,
+    buttonSize,
+  } = useSidebarContext();
   // Tie animations to initial sidebar state (currently set to open)
   const sidebarAnimatedValue = useSharedValue(isSidebarOpen ? 1 : 0);
   const mainScreenWidth = useSharedValue(
     Dimensions.get('window').width - (openSidebarWidth + closedSidebarWidth));
-  // Transition settings
-  const { transitionEasing, transitionDuration } = useTransitionCustomization();
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const toggleSidebar = async () => {
     if ((sidebarAnimatedValue.value === 1 && isSidebarOpen) ||
@@ -70,13 +78,23 @@ const DrawerLayout = () => {
 
   return (
     <SafeAreaView>
-      <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth }}>
+      <SidebarContext.Provider value={{
+        isSidebarOpen,
+        toggleSidebar,
+        openSidebarWidth,
+        closedSidebarWidth,
+        activeIconTextColor,
+        defaultIconTextColor,
+        activeTabColor,
+        defaultTabColor,
+        buttonColor,
+        buttonSize,
+        }}>
         <GestureDetector gesture={swipeGesture}>
-          <View className="flex-1 flex-row" //collapsable={false}
-          >
+          <View className="flex-1 flex-row" collapsable={false}>
             
             {/* Sidebar */}
-            <Sidebar animatedValue={sidebarAnimatedValue} />
+            <Sidebar animatedValue={sidebarAnimatedValue}/>
             
             {/* Main screen in ./(drawer)/ */}
             <Animated.View style={[
