@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import { View, Dimensions, SafeAreaView } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated'
 import { GestureDetector, Gesture } from 'react-native-gesture-handler'
 import { Slot } from 'expo-router'
 import Sidebar, {
@@ -81,7 +86,7 @@ const DrawerLayout = () => {
       (event.translationX > 50 && !isSidebarOpen) ||
       (event.translationX < -50 && isSidebarOpen)
     ) {
-      toggleSidebar()
+      runOnJS(toggleSidebar)()
     }
   })
 

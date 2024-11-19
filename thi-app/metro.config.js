@@ -1,5 +1,7 @@
 const path = require("path");
 const { getDefaultConfig } = require("expo/metro-config");
+const { withNativeWind } = require("nativewind/metro");
+const { wrapWithReanimatedMetroConfig } = require("react-native-reanimated/metro-config");
 
 // 1. Enable CSS for Expo.
 const config = getDefaultConfig(__dirname, {
@@ -17,8 +19,7 @@ config.resolver.nodeModulesPaths = [
 ];
 
 // 2. Enable NativeWind
-const { withNativeWind } = require("nativewind/metro");
-module.exports = withNativeWind(config, {
+const nativeWindConfig = withNativeWind(config, {
   // 3. Set `input` to your CSS file with the Tailwind at-rules
   input: "global.css",
   // This is optional
@@ -28,3 +29,6 @@ module.exports = withNativeWind(config, {
     transformPercentagePolyfill: true,
   },
 });
+
+// 4. Enable Reanimated
+module.exports = wrapWithReanimatedMetroConfig(nativeWindConfig);
