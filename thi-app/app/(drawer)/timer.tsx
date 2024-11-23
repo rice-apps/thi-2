@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type Theme = {
   name: string;
-  icon?: JSX.Element; // Optional icon for themes
+  icon?: JSX.Element; 
   image?: any; // Path to the image
 };
 
@@ -49,7 +49,7 @@ export default function TimerPage() {
       icon: <MaterialCommunityIcons name="timer-sand" size={40} color="black" />,
     },
     { name: 'Tiger', image: require('../../assets/images/tiger.png') },
-    { name: 'Hippo1', image: require('../../assets/images/hippo.png') },
+    { name: 'Hippo', image: require('../../assets/images/hippo.png') },
     {  name:'Bunny', image: require('../../assets/images/bunny.png') },
     { name: 'Dog', image: require('../../assets/images/dog.png') },
   ];
@@ -65,7 +65,7 @@ export default function TimerPage() {
         
         {/* Timer Section */}
         <View className="flex-1 items-center justify-center bg-gray-100">
-          <View className="bg-white justify-center items-center shadow-md rounded-lg w-[877px] h-[323px] p-4">
+          <View className="bg-white justify-center items-center shadow-md rounded-lg w-[1050px] h-[323px] p-4">
             <View className="flex-row space-x-4">
                 <View className="bg-[rgba(16,83,102,0.6)] w-[195px] h-[195px] rounded-lg flex justify-center items-center">
                     <Text className="text-[70px] font-bold text-white">{formattedHours}</Text>
@@ -89,26 +89,28 @@ export default function TimerPage() {
         {/* Theme */}
       <Text className="text-2xl font-bold mb-8 mt-8">Pick a theme</Text>
 
-      <View className="flex-row flex-wrap gap-x-24 gap-y-8 mb-8 justify-center">
-        {themes.map((theme, index) => (
-            <TouchableOpacity
-            key={index}
-            className={'p-4 rounded-lg  bg-white shadow-md'}
-            onPress={() => onThemeSelect(theme.name)}
-          >
-            <Image
-              source={theme.image}
-              style={{ width: 60, height: 60, marginBottom: 8 }}
-              resizeMode="contain"
-            />
-            <Text className="text-center">{theme.name}</Text>
-          </TouchableOpacity>
-             ))}
-      
+      <View className="w-[1000px] h-[117px] justify-center">
+        <View className="flex-row flex-wrap justify-evenly ">
+          {themes.map((theme, index) => (
+              <TouchableOpacity
+              key={index}
+              className={'p-4 rounded-lg  bg-white shadow-md w-[123px] h-[117px] justify-center items-center'}
+              onPress={() => onThemeSelect(theme.name)}
+            >
+              <Image
+                source={theme.image}
+                style={{ width: 60, height: 60, marginBottom: 8 }}
+                resizeMode="contain"
+              />
+              <Text className="text-[16px] text-black text-center">{theme.name}</Text>
+            </TouchableOpacity>
+              ))}
+        </View>
       </View>
 
 
       {/* Buttons */}
+      <View className="flex-row justify-center items-center space-x-4 mt-8">
       <TouchableOpacity className="bg-[#105366] items-center justify-center w-[104px] h-[41px] p-2 rounded flex-row" onPress={() => setIsRunning(!isRunning)}>
         {!isRunning && (
             <FontAwesome name="play" size={12} color="white" />
@@ -120,6 +122,8 @@ export default function TimerPage() {
             {isRunning ? 'Pause' : 'Start'}
         </Text>
     </TouchableOpacity>
+    
+    </View>
 
 
     </ScrollView>
