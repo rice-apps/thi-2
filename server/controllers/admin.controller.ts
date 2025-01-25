@@ -1,39 +1,43 @@
 import { NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
+const Account = require("@/models/accountModel")
 const Abc = require("@/models/abc");
+const Duration = require("@models/duration")
 const HttpStatus = require("http-status-codes");
-const { ErrorResponse, generateTempPassword, sendEmail } = require("@/helper");
+const { ErrorResponse } = require("@/helper");
 const Resend = require('resend');
 
-// TODO: key and implement Resend to send a temp password to email in whitelist
+// TODO: add key in .env
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class AdminController {
     
     async whitelist(req: Request, res: Response, next: NextFunction) {
         try {
-            const { email } = req.body;
+            // Assuming email and name is included in request body for whitelist
+            const { email, first_name, last_name } = req.body;
 
-            // Generate temporary password
-            const tempPassword = generateTempPassword();
+            const tempPassword = generateTempPassword(8);
 
-            // Create new account entry with temp password (hashed)
             const newAccount = new Account({
                 email,
-                password: tempPassword, // Ideally, you would hash the temp password
-                role: "admin", // You can set the role or other properties as needed
+                password: tempPassword, //TODO: Hash?
+                first_name,
+                last_name,
+                // Unsure how the following are set when whitelisting
+                is_admin: false,
+                isActive: false,
+                is_deleted: false,
+                authorization_token: null,
             });
 
             const savedAccount = await newAccount.save();
 
-            // Send email with temp password
-            await sendEmail({
-                to: email,
-                subject: "Your Temporary Account Password",
-                body: `Your temporary password is: ${tempPassword}`,
-            });
+            await sendEmail(
+                email, // To
+                "Your Temporary Account Password", // Subject
+                `Your temporary password is: ${tempPassword}` // Body
+            );
 
-            // Respond with the saved account (or any necessary info)
             return res.status(HttpStatus.StatusCodes.CREATED).json({
                 message: "Account created and email sent with temporary password.",
                 account: savedAccount,
@@ -46,9 +50,9 @@ class AdminController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             
-            const email = req.body;
+            const email = req.body.email;
 
-            const deletedAccount = await Admin.findByEmailAndDelete(email);
+            const deletedAccount = await Account.findOneAndDelete({ email });
 
             if (!deletedAccount) {
                 throw new ErrorResponse({
@@ -57,45 +61,64 @@ class AdminController {
                 });
             }
 
-            return deletedAccount._doc;
+            return res.status(HttpStatus.StatusCodes.OK).json({
+                message: `Account with email ${email} successfully deleted.`,
+                deletedAccount: deletedAccount._doc,
+            });
         } catch (err: any) {
             throw err;
         }
     }
 
-    async findAll(req: Request, res: Response, next: NextFunction) {
+    async findAllAbc(req: Request, res: Response, next: NextFunction) {
         try {
-            const records = await Abc.find();
-            
-            const email = getEmail(req);
+            const abcRecords = await Abc.find();
 
-            const admin = await Admin.findAll(email);
+            return res.status(200).json({
+                message: "Successfully fetched all ABC records.",
+                data: abcRecords
+            });
+        } catch (err: any) {
+            throw err;
+        }
+    }
 
-            if (!admin) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Admin with email ${email} not found.`
-                })
-            }
+    async findAllDuration(req: Request, res: Response, next: NextFunction) {
+        try {
+            const durationRecords = await Duration.find();
 
-            return admin._doc;
+            return res.status(200).json({
+                message: "Successfully fetched all Duration records.",
+                data: durationRecords
+            });
         } catch (err: any) {
             throw err;
         }
     }
 }
 
-const getEmail = (req: Request) => {
-    const email = req.params.email;
-
-    if (!mongoose.Types.ObjectId.isValid(email)) {
-        throw new ErrorResponse({
-            statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-            message: `Invalid ID format for admin: ${email}.`,
-        });
+function generateTempPassword(length: number): string {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let tempPassword = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        tempPassword += chars[randomIndex];
     }
+    return tempPassword;
+}
 
-    return email;
+async function sendEmail(to: string, subject: string, text: string) {
+    try {
+        const response = await resend.sendEmail({
+            from: "your-email@example.com", // Replace with our sender email
+            to: to,
+            subject: subject,
+            text: text,
+        });
+        return response; // Return response from Resend for debugging
+    } catch (error) {
+        throw new Error(`Error sending email`);
+    }
 }
 
 module.exports = new AdminController();
