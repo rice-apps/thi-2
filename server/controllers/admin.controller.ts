@@ -1,26 +1,33 @@
 import { NextFunction, Request, Response } from "express";
 const Account = require("@/models/accountModel");
 const Abc = require("@/models/abc");
-const Duration = require("@models/duration");
+const { Duration } = require("../models");
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("@/helper");
 const Resend = require("resend");
+//TODO: Import the Duration model once we merge Branches
 
+// TODO: add key in .env
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class AdminController {
     async whitelist(req: Request, res: Response, next: NextFunction) {
         try {
-            // Name is provided by the user in request body
+            // Assuming email and name is included in request body for whitelist
             const { email, first_name, last_name } = req.body;
 
             const tempPassword = generateTempPassword(8);
 
             const newAccount = new Account({
                 email,
-                password: tempPassword,
+                password: tempPassword, //TODO: Hash?
                 first_name,
                 last_name,
+                // Unsure how the following are set when whitelisting
+                is_admin: false,
+                isActive: false,
+                is_deleted: false,
+                authorization_token: null,
             });
 
             const savedAccount = await newAccount.save();
