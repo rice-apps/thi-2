@@ -10,11 +10,8 @@ module.exports = {
         consequence: Joi.string().required,
         comments: Joi.string().required,
     }),
-    getAllRecordsByAccount: Joi.object({
-        staff_id: Joi.string().required(),
-    }),
+    getAllRecordsByAccount: Joi.object(), // No validation needed
     updateRecordById: Joi.object({
-        staff_id: Joi.string().required(),
         student_id: Joi.string().required(),
         date: Joi.date().required,
         settings: Joi.string().required,
