@@ -8,5 +8,6 @@ const jwtAuthen = require("@/validations/jwtAuthen");
 router.post("/whitelist", jwtAuthen, wrapMiddleware(adminValidation.whitelist), wrapController(adminController.whitelist));
 router.post("/delete", jwtAuthen, wrapMiddleware(adminValidation.delete), wrapController(adminController.delete));
 router.get("/", jwtAuthen, wrapController(adminController.findAll));
+router.get("/duration/:id", jwtAuthen, wrapController(adminController.getDuration));
 
 module.exports = router;

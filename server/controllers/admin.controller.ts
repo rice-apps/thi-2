@@ -4,6 +4,9 @@ const Abc = require("@/models/abc");
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse, generateTempPassword, sendEmail } = require("@/helper");
 const Resend = require('resend');
+//TODO: Import the Duration model once we merge Branches 
+const Duration = require("../models/duration")
+
 
 // TODO: key and implement Resend to send a temp password to email in whitelist
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -83,6 +86,26 @@ class AdminController {
             throw err;
         }
     }
+    //TODO: Implement getDuration once we merge Branches (make sure its correct ) 
+    async getDurationById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id;
+            const duration = await Duration.findById(id);
+
+            if (!duration) {
+                throw new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+                    message: `Duration with ID ${id} not found.`,
+                });
+            }
+
+            return duration;
+        } catch (err: any) {
+            throw err;
+        }
+    }
+
+    async getRecrdById(req: Request, res: Response, next: NextFunction) {
 }
 
 const getEmail = (req: Request) => {
