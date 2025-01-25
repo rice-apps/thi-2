@@ -1,5 +1,3 @@
-const Account = require("./accountModel");
+import { AccountDocument, AccountModel } from "./accountModel";
 
-module.exports = {
-    Account
-}
+module.exports = { AccountModel };

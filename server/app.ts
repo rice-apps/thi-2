@@ -1,11 +1,14 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
+const HttpStatus = require("http-status-codes");
+require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const port = 3000;
-require("dotenv").config();
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
+const port = process.env.PORT;
+
 const { default: mongoose } = require("mongoose");
 
 const uri =
@@ -22,6 +25,7 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
+
 async function run() {
   try {
     await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
@@ -49,4 +53,57 @@ async function run() {
   }
 }
 
+run().catch(console.dir);
+
+try {
+  await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
+  console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  const app = express();
+
+  app.use(cors());
+  app.use(
+    morgan(
+      ":date :method :url :status :res[content-length] - :response-time ms"
+    )
+  );
+  app.use(express.json());
+  app.use("/api", require("./routes"));
+
+  app.use([notFoundHandle, responseHandle]);
+
+  app.listen(port, () => {
+    console.log(`App listening at http://localhost:${port}`);
+  });
+} catch (error) {
+  console.log(error);
+}
+
+const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
+  next({
+    success: false,
+    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+    message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.NOT_FOUND),
+  });
+};
+
+const responseHandle = (
+  output: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { success, statusCode, status, message, ...rest } = output;
+  const code =
+    statusCode || status || HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR;
+  if (success) {
+    res.status(HttpStatus.StatusCodes.OK).json({ ...output });
+    return;
+  }
+  res.status(code).json({
+    success: success,
+    statusCode,
+    message,
+    ...rest,
+  });
+};
 run().catch(console.dir);

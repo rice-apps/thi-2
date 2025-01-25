@@ -1,15 +1,29 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const accountSchema = new mongoose.Schema({
-    email: String,
-    password: String,
-    first_name: String,
-    last_name: String,
-    is_admin: Boolean,
-    is_active: Boolean,
-    is_deleted: Boolean,
-    authorization_token: String
-  });
+export interface AccountDocument extends Document {
+  email: string;
+  is_active: { type: Boolean; default: false };
+  password: String;
+  first_name: String;
+  last_name: String;
+  is_admin: { type: Boolean; default: false };
+  is_deleted: { type: Boolean; default: false };
+  authorization_token: { type: String; default: null };
+}
 
-module.exports = mongoose.model('Account', accountSchema);
-  
+const accountSchema = new mongoose.Schema<AccountDocument>({
+  email: String,
+  password: String,
+  first_name: String,
+  last_name: String,
+  is_admin: { type: Boolean, default: false },
+  is_active: { type: Boolean, default: false },
+  is_deleted: { type: Boolean, default: false },
+  authorization_token: { type: String, default: null },
+});
+
+//module.exports = mongoose.model<AccountDocument>("Account", accountSchema);
+export const AccountModel = mongoose.model<AccountDocument>(
+  "Account",
+  accountSchema
+);
