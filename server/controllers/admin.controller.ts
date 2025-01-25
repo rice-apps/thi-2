@@ -1,23 +1,43 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-const Admin = require("@/models/accountModel");
 const Abc = require("@/models/abc");
 const HttpStatus = require("http-status-codes");
-const { ErrorResponse } = require("@/helper");
+const { ErrorResponse, generateTempPassword, sendEmail } = require("@/helper");
 const Resend = require('resend');
 
-// TODO: KEY
+// TODO: key and implement Resend to send a temp password to email in whitelist
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class AdminController {
     
     async whitelist(req: Request, res: Response, next: NextFunction) {
         try {
-            // Create admin first?
-            const admin = new Admin(req.body);
-            const savedAdmin = await admin.save();
+            const { email } = req.body;
 
-            return savedAdmin._doc;
+            // Generate temporary password
+            const tempPassword = generateTempPassword();
+
+            // Create new account entry with temp password (hashed)
+            const newAccount = new Account({
+                email,
+                password: tempPassword, // Ideally, you would hash the temp password
+                role: "admin", // You can set the role or other properties as needed
+            });
+
+            const savedAccount = await newAccount.save();
+
+            // Send email with temp password
+            await sendEmail({
+                to: email,
+                subject: "Your Temporary Account Password",
+                body: `Your temporary password is: ${tempPassword}`,
+            });
+
+            // Respond with the saved account (or any necessary info)
+            return res.status(HttpStatus.StatusCodes.CREATED).json({
+                message: "Account created and email sent with temporary password.",
+                account: savedAccount,
+            });
         } catch (err: any) {
             throw err;
         }
@@ -26,38 +46,30 @@ class AdminController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             
-            const email = getEmail(req);
-            // get account associated with email?
+            const email = req.body;
 
-            if (!mongoose.Types.ObjectId.isValid(email)) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-                    message: `Invalid email format for admin: ${email}.`,
-                });
-            }
+            const deletedAccount = await Admin.findByEmailAndDelete(email);
 
-            const deletedAdmin = await Admin.findByEmailAndDelete(email);
-
-            if (!deletedAdmin) {
+            if (!deletedAccount) {
                 throw new ErrorResponse({
                     statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Admin with email ${email} not found.`,
+                    message: `Account with email ${email} not found.`,
                 });
             }
 
-            return deletedAdmin._doc;
+            return deletedAccount._doc;
         } catch (err: any) {
             throw err;
         }
     }
 
-    async findByEmail(req: Request, res: Response, next: NextFunction) {
+    async findAll(req: Request, res: Response, next: NextFunction) {
         try {
             const records = await Abc.find();
             
             const email = getEmail(req);
 
-            const admin = await Admin.findByEmail(email);
+            const admin = await Admin.findAll(email);
 
             if (!admin) {
                 throw new ErrorResponse({
