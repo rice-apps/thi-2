@@ -1,9 +1,7 @@
-import Joi from "joi"
-import mongoose from "mongoose"
+import Joi from "joi";
 
 module.exports = {
-      create: Joi.object({
-        staff_id: Joi.string().required(),
+    create: Joi.object({
         student_id: Joi.string().required(),
         date: Joi.date().required,
         settings: Joi.string().required,
@@ -11,11 +9,11 @@ module.exports = {
         behavior: Joi.string().required,
         consequence: Joi.string().required,
         comments: Joi.string().required,
-      })  ,
-      getAllRecordsByAccount: Joi.object({
-        staff_id: Joi.string().required()
-      }),
-      updateRecordById: Joi.object({
+    }),
+    getAllRecordsByAccount: Joi.object({
+        staff_id: Joi.string().required(),
+    }),
+    updateRecordById: Joi.object({
         staff_id: Joi.string().required(),
         student_id: Joi.string().required(),
         date: Joi.date().required,
@@ -27,12 +25,11 @@ module.exports = {
         id: Joi.string().required(),
     }),
     deleteRecordById: Joi.object({
-        id: Joi.string().required()
+        id: Joi.string().required(),
     }).unknown(true),
     getRecordByID: Joi.object({
-        id: Joi.string().required()
+        id: Joi.string().required(),
     }).unknown(true),
-    exportRecord : Joi.object({}),
-    importRecord : Joi.object({}),
-
+    exportRecord: Joi.object({}),
+    importRecord: Joi.object({}),
 };
