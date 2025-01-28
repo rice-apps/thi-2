@@ -1,29 +1,38 @@
 const HttpStatus = require("http-status-codes");
-const ErrorResponse = require("./error.response");
 import { NextFunction, Request, Response } from "express";
+
+const optError = (error: any) => ({
+    success: false,
+    statusCode: HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY,
+    message: HttpStatus.getReasonPhrase(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY),
+    error
+});
 
 module.exports = (controller: any) => {
     return (req: Request, res: Response, next: NextFunction) => {
         controller(req, res, next).then((value: any) => {
             const { message, ...rest } = value;
-            next({
+            res.send({
                 success: true,
                 statusCode: HttpStatus.StatusCodes.OK,
                 message: message || null,
                 data: { ...rest }
             })
         }).catch((error: any) => {
-            const { success, ...rest } = error;
-            if (!success) {
-                next(new ErrorResponse({
-                    ...rest 
-                }))
+            const { isError, ...rest } = error;
+            console.log(error);
+            if (error.isError) {
+                res.send({
+                    success: false,
+                    ...rest
+                })
             } else {
-                next(new ErrorResponse({
+                res.send({
                     success: false,
                     statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
                     message: HttpStatus.getStatusText(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR),
-                }))
+                    mCode: "INTERNAL_SERVER_ERROR",
+                })
             }
         })
     }
