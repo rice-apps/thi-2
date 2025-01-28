@@ -15,5 +15,7 @@ router.use("/abc", abcRouter);
 router.use("/student", studentRouter);
 router.use("/duration", durationRouter);
 router.use("/admin", adminRouter);
+router.use("/auth", authRouter);
+router.use("/duration", durationRouter);
 
 module.exports = router;
