@@ -88,7 +88,7 @@ export default function Layout() {
   });
 
   return (
-    <SafeAreaView>
+      <SafeAreaView>
       <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, openSidebarWidth, closedSidebarWidth }}>
         <GestureDetector gesture={swipeGesture}>
           <View className="flex-1 flex-row" collapsable={false}>

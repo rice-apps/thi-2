@@ -5,6 +5,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { TimerProvider } from "@/context/TimerContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -45,13 +46,15 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <GestureHandlerRootView className="flex-1">
-      <View className="absolute inset-0">
-        <Stack>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-        </Stack>
-      </View>
-    </GestureHandlerRootView>
+    <TimerProvider>
+      <GestureHandlerRootView className="flex-1">
+        <View className="absolute inset-0">
+          <Stack>
+            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+          </Stack>
+        </View>
+      </GestureHandlerRootView>
+    </TimerProvider>
   );
 }
