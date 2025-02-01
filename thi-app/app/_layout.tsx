@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
+// import  IndividualStudent  from "@/app/(drawer)/IndividualStudent";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -43,6 +44,7 @@ function RootLayoutNav() {
         <Stack>
           <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
           <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="IndividualStudent" options={{ headerShown: false }} />
         </Stack>
       </View>
     </GestureHandlerRootView>
