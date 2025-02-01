@@ -2,11 +2,12 @@ import mongoose, { model } from 'mongoose';
 const { Schema } = mongoose;
 
 const durationSchema = new Schema({
-    student_id: {
+      student_id: {
         type: Schema.Types.ObjectId,
         ref: 'Student',
         required: true
       },
+      
       date: {
         type: Date,
         required: true
@@ -30,7 +31,11 @@ const durationSchema = new Schema({
       notes: {
         type: String,
         required: true
-      }
-});
+      },
+      staff: {
+        type: mongoose.Types.ObjectId, // Assume that we will retrieve this using the staff_id from the user
+        required: true // This is the staff that assinged the duration
+      },
+    });
 
 module.exports = mongoose.model('Duration', durationSchema);

@@ -5,8 +5,6 @@ const Duration = require("@models/duration")
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("@/helper");
 const Resend = require('resend');
-//TODO: Import the Duration model once we merge Branches 
-const Duration = require("../models/duration")
 
 
 // TODO: add key in .env
@@ -118,6 +116,7 @@ class AdminController {
     }
 
     async getRecrdById(req: Request, res: Response, next: NextFunction) {
+}
 }
 
 function generateTempPassword(length: number): string {

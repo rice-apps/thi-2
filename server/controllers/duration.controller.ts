@@ -22,7 +22,10 @@ class DurationController {
             const newData = req.body;
             const updatedDuration = await Duration.findOneAndUpdate(
                 { student_id: studentId },
-                newData
+                newData,
+                { new: true }
+    
+
             );
 
             if (!updatedDuration) {
@@ -93,6 +96,25 @@ class DurationController {
             throw err;
         }
     }
+
+    async findByStaffId(req: Request, res: Response, next: NextFunction) {  
+        try {
+            const staffId = req.params.staff_id;
+            const students = await Duration.find({ staff_id: staffId });
+
+            if (!students) {
+                throw new ErrorResponse({
+                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+                    message: `Students with staff id ${staffId} not found.`
+                });
+            }
+
+            return students._doc;
+        }  catch (err) {
+            throw err;
+        }
+    }
+
 }
 
 module.exports = new DurationController();

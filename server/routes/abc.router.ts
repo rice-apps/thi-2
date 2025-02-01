@@ -37,6 +37,17 @@ router.get(
     wrapMiddleware(abcValidation.exportRecord),
     wrapController(abcController.exportRecord)
 );
+router.get(
+    "/records/staff/:staffId",
+    wrapController(abcController.getRecordsByStaffId)
+);
+
+router.get(
+    "/records/student/:studentId",
+    wrapController(abcController.getRecordsByStudentId)
+);
+
+
 // NOT NEEDED ANYMORE
 // router.post(
 //     "/import",
