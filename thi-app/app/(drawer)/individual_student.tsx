@@ -1,19 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import StudentForm from "@/screens/student_modals/StudentForm";
 import Filter from "@/screens/student_modals/Filter";
+import ExcelExport from "@/screens/student_modals/ExcelExport";
 import { useRouter } from 'expo-router';
 // import { useParams } from 'react-router-dom';
 
 
-const IndividualStudent = () => {
+
+
+
+const IndividualStudent = ({studentId}: {studentId: string}, {name}: {name: String}) => {
   // const { id } = useParams();
   const router = useRouter();
+  
+  // const { studentId, name } = router.query;
 
+
+  const [studentData, setStudentData] = useState<any>(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFilterVisible, setFilterVisible] = useState(false);
+  const [isExportVisible, setExportVisible] = useState(false);
+
+
+
+  //fetch from API whenever backend is done
+  useEffect(() => {
+    setStudentData({
+      id: studentId,
+      name: name,
+    });
+  }, [studentId, name]);
+
+
 
 
   const backToStudentsPage = () => {
@@ -28,6 +49,9 @@ const IndividualStudent = () => {
   const closeFilter = () => {
     setFilterVisible(false);
   };
+  const closeExport = () => {
+    setExportVisible(false);
+  };
 
 
   return (
@@ -39,7 +63,7 @@ const IndividualStudent = () => {
 
       {/* Title and Add Data Button */}
       <View className="flex-row justify-between items-center mb-8">
-        <Text className="text-3xl font-bold">*Placeholder Name*</Text>
+        <Text className="text-3xl font-bold"> {studentData.id}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}
           className="bg-[#105366] p-2 rounded flex-row items-center"
         >
@@ -58,7 +82,7 @@ const IndividualStudent = () => {
             <AntDesign name="filter" size={24} color="#105366" />
           </TouchableOpacity>
 
-          <TouchableOpacity className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center">
+          <TouchableOpacity onPress= {() => setExportVisible(true)} className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center">
             <MaterialIcons name="download" size={16} color="white" />
             <Text className="text-white font-bold ml-1">Export To Excel</Text>
           </TouchableOpacity>
@@ -80,7 +104,7 @@ const IndividualStudent = () => {
             <AntDesign name="filter" size={24} color="#105366" />
           </TouchableOpacity>
 
-          <TouchableOpacity
+          <TouchableOpacity onPress= {() => setExportVisible(true)}
             className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center">
             <MaterialIcons name="download" size={16} color="white" />
             <Text className="text-white font-bold ml-1">Export To Excel</Text>
@@ -95,7 +119,8 @@ const IndividualStudent = () => {
 
       {/* Modals */}
       <StudentForm visible={isModalVisible} onClose={closeModal} />
-      {/* <Filter visible={isFilterVisible} onClose={closeFilter} /> */}
+      <Filter visible={isFilterVisible} onClose={closeFilter} />
+      <ExcelExport visible={isExportVisible} onClose={closeExport} />
 
 
     </View>

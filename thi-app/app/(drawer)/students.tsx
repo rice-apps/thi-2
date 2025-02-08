@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, SafeAreaView, Modal } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, SafeAreaView, Modal,
+  GestureResponderEvent
+} from "react-native";
 import { StudentCard } from "@/components/StudentCard";
 import EditAStudent from "@/screens/student_modals/EditAStudent";
 import AddAStudent from "@/screens/student_modals/AddAStudent";
@@ -19,6 +21,7 @@ export const sampleStudents: Student[] = [
   { id: "4", name: "Daisy Miller", age: "23", abcReports: 1, durationReports: 0 },
   { id: "5", name: "Ethan Green", age: "19", abcReports: 3, durationReports: 2 },
   { id: "6", name: "Fiona White", age: "20", abcReports: 0, durationReports: 2 },
+  { id: "7", name: "George Taylor", age: "18", abcReports: 0, durationReports: 2 },
 ];
 
 
@@ -27,19 +30,31 @@ const StudentsPage = () => {
 
   const [deletesVisible, setDeletesVisible] = useState(false); //state for adding delete exs icons
   const [isEditStudentVisible, setEditStudentVisible] = useState(false); //state for delete modal
+  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
+
+
 
   const [isAddStudentVisible, setAddStudentVisible] = useState(false);  
-  const [IndividualStudentVisible, setIndividualStudentVisible] = useState(false);
+  const [studentToAdd, setStudentToAdd] = useState<Student | null>(null);
+
 
 
   useEffect(() => {
     setStudents(sampleStudents); // Load the sample students
   }, []);
 
+
+
+
   const router = useRouter();
-  const navigateToIndividualStudent = () => {
-    router.replace('/(drawer)/individual_student/'); // Pass the student ID as a parameter
+  const navigateToIndividualStudent = (studentId: string, studentName: string) => {
+    router.push(`/individual_student/${studentId}?name=${encodeURIComponent(studentName)}`);
+    // router.push({
+    //   pathname: `/(drawer)/individual_student/`,
+    //   query: { name: studentName },
+    // });
   };
+
 
   
   //deleting/editing students functionality
@@ -47,20 +62,25 @@ const StudentsPage = () => {
     setDeletesVisible(prevState => !prevState); // Toggle the state
   }
 
-  const handleEditStudent = () => {
-    setEditStudentVisible(true);
-  }
-
-
-
-  //adding students functionality
-  const closeAddStudent = () => {
-    setAddStudentVisible(false);
+  const handleEditStudent = (studentId: string) => {
+    setStudents(prevStudents => prevStudents.filter(student => student.id !== studentId)); // Remove student by ID
   };
+
+  const handleOpenEditModal = (student: Student) => {
+    setStudentToDelete(student);
+    setEditStudentVisible(true);
+  };
+
+  
   const handleAddStudent = (newStudent: Student) => {
     setStudents(prevStudents => [...prevStudents, newStudent]); // Add the new student to the state
     setAddStudentVisible(false); // Close the modal after adding the student
   };
+
+  const closeAddStudent = () => {
+    setAddStudentVisible(false);
+  };
+
 
 
 
@@ -80,7 +100,13 @@ const StudentsPage = () => {
               <MaterialIcons name="edit" size={16} color="white" />
               <Text className="text-white font-bold ml-1">Edit Students</Text>
 
-              <EditAStudent visible = {isEditStudentVisible} onClose = {() => setEditStudentVisible(false)} />
+              <EditAStudent visible = {isEditStudentVisible} onClose = {() => setEditStudentVisible(false)}
+                                    student={studentToDelete} onDelete={() => 
+                                      {if (studentToDelete) 
+                                      {handleEditStudent(studentToDelete.id);
+                                      setEditStudentVisible(false);
+                                      }}
+              } />
             </TouchableOpacity>
 
 
@@ -88,7 +114,14 @@ const StudentsPage = () => {
             onPress={() => setAddStudentVisible(true)}>
               <AntDesign name="plus" size={16} color="white" />
               <Text className="text-white font-bold ml-1">Add Student</Text>
-              <AddAStudent visible = {isAddStudentVisible} onClose = {closeAddStudent} />
+
+              <AddAStudent
+                  visible={isAddStudentVisible}
+                  onClose={closeAddStudent}
+                  onAdd={handleAddStudent} // Pass handleAddStudent function as prop
+                />
+
+
             </TouchableOpacity>
           </View>
         </View>
@@ -98,13 +131,17 @@ const StudentsPage = () => {
       <View className="flex-row flex-wrap justify-start gap-x-24 gap-y-8 mb-8">
           {students.map((student) => (
             <View key={student.id} style={{ width: 243 }} >
-                <TouchableOpacity onPress={navigateToIndividualStudent}>
+                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id, student.name)}>
                    <StudentCard student={student} />
                 </TouchableOpacity>
 
               
-                {deletesVisible &&
-              (<TouchableOpacity  onPress={() => setEditStudentVisible(true)} 
+            
+            
+            {/* code for deleting a student card */}
+            {deletesVisible &&
+              (<TouchableOpacity onPress={() => handleOpenEditModal(student)}
+            
                   style={{ position: 'absolute', top: -10, right: -10, 
                   }}>
 
@@ -126,6 +163,7 @@ const StudentsPage = () => {
           ))}
         </View>
       </ScrollView>
+
     </SafeAreaView>
   );
 };

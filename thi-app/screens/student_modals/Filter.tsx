@@ -13,6 +13,9 @@ import {
   Easing,
 } from 'react-native';
 
+import { AntDesign } from '@expo/vector-icons';
+import { Dropdown } from 'react-native-element-dropdown';
+
 
 
 
@@ -35,7 +38,7 @@ export default function Filter({ visible, onClose }: FilterProps){
 
 
     return (
-    <Modal animationType="slide" transparent={true}>
+    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose = {onClose}>
     <View style={styles.overlay}>
       <View style={styles.modalContainer}>
       <View style={styles.titleContainer}>
@@ -45,15 +48,24 @@ export default function Filter({ visible, onClose }: FilterProps){
          </TouchableOpacity> */}
         </View>
 
+        {/* <Dropdown
+        // data={data}
+        labelField="label"
+        valueField="value"
+        // value={selectedValue}
+        // onChange={item => setSelectedValue(item.value)}
+        renderRightIcon={() => <AntDesign name="down" size={20} color="black" />}
+      /> */}
+
 
 
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
           <Text style={styles.cancelButtonText}> Cancel </Text>
         </TouchableOpacity>
-                        <TouchableOpacity style={styles.navButton} onPress={handleSubmit}>
-                          <Text style={styles.navButtonText}>Apply</Text>
-                        </TouchableOpacity>
+         <TouchableOpacity style={styles.navButton} onPress={handleSubmit}>
+            <Text style={styles.navButtonText}>Apply</Text>
+          </TouchableOpacity>
           </View> 
 
       </View>

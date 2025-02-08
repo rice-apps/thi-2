@@ -1,55 +1,53 @@
-import React, { useState } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-  ScrollView
-} from 'react-native';
 
+import React from 'react';
+import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface EditStudentProps {
   visible: boolean;
   onClose: () => void;
+  student: { id: string; name: string } | null;
+  onDelete: () => void;
 }
 
-export default function EditAStudent({ visible, onClose }: EditStudentProps) {
-  const [studentName, setStudentName] = useState('');
-
-  const handleDelete = () => {
-    console.log('Student deleted');
-    onClose();
-  };
-
+export default function EditAStudent({ visible, onClose, student, onDelete }: EditStudentProps) {
   return (
-    <View>
-    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}> 
-      <View className="flex-1 justify-center items-center bg-black bg-opacity-50"> {/* overlay styling first */}
-        <View style={{ width: '40%', backgroundColor: 'white', padding: 20, borderRadius: 5 }}> {/* box styling */}
+    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
+      <View style={styles.overlay}>
+        <View style={{ width: '40%', backgroundColor: 'white', padding: 20, borderRadius: 5 }}>
+          {student && (
+            <>
+              <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Delete {student.name}?</Text>
+              <Text style={{ fontSize: 15 }}>
+                You will lose all history associated with this student. This action cannot be undone.
+              </Text>
+            </>
+          )}
+        
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Would you like to delete this student? </Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>You will lose all history associated with this student. You will not be able to undo this action. </Text>
-          </View>
-          
           <View style={{ marginTop: 20, flexDirection: 'row'}}>
             <TouchableOpacity onPress={onClose}>
-              <Text style={{paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} > Cancel </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ backgroundColor: '#105366', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} 
-            onPress={handleDelete}>
+            <Text style={{paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} > Cancel </Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={{ backgroundColor: '#105366', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} 
+            onPress={onDelete}>
                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    </Modal>
-</View>
- 
+    </Modal> 
   );
 }
+
+
+
+
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+});
