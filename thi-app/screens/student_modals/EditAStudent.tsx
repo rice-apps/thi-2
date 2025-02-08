@@ -10,23 +10,17 @@ import {
 } from 'react-native';
 
 
-interface AddStudentProps {
+interface EditStudentProps {
   visible: boolean;
   onClose: () => void;
 }
 
-
-export default function AddAStudent({ visible, onClose }: AddStudentProps) {
+export default function EditAStudent({ visible, onClose }: EditStudentProps) {
   const [studentName, setStudentName] = useState('');
-  
 
-  const handleSubmit = () => {
-    if (studentName.trim()) {
-      console.log('Student submitted:', { studentName });
-      onClose(); // close the modal
-    } else {
-      console.log('Please enter a student name');
-    }
+  const handleDelete = () => {
+    console.log('Student deleted');
+    onClose();
   };
 
   return (
@@ -36,22 +30,20 @@ export default function AddAStudent({ visible, onClose }: AddStudentProps) {
         <View style={{ width: '40%', backgroundColor: 'white', padding: 20, borderRadius: 5 }}> {/* box styling */}
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Would you like to add a student? </Text>
+            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Would you like to delete this student? </Text>
           </View>
 
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 20, paddingLeft: 10, borderRadius: 5 }}
-            placeholder="Student Name"
-            value={studentName}
-            onChangeText={setStudentName}
-          />
-
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>You will lose all history associated with this student. You will not be able to undo this action. </Text>
+          </View>
+          
           <View style={{ marginTop: 20, flexDirection: 'row'}}>
             <TouchableOpacity onPress={onClose}>
               <Text style={{paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} > Cancel </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ backgroundColor: '#105366', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} onPress={handleSubmit}>
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Save</Text>
+            <TouchableOpacity style={{ backgroundColor: '#105366', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 }} 
+            onPress={handleDelete}>
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
             </TouchableOpacity>
           </View>
         </View>
