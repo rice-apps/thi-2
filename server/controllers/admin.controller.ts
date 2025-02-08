@@ -109,9 +109,6 @@ class AdminController {
             throw err;
         }
     }
-
-    async getRecrdById(req: Request, res: Response, next: NextFunction) {
-}
 }
 
 function generateTempPassword(length: number): string {
