@@ -1,98 +1,99 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-const Student = require("../models/student")
+const Student = require("../models/student");
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("../helper");
 
 class StudentController {
-    async create(req: Request, res: Response, next: NextFunction) {
-        try {
-            const student = new Student(req.body);
-            const savedStudent = await student.save();
-
-            return savedStudent._doc;
-        } catch (err: any) {
-            throw err;
-        }
+  async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const student = new Student(req.body);
+      console.log("About to Creating a new student");
+      const savedStudent = await student.save();
+      console.log("Creating a new student");
+      return savedStudent._doc;
+    } catch (err: any) {
+      throw err;
     }
+  }
 
-    async update(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = getId(req)
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = getId(req);
 
-            const newData = req.body;
-            const updatedStudent = await Student.findByIdAndUpdate(id, newData);
+      const newData = req.body;
+      const updatedStudent = await Student.findByIdAndUpdate(id, newData);
 
-            if (!updatedStudent) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Student with id ${id} not found.`
-                })
-            }
+      if (!updatedStudent) {
+        throw new ErrorResponse({
+          statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+          message: `Student with id ${id} not found.`,
+        });
+      }
 
-            return updatedStudent._doc;
-        } catch (err: any) {
-            throw err;
-        }
+      return updatedStudent._doc;
+    } catch (err: any) {
+      throw err;
     }
+  }
 
-    async delete(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = getId(req)
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = getId(req);
 
-            if (!mongoose.Types.ObjectId.isValid(id)) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-                    message: `Invalid ID format for student: ${id}.`,
-                });
-            }
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ErrorResponse({
+          statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+          message: `Invalid ID format for student: ${id}.`,
+        });
+      }
 
-            const deletedStudent = await Student.findByIdAndDelete(id);
+      const deletedStudent = await Student.findByIdAndDelete(id);
 
-            if (!deletedStudent) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Student with id ${id} not found.`,
-                });
-            }
+      if (!deletedStudent) {
+        throw new ErrorResponse({
+          statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+          message: `Student with id ${id} not found.`,
+        });
+      }
 
-            return deletedStudent._doc;
-        } catch (err: any) {
-            throw err;
-        }
+      return deletedStudent._doc;
+    } catch (err: any) {
+      throw err;
     }
+  }
 
-    async findById(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = getId(req)
+  async findById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = getId(req);
 
-            const student = await Student.findById(id);
+      const student = await Student.findById(id);
 
-            if (!student) {
-                throw new ErrorResponse({
-                    statusCode: HttpStatus.StatusCodes.NOT_FOUND,
-                    message: `Student with id ${id} not found.`
-                })
-            }
+      if (!student) {
+        throw new ErrorResponse({
+          statusCode: HttpStatus.StatusCodes.NOT_FOUND,
+          message: `Student with id ${id} not found.`,
+        });
+      }
 
-            return student._doc;
-        } catch (err: any) {
-            throw err;
-        }
+      return student._doc;
+    } catch (err: any) {
+      throw err;
     }
+  }
 }
 
 const getId = (req: Request) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ErrorResponse({
-            statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
-            message: `Invalid ID format for student: ${id}.`,
-        });
-    }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ErrorResponse({
+      statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
+      message: `Invalid ID format for student: ${id}.`,
+    });
+  }
 
-    return id;
-}
+  return id;
+};
 
 module.exports = new StudentController();

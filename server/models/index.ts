@@ -1,3 +1,3 @@
-import { AccountDocument, AccountModel } from "./accountModel";
+const AccountModel = require("./accountModel");
 
 module.exports = { AccountModel };

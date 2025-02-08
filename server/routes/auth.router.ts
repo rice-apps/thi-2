@@ -19,6 +19,11 @@ const { jwtAuthen } = require("../validations");
 
 // Template controller
 router.post(
+  "/create-user",
+  wrapMiddleware(authValidation.createUser),
+  wrapController(authController.createUser)
+);
+router.post(
   "/sign-up",
   wrapMiddleware(authValidation.signUp),
   wrapController(authController.signUp)
@@ -30,12 +35,6 @@ router.post(
   wrapController(authController.signIn)
 );
 
-router.post(
-  "/change-password",
-  jwtAuthen,
-  wrapMiddleware(authValidation.changePassword),
-  wrapController(authController.changePassword)
-);
 //Router for getting user's info
 router.post(
   "/info",

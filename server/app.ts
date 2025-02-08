@@ -3,12 +3,11 @@ const HttpStatus = require("http-status-codes");
 require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
 
+//const rateLimit = require("express-rate-limit");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = process.env.PORT;
-
+//const port = 3000;
 const { default: mongoose } = require("mongoose");
 
 const uri =
@@ -16,15 +15,15 @@ const uri =
   process.env.MONGO_ADMIN_USERNAME +
   ":" +
   process.env.MONGO_ADMIN_PASSWORD +
-  "@thi-cluster.nkv5u.mongodb.net/thi-behavior?retryWrites=true&w=majority&appName=thi-cluster";
+  "@thi-cluster.nkv5u.mongodb.net/";
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again later.",
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // Limit each IP to 100 requests per windowMs
+//   message: "Too many requests from this IP, please try again later.",
+//   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+// });
 
 async function run() {
   try {
@@ -34,19 +33,23 @@ async function run() {
     );
     const app = express();
 
-    app.use(express.json());
     app.use(cors());
-    app.use(helmet());
     app.use(
       morgan(
         ":date :method :url :status :res[content-length] - :response-time ms"
       )
     );
-    // app.use(limiter);
+    app.use(express.json());
     app.use("/api", require("./routes"));
 
-    app.listen(port, () => {
-      console.log(`App listening at http://localhost:${port}`);
+    app.use([notFoundHandle, responseHandle]);
+
+    // app.listen(port, () => {
+    //   console.log(`App listening at http://localhost:${port}`);
+
+    // });
+    app.listen(8080, () => {
+      console.log(`App listening at http://localhost:8080`);
     });
   } catch (error) {
     console.log(error);
@@ -54,29 +57,6 @@ async function run() {
 }
 
 run().catch(console.dir);
-
-try {
-  await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
-  console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  const app = express();
-
-  app.use(cors());
-  app.use(
-    morgan(
-      ":date :method :url :status :res[content-length] - :response-time ms"
-    )
-  );
-  app.use(express.json());
-  app.use("/api", require("./routes"));
-
-  app.use([notFoundHandle, responseHandle]);
-
-  app.listen(port, () => {
-    console.log(`App listening at http://localhost:${port}`);
-  });
-} catch (error) {
-  console.log(error);
-}
 
 const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
   next({
@@ -106,4 +86,3 @@ const responseHandle = (
     ...rest,
   });
 };
-run().catch(console.dir);
