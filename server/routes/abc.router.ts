@@ -39,11 +39,13 @@ router.get(
 );
 router.get(
     "/records/staff/:staffId",
+    wrapMiddleware(abcValidation.getRecordsByStaffId),
     wrapController(abcController.getRecordsByStaffId)
 );
 
 router.get(
     "/records/student/:studentId",
+    wrapMiddleware(abcValidation.getRecordsByStudentId),
     wrapController(abcController.getRecordsByStudentId)
 );
 
