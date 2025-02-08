@@ -1,17 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-const Account = require("@/models/accountModel")
+const Account = require("@/models/accountModel");
 const Abc = require("@/models/abc");
-const Duration = require("@models/duration")
+const Duration = require("@models/duration");
 const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("@/helper");
-const Resend = require('resend');
-
-
+const Resend = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class AdminController {
-    
     async whitelist(req: Request, res: Response, next: NextFunction) {
         try {
             // Name is provided by the user in request body
@@ -35,7 +32,8 @@ class AdminController {
             );
 
             return res.status(HttpStatus.StatusCodes.CREATED).json({
-                message: "Account created and email sent with temporary password.",
+                message:
+                    "Account created and email sent with temporary password.",
                 account: savedAccount,
             });
         } catch (err: any) {
@@ -45,7 +43,6 @@ class AdminController {
 
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
-            
             const email = req.body.email;
 
             const deletedAccount = await Account.findOneAndDelete({ email });
@@ -72,7 +69,7 @@ class AdminController {
 
             return res.status(200).json({
                 message: "Successfully fetched all ABC records.",
-                data: abcRecords
+                data: abcRecords,
             });
         } catch (err: any) {
             throw err;
@@ -85,13 +82,13 @@ class AdminController {
 
             return res.status(200).json({
                 message: "Successfully fetched all Duration records.",
-                data: durationRecords
+                data: durationRecords,
             });
         } catch (err: any) {
             throw err;
         }
     }
-    //TODO: Implement getDuration once we merge Branches (make sure its correct ) 
+    //TODO: Implement getDuration once we merge Branches (make sure its correct )
     async getDurationById(req: Request, res: Response, next: NextFunction) {
         try {
             const id = req.params.id;
@@ -112,7 +109,8 @@ class AdminController {
 }
 
 function generateTempPassword(length: number): string {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let tempPassword = "";
     for (let i = 0; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * chars.length);

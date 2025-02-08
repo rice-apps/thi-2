@@ -21,7 +21,7 @@
     "morgan": "^1.10.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "resend": "^4.1.1"
+    "resend": "^4.0.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
