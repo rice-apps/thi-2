@@ -7,6 +7,7 @@ const durationSchema = new Schema({
         ref: "Student",
         required: true,
     },
+
     date: {
         type: Date,
         required: true,

@@ -114,6 +114,7 @@ class AdminController {
         }
     }
 }
+}
 
 function generateTempPassword(length: number): string {
     const chars =

@@ -1,7 +1,6 @@
 const authRouter = require("./auth.router");
 const durationRouter = require("./duration.router");
 const studentRouter = require("./student.router");
-const abcRouter = require("./abc.router");
 const adminRouter = require("./admin.router");
 const abcRouter = require("./abc.router");
 import express from "express";
