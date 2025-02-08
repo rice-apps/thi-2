@@ -158,6 +158,8 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
 
                 {/* Settings */}
                 <SidebarTab iconSet={FontAwesome} iconName="gear" label="Settings" />
+                {/* admin */}
+                <SidebarTab iconSet={FontAwesome} iconName="gear" label="Admin" />
               </View>
             </Animated.View>
           )}
