@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { StudentCard } from "@/components/StudentCard";
-import { Student } from "@/types";
+import { Student } from '@/types';
+import { sampleStudents } from './students';
 import SmallTimer from "@/components/TimerSmallComponent";
 import { TimerContext } from "@/context/TimerContext"; 
+import { StudentCard } from '@/components/StudentCard';
 
 export const teacherName = "Jane Summers";
 
