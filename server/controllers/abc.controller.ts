@@ -94,17 +94,21 @@ class AbcController {
             throw err;
         }
     }
-    async getRecordsByStudentId(req: Request, res: Response, next: NextFunction) {
+    async getRecordsByStudentId(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         try {
             const studentId = req.params.studentId;
             const records = await Abc.find({ student_id: studentId });
-    
+
             if (!records || records.length === 0) {
                 return res.status(HttpStatus.StatusCodes.NOT_FOUND).json({
                     message: `No ABC records found for student ID: ${studentId}.`,
                 });
             }
-    
+
             return res.status(HttpStatus.StatusCodes.OK).json(records);
         } catch (err: any) {
             next(err);
@@ -114,27 +118,26 @@ class AbcController {
     async getRecordsByStaffId(req: Request, res: Response, next: NextFunction) {
         try {
             const staffId = req.params.staffId;
-    
+
             if (!mongoose.Types.ObjectId.isValid(staffId)) {
                 return res.status(HttpStatus.StatusCodes.BAD_REQUEST).json({
                     message: `Invalid Staff ID format: ${staffId}.`,
                 });
             }
-    
+
             const records = await Abc.find({ staff: staffId });
-    
+
             if (!records || records.length === 0) {
                 return res.status(HttpStatus.StatusCodes.NOT_FOUND).json({
                     message: `No ABC records found for staff ID: ${staffId}.`,
                 });
             }
-    
+
             return res.status(HttpStatus.StatusCodes.OK).json(records);
         } catch (err: any) {
             next(err);
         }
     }
-
 
     async exportRecord(req: any, res: Response, next: NextFunction) {
         // TODO: Implement

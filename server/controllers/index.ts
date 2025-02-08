@@ -3,6 +3,7 @@ const abcController = require("./abc.controller");
 const studentController = require("./student.controller");
 const durationController = require("./duration.controller");
 const adminController = require("./admin.controller");
+const abcController = require("./abc.controller");
 
 module.exports = {
     authController,

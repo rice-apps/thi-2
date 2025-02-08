@@ -27,6 +27,12 @@ module.exports = {
     getRecordsByStudentId: Joi.object({
         id: Joi.string().required(),
     }),
+    deleteRecordById: Joi.object({
+        id: Joi.string().required(),
+    }).unknown(true),
+    getRecordByID: Joi.object({
+        id: Joi.string().required(),
+    }).unknown(true),
     exportRecord: Joi.object({}),
     importRecord: Joi.object({}),
 };
