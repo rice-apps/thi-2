@@ -21,12 +21,12 @@ module.exports = {
         comments: Joi.string().required,
         id: Joi.string().required(),
     }),
-    deleteRecordById: Joi.object({
+    getRecordsByStaffId: Joi.object({
         id: Joi.string().required(),
-    }).unknown(true),
-    getRecordByID: Joi.object({
+    }),
+    getRecordsByStudentId: Joi.object({
         id: Joi.string().required(),
-    }).unknown(true),
+    }),
     exportRecord: Joi.object({}),
     importRecord: Joi.object({}),
 };

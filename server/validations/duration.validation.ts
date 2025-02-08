@@ -82,4 +82,14 @@ module.exports = {
             })
             .required(),
     }),
+    findByStaffId: Joi.object({
+        staff_id: Joi.string()
+            .custom((value: string, helpers: CustomHelpers) => {
+                if (!mongoose.Types.ObjectId.isValid(value)) {
+                    return helpers.error('Invalid staff ID');
+                }
+                return value;
+            })
+            .required(),
+    }),
 };
