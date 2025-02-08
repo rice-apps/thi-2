@@ -6,28 +6,22 @@ const HttpStatus = require("http-status-codes");
 const { ErrorResponse } = require("@/helper");
 const Resend = require('resend');
 
-// TODO: add key in .env
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class AdminController {
     
     async whitelist(req: Request, res: Response, next: NextFunction) {
         try {
-            // Assuming email and name is included in request body for whitelist
+            // Name is provided by the user in request body
             const { email, first_name, last_name } = req.body;
 
             const tempPassword = generateTempPassword(8);
 
             const newAccount = new Account({
                 email,
-                password: tempPassword, //TODO: Hash?
+                password: tempPassword,
                 first_name,
                 last_name,
-                // Unsure how the following are set when whitelisting
-                is_admin: false,
-                isActive: false,
-                is_deleted: false,
-                authorization_token: null,
             });
 
             const savedAccount = await newAccount.save();
