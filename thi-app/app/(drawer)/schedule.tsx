@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, Modal, TextInput, Button, Platform } from 'react-native';
+import React, { useContext, useEffect, useState } from "react";
+import { ScrollView, View, Text, TouchableOpacity, SafeAreaView, Modal, TextInput, Button } from "react-native";
 import { Calendar } from 'react-native-big-calendar';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useSidebarContext } from '@/components/Sidebar';
 import { addDays, setHours, setMinutes } from 'date-fns';
-import { AntDesign } from '@expo/vector-icons';
+import { useSidebarContext } from '@/components/Sidebar';
 
 export default function SchedulePage() {
   const { isSidebarOpen } = useSidebarContext();
@@ -27,13 +25,9 @@ export default function SchedulePage() {
   const [modalVisible, setModalVisible] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: '',
-    start: new Date(),
-    end: new Date(),
+    start: '',
+    end: '',
   });
-
-  // State for DateTimePicker
-  const [showStartPicker, setShowStartPicker] = useState(false);
-  const [showEndPicker, setShowEndPicker] = useState(false);
 
   // Handle Adding Event
   const handleAddEvent = () => {
@@ -41,9 +35,16 @@ export default function SchedulePage() {
     if (!title || !start || !end) return;
 
     // Add new event to state
-    setEvents([...events, { title, start, end }]);
+    setEvents([
+      ...events,
+      {
+        title,
+        start: new Date(start),
+        end: new Date(end),
+      }
+    ]);
     setModalVisible(false); // Close Modal
-    setNewEvent({ title: '', start: new Date(), end: new Date() }); // Reset Form
+    setNewEvent({ title: '', start: '', end: '' }); // Reset Form
   };
 
   return (
@@ -58,7 +59,7 @@ export default function SchedulePage() {
         </TouchableOpacity>
       </View>
 
-      <View className="bg-white rounded-lg shadow-md overflow-hidden mx-4">
+      <View className="bg-white rounded-lg shadow-md overflow-hidden mx-4 border border-gray-300">
         <Calendar
           events={events}
           height={800}
@@ -104,70 +105,26 @@ export default function SchedulePage() {
               onChangeText={(text) => setNewEvent({ ...newEvent, title: text })}
             />
 
-            <TouchableOpacity
+            <Text className="mb-2 font-bold">Start Time</Text>
+            <TextInput
               className="border border-gray-300 rounded p-2 mb-4"
-              onPress={() => setShowStartPicker(true)}
-            >
-              <Text>Start Time: {newEvent.start.toLocaleString()}</Text>
-            </TouchableOpacity>
+              placeholder="Start Time (e.g., 2025-02-22T09:00:00)"
+              value={newEvent.start}
+              onChangeText={(text) => setNewEvent({ ...newEvent, start: text })}
+            />
 
-            <TouchableOpacity
+            <Text className="mb-2 font-bold">End Time</Text>
+            <TextInput
               className="border border-gray-300 rounded p-2 mb-4"
-              onPress={() => setShowEndPicker(true)}
-            >
-              <Text>End Time: {newEvent.end.toLocaleString()}</Text>
-            </TouchableOpacity>
+              placeholder="End Time (e.g., 2025-02-22T10:00:00)"
+              value={newEvent.end}
+              onChangeText={(text) => setNewEvent({ ...newEvent, end: text })}
+            />
 
             <Button title="Add Event" onPress={handleAddEvent} />
           </View>
         </TouchableOpacity>
       </Modal>
-
-      {/* Date Picker for Start Time */}
-      {showStartPicker && (
-        <Modal
-          transparent={true}
-          animationType="fade"
-          onRequestClose={() => setShowStartPicker(false)}
-        >
-          <View className="flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]">
-            <View className="bg-white rounded-lg p-4 w-[80%]" style={{ zIndex: 20, elevation: 20 }}>
-              <DateTimePicker
-                value={newEvent.start}
-                mode="datetime"
-                display="default"
-                onChange={(event, date) => {
-                  setShowStartPicker(Platform.OS === 'ios');
-                  if (date) setNewEvent({ ...newEvent, start: date });
-                }}
-              />
-            </View>
-          </View>
-        </Modal>
-      )}
-
-      {/* Date Picker for End Time */}
-      {showEndPicker && (
-        <Modal
-          transparent={true}
-          animationType="fade"
-          onRequestClose={() => setShowEndPicker(false)}
-        >
-          <View className="flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]">
-            <View className="bg-white rounded-lg p-4 w-[80%]" style={{ zIndex: 20, elevation: 20 }}>
-              <DateTimePicker
-                value={newEvent.end}
-                mode="datetime"
-                display="default"
-                onChange={(event, date) => {
-                  setShowEndPicker(Platform.OS === 'ios');
-                  if (date) setNewEvent({ ...newEvent, end: date });
-                }}
-              />
-            </View>
-          </View>
-        </Modal>
-      )}
     </SafeAreaView>
   );
 };
