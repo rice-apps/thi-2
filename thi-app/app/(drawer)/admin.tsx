@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, SafeAreaView, Image } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { Student } from '@/types';
+import { imageUrls, Student } from '@/types';
 
 export const teacherName = "Jane Summers";
 export const sampleStudents: Student[] = [
@@ -12,6 +12,7 @@ export const sampleStudents: Student[] = [
   { id: "5", name: "Ethan Green", age: "19", abcReports: 3, durationReports: 2 },
   { id: "6", name: "Fiona White", age: "20", abcReports: 0, durationReports: 2 },
 ];
+const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
 export default function AdminPage() {
     const [students, setStudents] = useState<Student[]>([]);
@@ -35,24 +36,35 @@ export default function AdminPage() {
             </TouchableOpacity>
           </View>      
           </View>
-          <table className="table-fixed">
+          <table className="table-relative text-left w-full">
           <thead>
-                <tr>
-                <th>Name</th>
-                <th>Teacher Assigned To</th>
-                <th>ABC Behavior Data</th>
-                <th>Duration Data</th>
+                <tr className="bg-[#f0f0f0]"
+                >
+                  
+                <th className="p-[16px]">Name</th>
+                <th className="p-[16px]">Teacher Assigned To</th>
+                <th className="p-[16px]">ABC Behavior Data</th>
+                <th className="p-[16px]">Duration Data</th>
                 </tr>
                 </thead>
                 <tbody>
                 {students.map((student) => (
+                  
                                     <tr
                                     key={student.id}
+                                    className="bg-white"
                                   >
-                                        <td>{student.name}</td>
-                                        <td>{teacherName}</td>
-                                        <td>{student.abcReports}</td>
-                                        <td>{student.durationReports}</td>
+                                        <td className="p-[16px]">
+                                          <View className="flex-row items-center">
+                                          <Image
+                                                  source={{ uri: randomImageUrl }}
+                                                  className="w-[16px] h-[16px] rounded-full mr-[10px]"
+                                                />{student.name}
+                                                </View>
+                                                </td>
+                                        <td className="p-[16px]">{teacherName}</td>
+                                        <td className="p-[16px]">{ ((student.abcReports == 0) ? "N/A" : ((student.abcReports > 1)) ? student.abcReports+" Reports" : student.abcReports+" Report")}</td>
+                                        <td className="p-[16px]">{ ((student.durationReports == 0) ? "N/A" : ((student.durationReports > 1)) ? student.durationReports+" Reports" : student.durationReports+" Report")}</td>
                                     </tr>
                                   ))}
 </tbody>
