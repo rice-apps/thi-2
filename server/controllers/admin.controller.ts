@@ -10,6 +10,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 class AdminController {
     async whitelist(req: Request, res: Response, next: NextFunction) {
+        checkAdminPerm(req);
         try {
             // Assuming email and name is included in request body for whitelist
             const { email, first_name, last_name } = req.body;
@@ -42,11 +43,15 @@ class AdminController {
                 account: savedAccount,
             });
         } catch (err: any) {
-            throw err;
+            throw new ErrorResponse({
+                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                message: err,
+            });
         }
     }
 
     async delete(req: Request, res: Response, next: NextFunction) {
+        checkAdminPerm(req);
         try {
             const email = req.body.email;
 
@@ -64,11 +69,15 @@ class AdminController {
                 deletedAccount: deletedAccount._doc,
             });
         } catch (err: any) {
-            throw err;
+            throw new ErrorResponse({
+                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                message: err,
+            });
         }
     }
 
     async findAllAbc(req: Request, res: Response, next: NextFunction) {
+        checkAdminPerm(req);
         try {
             const abcRecords = await Abc.find();
 
@@ -77,11 +86,15 @@ class AdminController {
                 data: abcRecords,
             });
         } catch (err: any) {
-            throw err;
+            throw new ErrorResponse({
+                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                message: err,
+            });
         }
     }
 
     async findAllDuration(req: Request, res: Response, next: NextFunction) {
+        checkAdminPerm(req);
         try {
             const durationRecords = await Duration.find();
 
@@ -90,11 +103,15 @@ class AdminController {
                 data: durationRecords,
             });
         } catch (err: any) {
-            throw err;
+            throw new ErrorResponse({
+                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                message: err,
+            });
         }
     }
     //TODO: Implement getDuration once we merge Branches (make sure its correct )
     async getDurationById(req: Request, res: Response, next: NextFunction) {
+        checkAdminPerm(req);
         try {
             const id = req.params.id;
             const duration = await Duration.findById(id);
@@ -108,11 +125,21 @@ class AdminController {
 
             return duration;
         } catch (err: any) {
-            throw err;
+            throw new ErrorResponse({
+                statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                message: err,
+            });
         }
     }
 }
-
+function checkAdminPerm(req: any) {
+    if (!req.user.is_admin) {
+        throw new ErrorResponse({
+            statusCode: HttpStatus.StatusCodes.UNAUTHORIZED,
+            message: `Account is not an admin.`,
+        });
+    }
+}
 function generateTempPassword(length: number): string {
     const chars =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
