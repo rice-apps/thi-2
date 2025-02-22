@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-const Account = require("@/models/accountModel");
-const Abc = require("@/models/abc");
-const { Duration } = require("../models");
+import { Resend } from "resend";
+const { Account, Abc, Duration } = require("../models");
 const HttpStatus = require("http-status-codes");
-const { ErrorResponse } = require("@/helper");
-const Resend = require("resend");
+const { ErrorResponse } = require("../helper");
 //TODO: Import the Duration model once we merge Branches
 
 // TODO: add key in .env
@@ -114,7 +112,6 @@ class AdminController {
         }
     }
 }
-}
 
 function generateTempPassword(length: number): string {
     const chars =
@@ -129,7 +126,7 @@ function generateTempPassword(length: number): string {
 
 async function sendEmail(to: string, subject: string, text: string) {
     try {
-        const response = await resend.sendEmail({
+        const response = await resend.emails.send({
             from: "your-email@example.com", // Replace with our sender email
             to: to,
             subject: subject,
