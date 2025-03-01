@@ -5,5 +5,5 @@ const wrapController = require("./wrap.controller");
 module.exports = {
     wrapMiddleware,
     ErrorResponse: ErrorResponse1,
-    wrapController
-}
+    wrapController,
+};
