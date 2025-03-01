@@ -12,6 +12,7 @@ passport.use(jwtAuthenStrategy);
 
 router.use("/auth", authRouter);
 router.use("/abc", abcRouter);
+router.use("/duration", durationRouter);
 router.use("/student", studentRouter);
 router.use("/duration", durationRouter);
 router.use("/admin", adminRouter);
