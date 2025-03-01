@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TimerProvider } from "@/context/TimerContext";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
+// import  IndividualStudent  from "@/app/(drawer)/IndividualStudent";
 
 export {
   // Catch any errors thrown by the Layout component.
