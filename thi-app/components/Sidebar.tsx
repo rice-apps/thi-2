@@ -120,7 +120,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 />
               </View>
 
-              {/* Navigable screens */}
+              {/* Navigatable screens */}
               <View
                 className="flex-col items-start justify-between"
                 style={{

@@ -1,6 +1,7 @@
 import { imageUrls, Student, StudentProps } from "@/types";
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, Pressable } from "react-native";
+
 
 export const StudentCard = ({ student }: StudentProps) => {
   const { name, abcReports, durationReports } = student;
@@ -15,6 +16,7 @@ export const StudentCard = ({ student }: StudentProps) => {
           className="w-[60px] h-[60px] rounded-full absolute top-[35px] border-[3px] border-white"
         />
       </View>
+
 
       {/* Student Name */}
       <Text className="text-lg font-bold text-center mt-[30px]">{name}</Text>

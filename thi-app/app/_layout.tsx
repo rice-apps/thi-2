@@ -1,10 +1,12 @@
 import { TimerProvider } from "@/context/TimerContext";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
+
 import { useEffect } from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "../global.css";
+
 
 export {
     // Catch any errors thrown by the Layout component.
