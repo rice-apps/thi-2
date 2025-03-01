@@ -31,6 +31,7 @@ class AuthController {
             first_name: "John",
             last_name: "Doe",
             is_deleted: false,
+            is_admin: true,
         });
         try {
             await account.save();

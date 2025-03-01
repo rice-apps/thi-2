@@ -13,7 +13,7 @@ class AdminController {
         checkAdminPerm(req);
         try {
             // Assuming email and name is included in request body for whitelist
-            const { email, first_name, last_name } = req.body;
+            const { email, first_name, last_name, is_admin } = req.body;
 
             const tempPassword = generateTempPassword(8);
 
@@ -23,7 +23,7 @@ class AdminController {
                 first_name,
                 last_name,
                 // Unsure how the following are set when whitelisting
-                is_admin: false,
+                is_admin: is_admin,
                 isActive: false,
                 is_deleted: false,
                 authorization_token: null,
@@ -37,11 +37,11 @@ class AdminController {
                 `Your temporary password is: ${tempPassword}` // Body
             );
 
-            return res.status(HttpStatus.StatusCodes.CREATED).json({
+            return {
                 message:
                     "Account created and email sent with temporary password.",
-                account: savedAccount,
-            });
+                account: savedAccount._doc,
+            };
         } catch (err: any) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
@@ -64,10 +64,10 @@ class AdminController {
                 });
             }
 
-            return res.status(HttpStatus.StatusCodes.OK).json({
+            return {
                 message: `Account with email ${email} successfully deleted.`,
                 deletedAccount: deletedAccount._doc,
-            });
+            };
         } catch (err: any) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
@@ -81,10 +81,10 @@ class AdminController {
         try {
             const abcRecords = await Abc.find();
 
-            return res.status(200).json({
+            return {
                 message: "Successfully fetched all ABC records.",
                 data: abcRecords,
-            });
+            };
         } catch (err: any) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
@@ -98,10 +98,10 @@ class AdminController {
         try {
             const durationRecords = await Duration.find();
 
-            return res.status(200).json({
+            return {
                 message: "Successfully fetched all Duration records.",
                 data: durationRecords,
-            });
+            };
         } catch (err: any) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,

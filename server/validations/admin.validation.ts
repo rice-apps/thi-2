@@ -6,6 +6,7 @@ module.exports = {
         email: Joi.string()
             .email({ tlds: { allow: false } })
             .required(),
+        is_admin: Joi.boolean().default(false),
     }),
     update: Joi.object({
         first_name: Joi.string().required(),
