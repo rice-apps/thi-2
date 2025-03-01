@@ -9,7 +9,8 @@ require("dotenv").config();
 class AuthController {
     // For reference purposes only, NOT actual implementation
     async signUp(req: Request, res: Response, next: NextFunction) {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        email = email.toLowerCase();
         if (email.length > 20) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
@@ -45,12 +46,12 @@ class AuthController {
     }
 
     async signIn(req: Request, res: Response, next: NextFunction) {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        email = email.toLowerCase();
         const account = await Account.findOne(
             { email: email },
-            "_id password is_admin is_deleted"
+            "_id password is_admin is_deleted first_name last_name"
         ).exec();
-        console.log(account.is_deleted);
         if (!account || account.is_deleted) {
             throw new ErrorResponse({
                 statusCode: HttpStatus.StatusCodes.BAD_REQUEST,
@@ -65,6 +66,8 @@ class AuthController {
                     process.env.JWT_SECRET_KEY,
                     { expiresIn: SEC_IN_ONE_DAY }
                 ),
+                first_name: account.first_name,
+                last_name: account.last_name,
             };
         } else {
             throw new ErrorResponse({
