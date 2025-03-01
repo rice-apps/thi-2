@@ -11,12 +11,12 @@ import { useRouter } from 'expo-router';
 
 
 
-
-const IndividualStudent = ({studentId}: {studentId: string}, {name}: {name: String}) => {
-  // const { id } = useParams();
+// {studentId}: {studentId: string}, {name}: {name: String}
+const IndividualStudent = () => {
   const router = useRouter();
-  
-  // const { studentId, name } = router.query;
+//   const { studentId } = router.query;
+
+  // const { studentId, studentName, abcReports, durationReports } = router.query;
 
 
   const [studentData, setStudentData] = useState<any>(null);
@@ -27,12 +27,12 @@ const IndividualStudent = ({studentId}: {studentId: string}, {name}: {name: Stri
 
 
   //fetch from API whenever backend is done
-  useEffect(() => {
-    setStudentData({
-      id: studentId,
-      name: name,
-    });
-  }, [studentId, name]);
+  // useEffect(() => {
+  //   setStudentData({
+  //     id: studentId,
+  //     name: name,
+  //   });
+  // }, [studentId, name]);
 
 
 
@@ -63,7 +63,7 @@ const IndividualStudent = ({studentId}: {studentId: string}, {name}: {name: Stri
 
       {/* Title and Add Data Button */}
       <View className="flex-row justify-between items-center mb-8">
-        <Text className="text-3xl font-bold"> {studentData.id}</Text>
+        <Text className="text-3xl font-bold">  *Placeholder Name*</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}
           className="bg-[#105366] p-2 rounded flex-row items-center"
         >
