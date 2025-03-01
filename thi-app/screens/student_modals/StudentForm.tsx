@@ -15,18 +15,14 @@ import {
 
 
 
-import { useRoute } from '@react-navigation/native';
-
-
-
 interface StudentFormProps {
   visible: boolean;
   onClose: () => void;
+  onSubmit: (data: any) => void; // Callback for submitting the data
 }
 
 
-
-export default function StudentForm({ visible, onClose }: StudentFormProps){
+export default function StudentForm({ visible, onClose, onSubmit }: StudentFormProps){
   const [whichBehavior, setWhichBehavior]= useState('');
   const [whichForm, setWhichForm]= useState('');
   const [setting, setSetting] = useState('');
@@ -38,12 +34,43 @@ export default function StudentForm({ visible, onClose }: StudentFormProps){
   const [step, setStep] = useState(0); // State to track the current step in the form
 
 
-
   const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log('Form submitted:', { preIncident, postIncident, behavior, length, notes });
-    onClose(); // Close the modal after submission
+    const dataABC = {
+      setting,
+      preIncident,
+      postIncident,
+      behavior,
+      consequence,
+      notes,
+    };
+    const dataDuration = {
+      setting,
+      preIncident,
+      postIncident,
+      notes
+      };
+
+    if (whichBehavior === 'ABC Behavior') {
+      onSubmit(dataABC);
+    } else if (whichBehavior === 'Duration Data') {
+      onSubmit(dataDuration);
+    }
+
+    console.log('Form submitted:', dataABC, dataDuration);
+    onClose(); 
+
+    //reset entire form lmao
+    setSetting('');
+    setPreIncident('');
+    setPostIncident('');
+    setBehavior('');
+    setConsequence('');
+    setNotes('');
+    setWhichBehavior('');
+    setWhichForm('');
+    setStep(0); 
   };
+  
 
 
   const handleNext = () => {

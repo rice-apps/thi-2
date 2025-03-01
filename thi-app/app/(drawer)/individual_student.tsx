@@ -7,17 +7,14 @@ import Filter from "@/screens/student_modals/Filter";
 import ExcelExport from "@/screens/student_modals/ExcelExport";
 import { useRouter } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
+import { imageUrls} from "@/types";
 
-type ItemProps = { date: string };
-const Item = ({ date }: ItemProps) => (
-  <View>
-    <Text> {date}</Text>
-  </View>
-);
 
 const IndividualStudent = () => {
   const router = useRouter();
   const { id, name } = useLocalSearchParams<{ id: string, name: string }>();
+  const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFilterVisible, setFilterVisible] = useState(false);
@@ -71,9 +68,10 @@ const IndividualStudent = () => {
       <Text style={{ fontWeight: "bold", width: 75 }}>Time</Text> 
       <Text style={{ fontWeight: "bold", width: 150 }}>Teacher</Text> 
       <Text style={{ fontWeight: "bold", width: 100 }}>Setting</Text> 
-      <Text style={{ fontWeight: "bold", width: 225 }}>Antecedent</Text> 
+      <Text style={{ fontWeight: "bold", width: 150 }}>Antecedent</Text> 
       <Text style={{ fontWeight: "bold", width: 125 }}>Behavior</Text> 
       <Text style={{ fontWeight: "bold", width: 125 }}>Consequence</Text> 
+      <Text style={{ fontWeight: "bold", width: 100 }}>Notes</Text>
       <Text style={{ fontWeight: "bold", width: 50 }}>Actions</Text>
     </View>
   );
@@ -84,9 +82,10 @@ const IndividualStudent = () => {
       <Text style={{ width: 75 }}>3:15 PM</Text> 
       <Text style={{ width: 150 }}>Jane Summers</Text> 
       <Text style={{ width: 100 }}>{item.setting}</Text> 
-      <Text style={{ width: 225 }}>{item.preIncident}</Text> 
+      <Text style={{ width: 150 }}>{item.preIncident}</Text> 
       <Text style={{ width: 125 }}>{item.behavior}</Text> 
       <Text style={{ width: 125 }}>{item.consequence}</Text> 
+      <Text style={{ width: 100 }}>{item.notes}</Text> 
       <TouchableOpacity onPress={() => deleteABCData(index)} style={{ width: 50, alignItems: 'center' }}>
         <AntDesign name="delete" size={20} color="#105366" />
       </TouchableOpacity>
