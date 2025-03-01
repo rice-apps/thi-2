@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, View, Text, TouchableOpacity, SafeAreaView, Modal, TextInput, Button } from "react-native";
 import { Calendar } from 'react-native-big-calendar';
-import { addDays, setHours, setMinutes } from 'date-fns';
+import { addDays, subWeeks, addWeeks, setHours, setMinutes } from 'date-fns';
 import { useSidebarContext } from '@/components/Sidebar';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function SchedulePage() {
   const { isSidebarOpen } = useSidebarContext();
-  const cardWidth = isSidebarOpen ? "30%" : "22%";
+  const [currentDate, setCurrentDate] = useState(new Date()); // Track current week
 
   const [events, setEvents] = useState([
     {
@@ -34,7 +35,6 @@ export default function SchedulePage() {
     const { title, start, end } = newEvent;
     if (!title || !start || !end) return;
 
-    // Add new event to state
     setEvents([
       ...events,
       {
@@ -45,6 +45,16 @@ export default function SchedulePage() {
     ]);
     setModalVisible(false); // Close Modal
     setNewEvent({ title: '', start: '', end: '' }); // Reset Form
+  };
+
+  // Move to Previous Week
+  const handlePrevWeek = () => {
+    setCurrentDate((prev) => subWeeks(prev, 1));
+  };
+
+  // Move to Next Week
+  const handleNextWeek = () => {
+    setCurrentDate((prev) => addWeeks(prev, 1));
   };
 
   return (
@@ -59,6 +69,20 @@ export default function SchedulePage() {
         </TouchableOpacity>
       </View>
 
+      {/* Week Navigation Buttons */}
+      <View className="flex-row justify-between items-center px-16 pb-4">
+        <TouchableOpacity onPress={handlePrevWeek} className="p-2 bg-gray-300 rounded">
+          <AntDesign name="left" size={20} color="black" />
+        </TouchableOpacity>
+
+        <Text className="text-lg font-bold">{currentDate.toDateString()}</Text>
+
+        <TouchableOpacity onPress={handleNextWeek} className="p-2 bg-gray-300 rounded">
+          <AntDesign name="right" size={20} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Calendar with Updated Week Navigation */}
       <View className="bg-white rounded-lg shadow-md overflow-hidden mx-4 border border-gray-300">
         <Calendar
           events={events}
@@ -66,14 +90,18 @@ export default function SchedulePage() {
           mode="week"
           weekStartsOn={0}
           locale="en"
-          date={new Date()}
-          swipeEnabled={true}
+          date={currentDate} // Controlled by state
+          swipeEnabled={true} // Allow swiping if it starts working
           eventCellStyle={{
             backgroundColor: '#105366',
             borderRadius: 8,
+            padding: 6,
           }}
           headerContainerStyle={{
-            backgroundColor: '#F5F5F5',
+            backgroundColor: '#E5E7EB',
+            paddingVertical: 8,
+            borderBottomWidth: 1,
+            borderBottomColor: '#D1D5DB',
           }}
           dayHeaderHighlightColor="#105366"
           onPressEvent={(event) => {
@@ -92,7 +120,7 @@ export default function SchedulePage() {
         <TouchableOpacity
           className="flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]"
           activeOpacity={1}
-          onPress={() => setModalVisible(false)} // Close on backdrop press
+          onPress={() => setModalVisible(false)}
         >
           <View className="bg-white rounded-lg p-4 w-[80%]" style={{ zIndex: 10, elevation: 10 }}>
             <Text className="text-xl font-bold mb-4">Add New Event</Text>
@@ -127,4 +155,4 @@ export default function SchedulePage() {
       </Modal>
     </SafeAreaView>
   );
-};
+}
