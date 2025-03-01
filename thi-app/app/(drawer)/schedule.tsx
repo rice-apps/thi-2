@@ -71,14 +71,14 @@ export default function SchedulePage() {
 
       {/* Week Navigation Buttons */}
       <View className="flex-row justify-between items-center px-16 pb-4">
-        <TouchableOpacity onPress={handlePrevWeek} className="p-2 bg-gray-300 rounded">
-          <AntDesign name="left" size={20} color="black" />
+        <TouchableOpacity onPress={handlePrevWeek}>
+          <AntDesign name="left" size={20} color="#6F97A2" />
         </TouchableOpacity>
 
         <Text className="text-lg font-bold">{currentDate.toDateString()}</Text>
 
-        <TouchableOpacity onPress={handleNextWeek} className="p-2 bg-gray-300 rounded">
-          <AntDesign name="right" size={20} color="black" />
+        <TouchableOpacity onPress={handleNextWeek}>
+          <AntDesign name="right" size={20} color="#6F97A2" />
         </TouchableOpacity>
       </View>
 
