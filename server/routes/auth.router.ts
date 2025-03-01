@@ -2,8 +2,7 @@ import express from "express";
 const router = express.Router();
 const { wrapMiddleware, wrapController } = require("../helper");
 const { authController } = require("../controllers");
-const authValidation = require("../validations/auth.validation");
-const { jwtAuthen } = require("../validations");
+const { jwtAuthen, authValidation } = require("../validations");
 
 // Template controller
 router.post(

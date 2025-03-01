@@ -1,36 +1,40 @@
-import mongoose, { model } from 'mongoose';
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const durationSchema = new Schema({
     student_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Student',
-        required: true
-      },
-      date: {
+        ref: "Student",
+        required: true,
+    },
+    date: {
         type: Date,
-        required: true
-      },
-      time_started: {
+        required: true,
+    },
+    time_started: {
         type: Date,
-        required: true
-      },
-      time_ended: {
-        type: Date, 
-        required: true
-      },
-      time_total: {
+        required: true,
+    },
+    time_ended: {
+        type: Date,
+        required: true,
+    },
+    time_total: {
         type: Number, // Assume that we will retrieve this using time_started - time_ended
-        required: true
-      },
-      activity: {
+        required: true,
+    },
+    activity: {
         type: String,
-        required: true
-      },
-      notes: {
+        required: true,
+    },
+    notes: {
         type: String,
-        required: true
-      }
+        required: true,
+    },
+    staff: {
+        type: mongoose.Types.ObjectId, // Assume that we will retrieve this using the staff_id from the user
+        required: true, // This is the staff that assinged the duration
+    },
 });
 
-module.exports = mongoose.model('Duration', durationSchema);
+module.exports = mongoose.model("Duration", durationSchema);
