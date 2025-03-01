@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, FlatList, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, FlatList, ScrollView, Image} from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import StudentForm from "@/screens/student_modals/StudentForm";
@@ -134,7 +134,15 @@ const IndividualStudent = () => {
 
         {/* Title and Add Data Button */}
         <View className="flex-row justify-between items-center mb-8">
-          <Text className="text-3xl font-bold">#{id}: {name}</Text>
+
+          <Text className="text-3xl font-bold">
+            <Image
+              source={{ uri: randomImageUrl }}
+              style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
+            /> 
+              #{id}: {name}
+          </Text>
+
           <TouchableOpacity onPress={() => setModalVisible(true)}
             className="bg-[#105366] p-2 rounded flex-row items-center"
           >
