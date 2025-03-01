@@ -8,13 +8,15 @@ import ExcelExport from "@/screens/student_modals/ExcelExport";
 import { useRouter } from 'expo-router';
 // import { useParams } from 'react-router-dom';
 
+import { useLocalSearchParams } from 'expo-router';
 
 
 
 // {studentId}: {studentId: string}, {name}: {name: String}
 const IndividualStudent = () => {
   const router = useRouter();
-//   const { studentId } = router.query;
+  const { id, name} = useLocalSearchParams<{ id: string, name: string}>();
+
 
   // const { studentId, studentName, abcReports, durationReports } = router.query;
 
@@ -63,7 +65,7 @@ const IndividualStudent = () => {
 
       {/* Title and Add Data Button */}
       <View className="flex-row justify-between items-center mb-8">
-        <Text className="text-3xl font-bold">  *Placeholder Name*</Text>
+        <Text className="text-3xl font-bold">#{id}: {name}</Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}
           className="bg-[#105366] p-2 rounded flex-row items-center"
         >

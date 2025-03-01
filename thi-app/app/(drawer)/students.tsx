@@ -51,8 +51,8 @@ const StudentsPage = () => {
 
 
 
-  const navigateToIndividualStudent = (studentId: string) => {
-    router.push(`/(drawer)/individual_student/`);
+  const navigateToIndividualStudent = (id: string, name: string) => {
+    router.push(`/(drawer)/individual_student?id=${id}&name=${encodeURIComponent(name)}`);
     
   };
   
@@ -133,7 +133,7 @@ const StudentsPage = () => {
       <View className="flex-row flex-wrap justify-start gap-x-24 gap-y-8 mb-8">
           {students.map((student) => (
             <View key={student.id} style={{ width: 243 }} >
-                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id)}>
+                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id, student.name)}>
                    <StudentCard student={student} />
                 </TouchableOpacity>
 
