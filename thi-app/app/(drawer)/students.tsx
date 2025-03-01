@@ -26,7 +26,7 @@ export const sampleStudents: Student[] = [
 
 
 const StudentsPage = () => {
-  const [students, setStudents] = useState<Student[]>(sampleStudents);  //state here for implementation later
+  const [students, setStudents] = useState<Student[]>(sampleStudents);  //for current state of sampleStudents array
 
   const [deletesVisible, setDeletesVisible] = useState(false); //state for adding delete exs icons
   const [isEditStudentVisible, setEditStudentVisible] = useState(false); //state for delete modal
@@ -65,7 +65,9 @@ const StudentsPage = () => {
   }
 
   const handleEditStudent = (studentId: string) => {
-    setStudents(prevStudents => prevStudents.filter(student => student.id !== studentId)); // Remove student by ID
+    setStudents(prevStudents => prevStudents.filter(student => student.id !== studentId)); 
+    setDeletesVisible(false)
+    //ADD THE API CALL HERE TO DELETE STUDENT FROM DATABASE
   };
 
   const handleOpenEditModal = (student: Student) => {
@@ -74,8 +76,12 @@ const StudentsPage = () => {
   };
 
   
-  const handleAddStudent = (newStudent: Student) => {
-    setStudents(prevStudents => [...prevStudents, newStudent]); // Add the new student to the state
+  const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
+    const studentWithId: Student = {
+      ...newStudent,
+      id: generateRandomId(), 
+    };
+    setStudents((prevStudents) => [...prevStudents, studentWithId]); 
     setAddStudentVisible(false); // Close the modal after adding the student
   };
 
@@ -83,7 +89,13 @@ const StudentsPage = () => {
     setAddStudentVisible(false);
   };
 
-
+  //generate a random 6 digit id for any student added
+  const generateRandomId = (): string => {
+      const min = 100000; 
+      const max = 999999;
+      const randomId = Math.floor(Math.random() * (max - min + 1)) + min;
+      return randomId.toString(); 
+    }; 
 
 
 
