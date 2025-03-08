@@ -83,7 +83,62 @@ export default function AdminPage() {
             </TouchableOpacity>
           </View>      
           </View>      
+          <table className="table-relative text-left w-full">
+          <thead>
+                <tr className="bg-[#f0f0f0]"
+                >
+                  
+                <th className="p-[16px]">Name</th>
+                <th className="p-[16px]">Email</th>
+                <th className="p-[16px]">Students</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr
+                                    key={"teacher"}
+                                    className="bg-white"
+                                  >
+                                    <td className="p-[16px]">{teacherName}</td>
+                                    <td className="p-[16px]">summersjm@bbc.edu</td>
+                                    <td className="p-[16px]">
+                                    <table className="table-relative text-left w-full">
+                                    {students.map((student) => (
+                                      <tr>
+                                        <td>
+                                        <View className="flex-row items-center">
+                                          <Image
+                                                  source={{ uri: randomImageUrl }}
+                                                  className="w-[16px] h-[16px] rounded-full mr-[10px]"
+                                                />{student.name}
+                                                </View>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                    </table>
+                                    </td>
 
+                                  </tr>
+                {/* {students.map((student) => (
+                  
+                                    <tr
+                                    key={student.id}
+                                    className="bg-white"
+                                  >
+                                        <td className="p-[16px]">
+                                          <View className="flex-row items-center">
+                                          <Image
+                                                  source={{ uri: randomImageUrl }}
+                                                  className="w-[16px] h-[16px] rounded-full mr-[10px]"
+                                                />{student.name}
+                                                </View>
+                                                </td>
+                                        <td className="p-[16px]">{teacherName}</td>
+                                        <td className="p-[16px]">{ ((student.abcReports == 0) ? "N/A" : ((student.abcReports > 1)) ? student.abcReports+" Reports" : student.abcReports+" Report")}</td>
+                                        <td className="p-[16px]">{ ((student.durationReports == 0) ? "N/A" : ((student.durationReports > 1)) ? student.durationReports+" Reports" : student.durationReports+" Report")}</td>
+                                    </tr>
+                                  ))} */}
+</tbody>
+          </table>
           
           </ScrollView>
     </SafeAreaView>
