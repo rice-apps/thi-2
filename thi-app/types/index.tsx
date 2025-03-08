@@ -5,6 +5,12 @@ export type Student = {
     abcReports: number;
     durationReports: number;
   };
+
+  export type Teacher = {
+    name: string;
+    email: string;
+    students: Student[];
+  };
   
 export interface StudentProps {
     student: Student;
