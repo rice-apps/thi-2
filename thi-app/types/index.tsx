@@ -10,6 +10,18 @@ export interface StudentProps {
     student: Student;
   }
 
+export type Event = {
+  title: string;
+  start: Date;
+  end: Date
+}
+
+export const grades = [
+  { label: "Grade 01", value: "Grade 01" },
+  { label: "Grade 02", value: "Grade 02" },
+  { label: "Grade 03", value: "Grade 03" },
+  { label: "Grade 04", value: "Grade 04" },
+];
 
 export const imageUrls = [
     "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L2pvYjY4Ni0yODAtdi5qcGc.jpg",

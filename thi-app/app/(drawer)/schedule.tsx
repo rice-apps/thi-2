@@ -1,88 +1,152 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, SafeAreaView, Modal, TextInput, Button } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, SafeAreaView, Modal, TextInput, Button } from "react-native";
 import { Calendar } from 'react-native-big-calendar';
-import { addDays, subWeeks, addWeeks, setHours, setMinutes } from 'date-fns';
-import { useSidebarContext } from '@/components/Sidebar';
+import { addWeeks, subWeeks, setHours, setMinutes, startOfWeek, format, parse } from "date-fns";
 import { AntDesign } from '@expo/vector-icons';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Event, grades } from "@/types";
 
 export default function SchedulePage() {
-  const { isSidebarOpen } = useSidebarContext();
   const [currentDate, setCurrentDate] = useState(new Date()); // Track current week
+  const [selectedGrade, setSelectedGrade] = useState("Grade 01");
+  const [isFocus, setIsFocus] = useState(false);
 
-  const [events, setEvents] = useState([
-    {
-      title: 'Activity Name',
-      start: setMinutes(setHours(new Date(), 9), 0),  // 9:00 AM Today
-      end: setMinutes(setHours(new Date(), 9), 50),   // 9:50 AM Today
-    },
-    {
-      title: 'Activity Name',
-      start: setMinutes(setHours(addDays(new Date(), 1), 10), 0),  // 10:00 AM Tomorrow
-      end: setMinutes(setHours(addDays(new Date(), 1), 10), 50),   // 10:50 AM Tomorrow
-    },
-  ]);
+  // Store events in state instead of modifying a constant object
+  const [gradeEvents, setGradeEvents] = useState<Record<string, Event[]>>({
+    "Grade 01": [
+      {
+        title: "Math Class",
+        start: setMinutes(setHours(new Date(), 9), 0), // 9:00 AM Today
+        end: setMinutes(setHours(new Date(), 10), 0), // 10:00 AM Today
+      },
+    ],
+    "Grade 02": [
+      {
+        title: "Science Lab",
+        start: setMinutes(setHours(new Date(), 11), 0),
+        end: setMinutes(setHours(new Date(), 12), 0),
+      },
+    ],
+    "Grade 03": [
+      {
+        title: "History Lecture",
+        start: setMinutes(setHours(new Date(), 13), 0),
+        end: setMinutes(setHours(new Date(), 14), 0),
+      },
+    ],
+    "Grade 04": [
+      {
+        title: "English Writing",
+        start: setMinutes(setHours(new Date(), 15), 0),
+        end: setMinutes(setHours(new Date(), 16), 0),
+      },
+    ],
+  });
+
+  const events: Event[] = gradeEvents[selectedGrade] || [];
 
   // State for Modal
   const [modalVisible, setModalVisible] = useState(false);
-  const [newEvent, setNewEvent] = useState({
-    title: '',
-    start: '',
-    end: '',
+  const [newEvent, setNewEvent] = useState<Event>({
+    title: "",
+    start: new Date(),
+    end: new Date(),
   });
 
-  // Handle Adding Event
+  // Move to Today
+  const handleGoToToday = () => {
+    setCurrentDate(startOfWeek(new Date(), { weekStartsOn: 0 }));
+  };
+
+  // Move to Previous/Next Week
+  const handlePrevWeek = () => setCurrentDate(subWeeks(currentDate, 1));
+  const handleNextWeek = () => setCurrentDate(addWeeks(currentDate, 1));
+
+  // Handle Adding Event (Fixed)
   const handleAddEvent = () => {
     const { title, start, end } = newEvent;
     if (!title || !start || !end) return;
 
-    setEvents([
-      ...events,
-      {
-        title,
-        start: new Date(start),
-        end: new Date(end),
-      }
-    ]);
+    // Ensure new event start & end are Date objects
+    const newEventData: Event = {
+      title,
+      start: new Date(start),
+      end: new Date(end),
+    };
+
+    // Add new event to the selected grade (IMMUTABLY update state)
+    setGradeEvents((prev) => ({
+      ...prev,
+      [selectedGrade]: [...prev[selectedGrade], newEventData],
+    }));
+
     setModalVisible(false); // Close Modal
-    setNewEvent({ title: '', start: '', end: '' }); // Reset Form
-  };
-
-  // Move to Previous Week
-  const handlePrevWeek = () => {
-    setCurrentDate((prev) => subWeeks(prev, 1));
-  };
-
-  // Move to Next Week
-  const handleNextWeek = () => {
-    setCurrentDate((prev) => addWeeks(prev, 1));
+    setNewEvent({ title: "", start: new Date(), end: new Date() }); // Reset Form
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F5F5F5]">
+    <SafeAreaView className="flex-1 bg-[#F5F5F5] px-16" >
       <View className="flex-row justify-between items-center p-16">
-        <Text className="text-3xl font-bold">Schedule</Text>
-        <TouchableOpacity
-          className="bg-[#105366] p-2 rounded flex-row items-center"
-          onPress={() => setModalVisible(true)}
-        >
-          <Text className="text-white font-bold ml-1">+ Add Event</Text>
-        </TouchableOpacity>
+        <Text className="text-4xl font-bold">Schedule</Text>
       </View>
 
-      {/* Week Navigation Buttons */}
-      <View className="flex-row justify-between items-center px-16 pb-4">
-        <TouchableOpacity onPress={handlePrevWeek}>
-          <AntDesign name="left" size={20} color="#6F97A2" />
-        </TouchableOpacity>
+      <View className="flex-row justify-between items-center px-6 py-3 bg-[#F0F0F0] border-b border-gray-300">
+        {/* Left: Today & Navigation */}
+        <View className="flex-row items-center">
+          <TouchableOpacity
+            onPress={handleGoToToday}
+            className="bg-[#6F97A2] px-4 py-2 rounded mr-3"
+          >
+            <Text className="text-white text-base font-bold">Today</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlePrevWeek} className="p-2 rounded mr-2">
+            <AntDesign name="left" size={18} color="#6F97A2" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleNextWeek} className="p-2 rounded">
+            <AntDesign name="right" size={18} color="#6F97A2" />
+          </TouchableOpacity>
+        </View>
 
-        <Text className="text-lg font-bold">{currentDate.toDateString()}</Text>
+        {/* Center: Current Date */}
+        <Text className="text-lg font-bold">{format(currentDate, "EEEE, MMM d yyyy")}</Text>
 
-        <TouchableOpacity onPress={handleNextWeek}>
-          <AntDesign name="right" size={20} color="#6F97A2" />
-        </TouchableOpacity>
+        {/* Right: Grade Selection & Add Event */}
+        <View className="flex-row items-center">
+          {/* Grade Dropdown */}
+          <View className="w-[120px] border border-gray-400 rounded bg-[#6F97A2] px-3 py-2 flex-row items-center">
+            <Dropdown
+              style={{ flex: 1 }} // Allow text to take space properly
+              data={grades}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select Grade' : '...'}
+              value={selectedGrade}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setSelectedGrade(item.value);
+                setIsFocus(false);
+              }}
+              containerStyle={{ backgroundColor: 'white', borderRadius: 8 }}
+              selectedTextStyle={{ fontWeight: "bold", color: "white", fontSize: 14 }}
+              placeholderStyle={{ fontWeight: "bold", color: "white", fontSize: 14 }}
+              iconColor="#F6F6F6"
+            />
+          </View>
+
+          {/* Add Event Button */}
+          <TouchableOpacity
+            className="bg-[#105366] px-4 py-2 ml-3 rounded flex-row items-center"
+            onPress={() => setModalVisible(true)}
+          >
+            <Text className="text-white text-base font-bold">+ Add Event</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* Calendar with Updated Week Navigation */}
+
+      {/* Calendar */}
       <View className="bg-white rounded-lg shadow-md overflow-hidden mx-4 border border-gray-300">
         <Calendar
           events={events}
@@ -90,23 +154,21 @@ export default function SchedulePage() {
           mode="week"
           weekStartsOn={0}
           locale="en"
-          date={currentDate} // Controlled by state
-          swipeEnabled={true} // Allow swiping if it starts working
+          date={currentDate}
+          swipeEnabled={true}
           eventCellStyle={{
-            backgroundColor: '#105366',
+            backgroundColor: "#105366",
             borderRadius: 8,
             padding: 6,
           }}
           headerContainerStyle={{
-            backgroundColor: '#E5E7EB',
+            backgroundColor: "#FAFAFA",
             paddingVertical: 8,
             borderBottomWidth: 1,
-            borderBottomColor: '#D1D5DB',
+            borderBottomColor: "#D1D5DB",
           }}
           dayHeaderHighlightColor="#105366"
-          onPressEvent={(event) => {
-            alert(`Event: ${event.title}`);
-          }}
+          onPressEvent={(event) => alert(`Event: ${event.title}`)}
         />
       </View>
 
@@ -136,17 +198,17 @@ export default function SchedulePage() {
             <Text className="mb-2 font-bold">Start Time</Text>
             <TextInput
               className="border border-gray-300 rounded p-2 mb-4"
-              placeholder="Start Time (e.g., 2025-02-22T09:00:00)"
-              value={newEvent.start}
-              onChangeText={(text) => setNewEvent({ ...newEvent, start: text })}
+              placeholder="Start Time (YYYY-MM-DD HH:mm)"
+              value={format(newEvent.start, "yyyy-MM-dd HH:mm")}
+              onChangeText={(text) => setNewEvent({ ...newEvent, start: parse(text, "yyyy-MM-dd HH:mm", new Date()) })}
             />
 
             <Text className="mb-2 font-bold">End Time</Text>
             <TextInput
               className="border border-gray-300 rounded p-2 mb-4"
-              placeholder="End Time (e.g., 2025-02-22T10:00:00)"
-              value={newEvent.end}
-              onChangeText={(text) => setNewEvent({ ...newEvent, end: text })}
+              placeholder="End Time (YYYY-MM-DD HH:mm)"
+              value={format(newEvent.end, "yyyy-MM-dd HH:mm")}
+              onChangeText={(text) => setNewEvent({ ...newEvent, end: parse(text, "yyyy-MM-dd HH:mm", new Date()) })}
             />
 
             <Button title="Add Event" onPress={handleAddEvent} />
