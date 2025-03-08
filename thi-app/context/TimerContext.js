@@ -8,6 +8,21 @@ export const TimerProvider = ({ children }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  const [inputHours, setInputHours] = useState("");
+  const [inputMinutes, setInputMinutes] = useState("10");
+  const [inputSeconds, setInputSeconds] = useState("");
+
+  const formatTime = (time) => {
+      const hours = Math.floor(time / 3600);
+      const minutes = Math.floor((time % 3600) / 60);
+      const seconds = time % 60;
+      return {
+          hours: String(hours).padStart(2, "0"),
+          minutes: String(minutes).padStart(2, "0"),
+          seconds: String(seconds).padStart(2, "0"),
+      };
+  };
+
   {/* Checks for when running/paused and updates countdown */}  
   useEffect(() => {
     let interval;
@@ -60,6 +75,13 @@ export const TimerProvider = ({ children }) => {
         pauseTimer,
         resumeTimer,
         resetTimer,
+        inputHours,
+        setInputHours,
+        inputMinutes,
+        setInputMinutes,
+        inputSeconds,
+        setInputSeconds,
+        formatTime,
       }}
     >
       {children}

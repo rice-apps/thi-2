@@ -1,33 +1,20 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { TimerContext } from "../context/TimerContext";
+import { TimerContext } from "@/context/TimerContext";
 
 const Timer = () => {
     const {
         timeLeft,
         isRunning,
         isPaused,
-        startTimer,
-        pauseTimer,
-        resumeTimer,
-        resetTimer,
-    } = useContext(TimerContext);
-
-    const [inputHours, setInputHours] = useState("");
-    const [inputMinutes, setInputMinutes] = useState("10");
-    const [inputSeconds, setInputSeconds] = useState("");
-
-    const formatTime = (time: number) => {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = time % 60;
-        return {
-            hours: String(hours).padStart(2, "0"),
-            minutes: String(minutes).padStart(2, "0"),
-            seconds: String(seconds).padStart(2, "0"),
-        };
-    };
+        inputHours,
+        setInputHours,
+        inputMinutes,
+        setInputMinutes,
+        inputSeconds,
+        setInputSeconds,
+        formatTime,
+      } = useContext(TimerContext);
 
     const { hours, minutes, seconds } = formatTime(timeLeft);
 
@@ -115,58 +102,6 @@ const Timer = () => {
                         />
                     </View>
                 </View>
-            </View>
-
-            <View className="flex flex-row gap-4 mt-4">
-                {isRunning || isPaused ? (
-                    <TouchableOpacity
-                        className="bg-[#105366] shadow-md items-center justify-center w-[104px] h-[41px] p-2 gap-2 rounded flex-row"
-                        onPress={resetTimer}
-                    >
-                        <FontAwesome
-                            name="rotate-left"
-                            size={12}
-                            color="white"
-                        />
-                        <Text className="text-white font-bold p-1">Reset</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity
-                        className="bg-[#105366] shadow-md items-center justify-center w-[104px] h-[41px] p-2 gap-2 rounded flex-row"
-                        onPress={() =>
-                            startTimer(
-                                parseInt(inputHours, 10) || 0,
-                                parseInt(inputMinutes, 10) || 0,
-                                parseInt(inputSeconds, 10) || 0
-                            )
-                        }
-                    >
-                        <FontAwesome name="play" size={12} color="white" />
-                        <Text className="text-white font-bold p-1">Start</Text>
-                    </TouchableOpacity>
-                )}
-
-                {/* Can only pause when running */}
-                {isRunning && !isPaused && (
-                    <TouchableOpacity
-                        className="bg-[#105366] shadow-md items-center justify-center w-[104px] h-[41px] p-2 gap-2 rounded flex-row"
-                        onPress={pauseTimer}
-                    >
-                        <FontAwesome name="pause" size={12} color="white" />
-                        <Text className="text-white font-bold p-1">Pause</Text>
-                    </TouchableOpacity>
-                )}
-
-                {/* Can only resume when paused */}
-                {isPaused && (
-                    <TouchableOpacity
-                        className="bg-[#105366] shadow-md items-center justify-center w-[104px] h-[41px] p-2 gap-2 rounded flex-row"
-                        onPress={resumeTimer}
-                    >
-                        <FontAwesome name="play" size={12} color="white" />
-                        <Text className="text-white font-bold p-1">Resume</Text>
-                    </TouchableOpacity>
-                )}
             </View>
         </View>
     );
