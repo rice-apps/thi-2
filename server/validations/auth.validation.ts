@@ -13,7 +13,10 @@ module.exports = {
   }),
   signUp: Joi.object({
     email: Joi.string().required(),
-    password: Joi.string().required(),
+    tempPassword: Joi.string().required(),
+  }),
+  setPassword: Joi.object({
+    newPassword: Joi.string().required(),
   }),
   signIn: Joi.object({
     email: Joi.string().required(),
@@ -22,5 +25,15 @@ module.exports = {
   changePassword: Joi.object({
     oldPassword: Joi.string().required(),
     newPassword: Joi.string().required(),
+  }),
+  forgetPassword: Joi.object({
+    email: Joi.string().required(),
+  }),
+  updateInfo: Joi.object({
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+  }),
+  info: Joi.object({
+    id: Joi.string().required(),
   }),
 };

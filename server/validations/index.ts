@@ -3,8 +3,7 @@ const jwtAuthen = require("./jwtAuthen");
 const jwtAuthenStrategy = require("./jwtStrategy");
 
 module.exports = {
-    AuthValidation,
-    jwtAuthen,
-    jwtAuthenStrategy
-
-}
+  AuthValidation,
+  jwtAuthen,
+  jwtAuthenStrategy,
+};
