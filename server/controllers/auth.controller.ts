@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+const { Account } = require("../models");
 import mongoose from "mongoose";
 const { AccountModel } = require("../models");
 const HttpStatus = require("http-status-codes");
+const { ErrorResponse } = require("../helper");
 
 const {
   ErrorResponse,
@@ -10,6 +12,7 @@ const {
   generateRandomPassword,
 } = require("../helper");
 const jwt = require("jsonwebtoken");
+const SEC_IN_ONE_DAY = 86400;
 require("dotenv").config();
 
 class AuthController {

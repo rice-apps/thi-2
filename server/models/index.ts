@@ -1,3 +1,8 @@
-const Account = require("./accountModel");
+const AccountModel = require("./accountModel");
+const DurationModel = require("./duration");
+const abcModel = require("./abc");
+const StudentModel = require("./student");
 
-module.exports = { AccountModel: Account }; //fixed on Feb. 22
+module.exports = {
+  Account: AccountModel,
+};
