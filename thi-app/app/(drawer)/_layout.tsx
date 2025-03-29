@@ -7,7 +7,7 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
-import { Slot } from "expo-router";
+import { Slot, useSegments  } from "expo-router";
 import Sidebar, {
   SidebarContext,
   useSidebarContext,
@@ -15,6 +15,8 @@ import Sidebar, {
 } from "@/components/Sidebar";
 
 const DrawerLayout = () => {
+  const segments = useSegments();
+  const isLoginPage = segments[0] === "login"; // Check if the user is on a login page
   // Sidebar state, dimensions, and transition settings
   const { transitionEasing, transitionDuration } = useTransitionCustomization();
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -76,7 +78,6 @@ const DrawerLayout = () => {
       }
     );
   };
-
   // Horizontal swipe triggers sidebar toggle
   const swipeGesture = Gesture.Pan().onUpdate((event) => {
     // Ignore swipes mid-transition
@@ -128,6 +129,9 @@ const DrawerLayout = () => {
           </View>
         </GestureDetector>
       </SidebarContext.Provider>
+
+        {/* Directly render Slot if it's a login page */}
+        {isLoginPage && <Slot />}
     </SafeAreaView>
   );
 };

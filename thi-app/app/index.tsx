@@ -1,11 +1,16 @@
-import { View } from "react-native";
-import Login from "../components/Login";
+import LoginSelection from '@/components/Choose_login';
 import React from 'react';
+import { View } from 'react-native';
+// import LoginSelection from '../components/Choose_login';
 
-export default function LoginPage() {
+
+const LoginPage = () => {
     return (
         <View className="flex-1 justify-center bg-white">
-            <Login />
+            <LoginSelection />
         </View>
-    );
-}
+    ); 
+};
+
+export default LoginPage; // Don't call the function
+

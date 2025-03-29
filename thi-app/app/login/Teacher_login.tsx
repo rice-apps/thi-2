@@ -3,7 +3,7 @@ import { View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'reac
 import { useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons'; 
 
-const Login = () => {
+const Teacher_login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -11,13 +11,13 @@ const Login = () => {
 
     const handleLogin = () => {
         console.log('Email:', username);
-        router.replace('/(drawer)/home'); // Temporary homepage redirect
+        router.replace('/(drawer)/home');
     };
 
     
     const handleSocialLogin = () => {
         console.log(`Login`);
-        router.replace('/(drawer)/home'); // Temporary homepage redirect
+        router.replace('/(drawer)/home');
     };
 
     return (
@@ -25,7 +25,7 @@ const Login = () => {
              {/* Logo */}
             <Image 
                 className="self-center my-10"
-                source={require('../assets/images/bb_icon.png')}
+                source={require('../../assets/images/bb_icon.png')}
                 style={{
                     height: Dimensions.get('window').height * 0.2,
                     width: Dimensions.get('window').width * 0.18,
@@ -34,10 +34,11 @@ const Login = () => {
              {/* Welcome */}
             <Text className="text-2xl font-bold text-center text-black mb-2">Welcome Back!</Text>
             
-            <Text className="text-base text-center text-black-600 mb-6">
+            <Text className="text-base text-center text-black-600 mb-6 mt-3">
                 Please login to your account to continue.
             </Text>
-
+            
+            {/* Email Input */}
             <TextInput
         
                 className="mb-4 h-12 border border-gray-300 px-3 rounded-md text-black w-4/5 max-w-md"
@@ -45,6 +46,7 @@ const Login = () => {
                 onChangeText={setUsername}
                 value={username}
             />
+            {/* Password Input */}
             <TextInput
                 className="mb-4 h-12 border border-gray-300 px-3 rounded-md text-black w-4/5 max-w-md"
                 placeholder="Enter Your Password"
@@ -60,34 +62,51 @@ const Login = () => {
             {/* Divider */}
             <View className="flex-row items-center mb-4 w-4/5 max-w-md">
                 <View className="flex-1 h-px bg-gray-300"></View>
-                <Text className="px-4 text-lg text-black-500">Or</Text>
+                <Text className="px-4 text-black text-xl">Or</Text>
                 <View className="flex-1 h-px bg-gray-300"></View>
             </View>
 
             {/* Social Media Logins */}
             <TouchableOpacity
                 onPress={() => handleSocialLogin()}
-                className="flex-row bg-white border border-gray-300 rounded-md py-3 w-11/12 max-w-md mb-4 items-center justify-center"
+                className="flex-row bg-white border border-gray-300 rounded-full py-3 w-11/12 max-w-md mb-3 items-center justify-center"
             >
                 <FontAwesome name="google" size={20} color="#DB4437" className="mr-2" />
-                <Text className="text-black text-base font-medium text-center">Sign in with Google</Text>
+                <Text className="text-black text-base font-medium">Sign in with Google</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => handleSocialLogin()}
-                className="flex-row bg-white border border-gray-300 rounded-md py-3 w-11/12 max-w-md mb-4 items-center justify-center"
+
+
+            {/* Links: Create Account & Forgot Password */}
+            {/* Links: Create Account & Forgot Password */}
+<View className="w-4/5 max-w-md items-center mt-3">
+    <Text className="text-black text-sm">
+        Not Registered?{' '} <Text 
+        className=" text-black font-md underline" 
+        onPress={()  => router.push('/login/Create_Teacher_Account')}
+        >Create An Account!</Text>
+    </Text>
+
+    <Text 
+        className="text-black text-sm font-large mt-4 underline" 
+        onPress={() => router.push('/login/Forgot_Password')} 
+    >
+        Forgot Password?
+    </Text>
+
+</View>
+
+
+            {/* Go Back Button */}
+            <TouchableOpacity 
+                onPress={() => router.back()} 
+                className="text-black mt-6 flex-row items-center justify-center"
             >
-                <FontAwesome name="apple" size={20} color="#000" className="mr-2" />
-                <Text className="text-black text-base font-medium text-center">Sign in with Apple</Text>
+                <FontAwesome name="arrow-left" size={16} color="#105366" />
+                <Text className="text-[#105366] ml-2 text-lg font-large">Go Back</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => handleSocialLogin()}
-                className="flex-row bg-white border border-gray-300 rounded-md py-3 w-11/12 max-w-md items-center justify-center"
-            >
-                <FontAwesome name="facebook" size={20} color="#4267B2" className="mr-2" />
-                <Text className="text-black text-base font-medium text-center">Sign in with Facebook</Text>
-            </TouchableOpacity>
+            
         </View>
     );
 };
 
-export default Login;
+export default Teacher_login;
