@@ -1,5 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import { useState } from "react";
 import {
     Dimensions,
@@ -32,12 +33,14 @@ const Login = () => {
                     }),
                 }
             ).then((response) => response.json());
-            console.log(response);
+            await await SecureStore.setItemAsync(
+                "session_token",
+                response.data.token
+            );
+            router.replace("/(drawer)/home"); // Temporary homepage redirect
         } catch (error) {
-            console.log("cant log in");
+            console.log(error);
         }
-
-        router.replace("/(drawer)/home"); // Temporary homepage redirect
     };
 
     const handleSocialLogin = () => {
