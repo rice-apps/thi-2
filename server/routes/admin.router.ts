@@ -10,7 +10,7 @@ router.post(
     wrapMiddleware(AdminValidation.whitelist),
     wrapController(adminController.whitelist)
 );
-router.post(
+router.delete(
     "/delete",
     jwtAuthen,
     wrapMiddleware(AdminValidation.delete),
