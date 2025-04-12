@@ -17,15 +17,23 @@ interface AddStudentProps {
   onAdd: (newStudent: Student) => void; // Accept onAdd as a prop
 }
 
+
 export default function AddAStudent({ visible, onClose, onAdd }: AddStudentProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  const generateRandomId = (): string => {
+      const min = 100000; 
+      const max = 999999;
+      const randomId = Math.floor(Math.random() * (max - min + 1)) + min;
+      return randomId.toString(); 
+    }; 
 
 
   const handleSubmit = () => {
     if (firstName && lastName) {
       const newStudent: Student = {
-        id: Math.random().toString(),  
+        id: generateRandomId(),
         firstName: firstName,
         lastName: lastName,
         abcReports: 0, 
@@ -35,7 +43,7 @@ export default function AddAStudent({ visible, onClose, onAdd }: AddStudentProps
       setFirstName('');
       setLastName('');
     } else {
-      console.log('Please enter a student name');
+      console.log('Please enter a student name.');
     }
   };
 

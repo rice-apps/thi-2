@@ -14,17 +14,6 @@ import { Student } from "@/types";
 
 
 
-// export const sampleStudents: Student[] = [
-//   { id: "1", firstName: "Alice", lastName: "Johnson", age: "20", abcReports: 1, durationReports: 2 },
-//   { id: "2", firstName: "Bob", lastName: "Smith", age: "22", abcReports: 0, durationReports: 1 },
-//   { id: "3", firstName: "Charlie", lastName: "Brown", age: "21", abcReports: 1, durationReports: 2 },
-//   { id: "4", firstName: "Daisy", lastName: "Miller", age: "23", abcReports: 1, durationReports: 0 },
-//   { id: "5", firstName: "Ethan", lastName: "Green", age: "19", abcReports: 3, durationReports: 2 },
-//   { id: "6", firstName: "Fiona", lastName: "White", age: "20", abcReports: 0, durationReports: 2 },
-//   { id: "7", firstName: "George", lastName: "Taylor", age: "18", abcReports: 0, durationReports: 2 },
-// ];
-
-
 export const sampleStudents: Student[] = [
   { id: "1", firstName: "Alice", lastName: "Johnson",  abcReports: 1, durationReports: 0 },
   { id: "2", firstName: "Bob", lastName: "Smith",abcReports: 0, durationReports: 1 },
@@ -34,7 +23,6 @@ export const sampleStudents: Student[] = [
   { id: "6", firstName: "Fiona", lastName: "White", abcReports: 0, durationReports: 2 },
   { id: "7", firstName: "George", lastName: "Taylor", abcReports: 0, durationReports: 2 },
 ];
-
 
 const StudentsPage = () => {
   const [students, setStudents] = useState<Student[]>(sampleStudents);  //for current state of sampleStudents array
@@ -84,13 +72,12 @@ const StudentsPage = () => {
   // const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
   //   const studentWithId: Student = {
   //     ...newStudent,
-  //     id: generateRandomId(), 
   //   };
   //   setStudents((prevStudents) => [...prevStudents, studentWithId]); 
   //   setAddStudentVisible(false); // Close the modal after adding the student
   // };
 
-  const handleAddStudent = async (newStudent: Omit<Student, 'id'>) => {
+  const handleAddStudent = async (newStudent: Student) => {
     try{
       //do we need a token or smth here
       // const token = userToken;
@@ -114,11 +101,11 @@ const StudentsPage = () => {
 
 
       const formattedStudent: Student = {
-        id: savedStudent._id, // from backend
+        id: savedStudent.id, // are these from the backend???
         firstName: savedStudent.first_name,
         lastName: savedStudent.last_name,
-        abcReports: savedStudent.abcReports ?? 0,
-        durationReports: savedStudent.durationReports ?? 0,
+        abcReports: savedStudent.abc_reports ?? 0,
+        durationReports: savedStudent.duration_reports ?? 0,
       };
       setStudents((prevStudents) => [...prevStudents, formattedStudent]); 
       setAddStudentVisible(false); 
@@ -135,13 +122,6 @@ const StudentsPage = () => {
   };
 
   //generate a random 6 digit id for any student added
-  const generateRandomId = (): string => {
-      const min = 100000; 
-      const max = 999999;
-      const randomId = Math.floor(Math.random() * (max - min + 1)) + min;
-      return randomId.toString(); 
-    }; 
-
 
 
   return (
