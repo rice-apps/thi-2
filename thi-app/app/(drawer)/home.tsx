@@ -6,15 +6,13 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { sampleStudents } from "./students";
+import { StudentList } from "@/components/StudentList";
 
 export const teacherName = "Jane Summers";
 
 const homePage = () => {
-    const [students, setStudents] = useState<Student[]>([]);
+    // const students = useMemo(() => sampleStudents, []);
 
-    useEffect(() => {
-        setStudents(sampleStudents); // Load the sample students
-    }, []);
 
     const {
         timeLeft,
@@ -64,18 +62,7 @@ const homePage = () => {
 
                 <View className="mb-5">
                     <Text className="text-lg font-bold mb-8">Students</Text>
-                    <View className="flex-row flex-wrap justify-center gap-x-32 gap-y-8 mb-8">
-                        {students.map((student) => (
-                            <View
-                                key={student.id}
-                                style={{
-                                    width: 243,
-                                }}
-                            >
-                                <StudentCard student={student} />
-                            </View>
-                        ))}
-                    </View>
+                    <StudentList students={sampleStudents} />
                 </View>
             </ScrollView>
         </SafeAreaView>

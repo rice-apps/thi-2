@@ -57,28 +57,28 @@ const IndividualStudent = () => {
   };
 
   const renderABCHeader = () => (
-    <View style={{ flexDirection: "row", justifyContent: "flex-start", padding: 10, paddingTop: 15, paddingBottom: 15,  backgroundColor: "#F0F0F0",
+    <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, paddingTop: 15, paddingBottom: 15,  backgroundColor: "#F0F0F0",
         shadowColor: "#000",  
         shadowOffset: { width: 0, height: -4},  
         shadowOpacity: 0.3,  
         shadowRadius: 4,  
         elevation: 5,  
      }}>
-      <Text style={{ fontWeight: "bold", width: 75 }}>Date</Text> 
-      <Text style={{ fontWeight: "bold", width: 75 }}>Time</Text> 
-      <Text style={{ fontWeight: "bold", width: 150 }}>Teacher</Text> 
-      <Text style={{ fontWeight: "bold", width: 100 }}>Setting</Text> 
-      <Text style={{ fontWeight: "bold", width: 150 }}>Antecedent</Text> 
-      <Text style={{ fontWeight: "bold", width: 125 }}>Behavior</Text> 
-      <Text style={{ fontWeight: "bold", width: 125 }}>Consequence</Text> 
-      <Text style={{ fontWeight: "bold", width: 100 }}>Notes</Text>
-      <Text style={{ fontWeight: "bold", width: 50 }}>Actions</Text>
+      <Text style={{ fontWeight: "bold" }}>Date</Text> 
+      <Text style={{ fontWeight: "bold" }}>Time</Text> 
+      <Text style={{ fontWeight: "bold" }}>Teacher</Text> 
+      <Text style={{ fontWeight: "bold" }}>Setting</Text> 
+      <Text style={{ fontWeight: "bold" }}>Antecedent</Text> 
+      <Text style={{ fontWeight: "bold" }}>Behavior</Text> 
+      <Text style={{ fontWeight: "bold" }}>Consequence</Text> 
+      <Text style={{ fontWeight: "bold" }}>Notes</Text>
+      <Text style={{ fontWeight: "bold" }}>Actions</Text>
     </View>
   );
 
   const renderABCItem = ({ item, index }: { item: any, index: number }) => (
     <View style={{ flexDirection: "row", justifyContent: "flex-start", padding: 10, paddingTop: 15, paddingBottom: 15, backgroundColor: "#FAFAFA"}}>
-      <Text style={{ width: 75 }}>3/1/2025</Text> 
+      <Text style={{ width: 100 }}>3/1/2025</Text> 
       <Text style={{ width: 75 }}>3:15 PM</Text> 
       <Text style={{ width: 150 }}>Jane Summers</Text> 
       <Text style={{ width: 100 }}>{item.setting}</Text> 
@@ -93,31 +93,31 @@ const IndividualStudent = () => {
   );
 
   const renderDurationHeader = () => (
-    <View style={{ flexDirection: "row", justifyContent: "flex-start", padding: 10, paddingTop: 15, paddingBottom: 15, backgroundColor: "#F0F0F0",
+    <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, paddingTop: 15, paddingBottom: 15, backgroundColor: "#F0F0F0",
         shadowColor: "#000",  
         shadowOffset: { width: 0, height: -4},  
         shadowOpacity: 0.3,  
         shadowRadius: 4,  
         elevation: 5,  
      }}>
-      <Text style={{ fontWeight: "bold", width: 100 }}>Date</Text> 
-      <Text style={{ fontWeight: "bold", width: 150 }}>Time Started</Text> 
-      <Text style={{ fontWeight: "bold", width: 150 }}>Time Ended</Text> 
-      <Text style={{ fontWeight: "bold", width: 150 }}>Total Time</Text> 
-      <Text style={{ fontWeight: "bold", width: 200 }}>Activity</Text> 
-      <Text style={{ fontWeight: "bold", width: 150 }}>Notes</Text> 
-      <Text style={{ fontWeight: "bold", width: 50 }}>Actions</Text> {/* Action column for delete */}
+      <Text style={{ fontWeight: "bold" }}>Date</Text> 
+      <Text style={{ fontWeight: "bold" }}>Time Started</Text> 
+      <Text style={{ fontWeight: "bold" }}>Time Ended</Text> 
+      <Text style={{ fontWeight: "bold" }}>Total Time</Text> 
+      <Text style={{ fontWeight: "bold" }}>Activity</Text> 
+      <Text style={{ fontWeight: "bold" }}>Notes</Text> 
+      <Text style={{ fontWeight: "bold"}}>Actions</Text> {/* Action column for delete */}
     </View>
   );
 
   const renderDurationItem = ({ item, index }: { item: any, index: number }) => (
-    <View style={{ flexDirection: "row", justifyContent: "flex-start", padding: 10, paddingTop: 15, paddingBottom: 15, backgroundColor: "#FAFAFA" }}>
-      <Text style={{ width: 100 }}>3/1</Text> 
-      <Text style={{ width: 150 }}>{item.setting}</Text> 
-      <Text style={{ width: 150 }}>{item.preIncident} </Text> 
-      <Text style={{ width: 150 }}> {item.setting} - {item.preIncident} </Text> 
-      <Text style={{ width: 200 }}>{item.postIncident}</Text> 
-      <Text style={{ width: 150 }}>{item.notes}</Text> 
+    <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, paddingTop: 15, paddingBottom: 15, backgroundColor: "#FAFAFA" }}>
+      <Text>3/1</Text> 
+      <Text>{item.setting}</Text> 
+      <Text>{item.preIncident} </Text> 
+      <Text> {item.setting} - {item.preIncident} </Text> 
+      <Text>{item.postIncident}</Text> 
+      <Text>{item.notes}</Text> 
       <TouchableOpacity onPress={() => deleteDurationData(index)} style={{ width: 50, alignItems: 'center' }}>
         <AntDesign name="delete" size={20} color="#105366" />
       </TouchableOpacity>
@@ -153,7 +153,7 @@ const IndividualStudent = () => {
 
         {/* ABC Behavior Data Section */}
         <View className="flex-row justify-between items-center mb-8">
-          <Text className="text-2xl font-bold mb-4">ABC Behavior Data 
+          <Text className="text-2xl font-bold mb-4 mr-4">ABC Behavior Data 
             <Text className="text-sm text-black font-normal px-2"> {dataEntriesABC.length} Reports </Text>
           </Text>
           <View className="flex-row space-x-4">
@@ -161,7 +161,7 @@ const IndividualStudent = () => {
               <AntDesign name="filter" size={24} color="#105366" />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setExportVisible(true)} className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center">
+            <TouchableOpacity onPress={() => setExportVisible(true)} className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center ml-4">
               <MaterialIcons name="download" size={16} color="white" />
               <Text className="text-white font-bold ml-1">Export To Excel</Text>
             </TouchableOpacity>
@@ -189,8 +189,7 @@ const IndividualStudent = () => {
               <AntDesign name="filter" size={24} color="#105366" />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setExportVisible(true)}
-              className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center">
+            <TouchableOpacity onPress={() => setExportVisible(true)} className="bg-[rgba(16,83,102,0.6)] p-3 rounded flex-row items-center ml-4">
               <MaterialIcons name="download" size={16} color="white" />
               <Text className="text-white font-bold ml-1">Export To Excel</Text>
             </TouchableOpacity>
