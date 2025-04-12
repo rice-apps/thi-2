@@ -140,24 +140,32 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 />
 
                 {/* Schedule */}
-                <SidebarTab
+                {/* <SidebarTab
                   iconSet={MaterialCommunityIcons}
                   iconName="calendar-multiple"
                   label="Schedule"
-                />
+                /> */}
 
                 {/* Games */}
-                <SidebarTab
+                {/* <SidebarTab
                   iconSet={MaterialCommunityIcons}
                   iconName="gamepad-square-outline"
                   label="Games"
-                />
+                /> */}
 
                 {/* Timer */}
                 <SidebarTab iconSet={MaterialCommunityIcons} iconName="timer-sand" label="Timer" />
 
                 {/* Settings */}
-                <SidebarTab iconSet={FontAwesome} iconName="gear" label="Settings" />
+                {/* <SidebarTab iconSet={FontAwesome} iconName="gear" label="Settings" /> */}
+
+                {/* Padding */}
+                <View className="flex-col items-start justify-between"
+                  style={{
+                    height: Dimensions.get("window").height * 0.3,
+                    width: openSidebarWidth,
+                  }}/>
+
               </View>
             </Animated.View>
           )}
