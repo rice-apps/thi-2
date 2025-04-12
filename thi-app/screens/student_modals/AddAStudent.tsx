@@ -8,7 +8,7 @@ import {
   StyleSheet,
   ScrollView
 } from 'react-native';
-import {Student} from "./types"
+import {Student} from "@/types"
 
 
 interface AddStudentProps {

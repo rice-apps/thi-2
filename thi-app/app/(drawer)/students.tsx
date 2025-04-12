@@ -79,14 +79,53 @@ const StudentsPage = () => {
     setEditStudentVisible(true);
   };
 
+
   
-  const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
-    const studentWithId: Student = {
-      ...newStudent,
-      id: generateRandomId(), 
-    };
-    setStudents((prevStudents) => [...prevStudents, studentWithId]); 
-    setAddStudentVisible(false); // Close the modal after adding the student
+  // const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
+  //   const studentWithId: Student = {
+  //     ...newStudent,
+  //     id: generateRandomId(), 
+  //   };
+  //   setStudents((prevStudents) => [...prevStudents, studentWithId]); 
+  //   setAddStudentVisible(false); // Close the modal after adding the student
+  // };
+
+  const handleAddStudent = async (newStudent: Omit<Student, 'id'>) => {
+    try{
+      //do we need a token or smth here
+      // const token = userToken;
+      const token = "abc";
+
+      const response = await fetch('some url here lololol', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(newStudent)
+      });
+
+      if (!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add student');
+      }
+
+      const savedStudent = await response.json();
+
+
+      const formattedStudent: Student = {
+        id: savedStudent._id, // from backend
+        firstName: savedStudent.first_name,
+        lastName: savedStudent.last_name,
+        abcReports: savedStudent.abcReports ?? 0,
+        durationReports: savedStudent.durationReports ?? 0,
+      };
+      setStudents((prevStudents) => [...prevStudents, formattedStudent]); 
+      setAddStudentVisible(false); 
+  
+    } catch (error) {
+      console.error('ERROR: Failed to add student');
+    }
   };
 
   
