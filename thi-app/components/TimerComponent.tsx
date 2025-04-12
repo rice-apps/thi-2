@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, View, Dimensions } from "react-native";
 import { TimerContext } from "@/context/TimerContext";
 
 const Timer = () => {
@@ -15,15 +15,24 @@ const Timer = () => {
         setInputSeconds,
         formatTime,
       } = useContext(TimerContext);
-
     const { hours, minutes, seconds } = formatTime(timeLeft);
+    const height = Dimensions.get("window").height;
 
     return (
-        <View className="flex-1 items-center justify-center bg-gray-100 mb-2">
-            <View className="bg-white justify-center items-center shadow-md rounded-lg w-[1000px] min-h-[323px] p-4">
+        <View className="flex-1 items-center justify-center w-full mb-2">
+            <View
+                className="flex-1 bg-white justify-center items-center w-full shadow-md rounded-lg"
+                style={{
+                    height: height * .37,
+                    minWidth: height * .90,
+                }}>
                 <View className="flex-row space-x-4">
                     {/* Hours Input */}
-                    <View className="bg-[rgba(16,83,102,0.6)] w-[195px] h-[195px] rounded-lg flex justify-center items-center">
+                    <View
+                    className="bg-[rgba(16,83,102,0.6)] aspect-square rounded-lg justify-center items-center"
+                    style={{
+                        height: height * .24,
+                    }}>
                         <TextInput
                             style={{
                                 fontSize: 70,
@@ -51,7 +60,11 @@ const Timer = () => {
                     </View>
 
                     {/* Minutes Input */}
-                    <View className="bg-[rgba(16,83,102,0.6)] w-[195px] h-[195px] rounded-lg flex justify-center items-center">
+                    <View
+                    className="bg-[rgba(16,83,102,0.6)] aspect-square rounded-lg flex justify-center items-center"
+                    style={{
+                        height: height * .24
+                    }}>
                         <TextInput
                             style={{
                                 fontSize: 70,
@@ -80,7 +93,11 @@ const Timer = () => {
                         </Text>
                     </View>
 
-                    <View className="bg-[rgba(16,83,102,0.6)] w-[195px] h-[195px] rounded-lg flex justify-center items-center">
+                    <View
+                    className="bg-[rgba(16,83,102,0.6)] aspect-square rounded-lg flex justify-center items-center"
+                    style={{
+                        height: height * .24
+                    }}>
                         <TextInput
                             style={{
                                 fontSize: 70,

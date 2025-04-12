@@ -53,21 +53,26 @@ export default function TimerPage() {
           formatTime,
         }}>
           <Text className="text-3xl font-bold mb-8 text-left">Timer</Text>
-          <View className="flex-1 items-center justify-center">
+          <View className="bg-red-500 flex-1 items-center justify-center mb-10">
 
             {/* Digital Clock */}
             <Timer />
 
-            <View className="w-full">
-              <Text className="text-2xl font-bold mb-8 text-left">Pick a theme</Text>
+            <View className="w-full mt-2">
+              <Text className="text-2xl font-bold text-left">Pick a theme</Text>
             </View>
 
             {/* TODO Theme Selectors */}
             <View
-              className="bg-red-500 w-full"
-              style={{ minHeight: height * 0.15 }}
+              className="flex-1 justify-center bg-red-500 w-full"
+              style={{ height: height * 0.10 }}
             >
-              
+              <View className="bg-white aspect-square justify-center items-center shadow-md rounded-lg mb-2 p-4"
+              style={{ width: width * 0.1 }}>
+                {/* <View className="flex-row space-x-4">
+
+                </View> */}
+              </View>
             </View>
 
             {/* Buttons */}
@@ -126,12 +131,6 @@ export default function TimerPage() {
             </View>
 
           </View>
-
-          {/* Bottom padding */}
-          <View
-            className="flex-1 flex-shrink-1"
-            style={{ maxHeight: Dimensions.get("window").height * 0.07 }}
-          />
 
         </TimerContext.Provider>
       </ScrollView>
