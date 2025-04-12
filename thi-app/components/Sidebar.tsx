@@ -162,7 +162,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 {/* Padding */}
                 <View className="flex-col items-start justify-between"
                   style={{
-                    height: Dimensions.get("window").height * 0.3,
+                    height: Dimensions.get("window").height * 0.2,
                     width: openSidebarWidth,
                   }}/>
 

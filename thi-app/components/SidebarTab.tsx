@@ -57,7 +57,7 @@ const SidebarTab = ({
   const directory = "/" + tabName;
   const isActive = currentScreen.includes(tabName);
   // Sidebar tab details
-  const tabHeight = Dimensions.get("window").height * 0.08;
+  const tabHeight = Dimensions.get("window").height * 0.11;
   const tabIconTextColor = useActiveColor && isActive ? activeIconTextColor : defaultIconTextColor;
   const tabButtonColor = useActiveColor && isActive ? activeTabColor : defaultTabColor;
 
