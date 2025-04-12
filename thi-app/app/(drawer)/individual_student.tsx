@@ -12,7 +12,7 @@ import { imageUrls} from "@/types";
 
 const IndividualStudent = () => {
   const router = useRouter();
-  const { id, name } = useLocalSearchParams<{ id: string, name: string }>();
+  const { id, firstName, lastName } = useLocalSearchParams<{ id: string, firstName: string, lastName: string }>();
   const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
 
@@ -140,7 +140,7 @@ const IndividualStudent = () => {
               source={{ uri: randomImageUrl }}
               style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
             /> 
-              #{id}: {name}
+              #{id}: {firstName} {lastName}
           </Text>
 
           <TouchableOpacity onPress={() => setModalVisible(true)}

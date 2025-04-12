@@ -14,26 +14,33 @@ import { Student } from "@/types";
 
 
 
+// export const sampleStudents: Student[] = [
+//   { id: "1", firstName: "Alice", lastName: "Johnson", age: "20", abcReports: 1, durationReports: 2 },
+//   { id: "2", firstName: "Bob", lastName: "Smith", age: "22", abcReports: 0, durationReports: 1 },
+//   { id: "3", firstName: "Charlie", lastName: "Brown", age: "21", abcReports: 1, durationReports: 2 },
+//   { id: "4", firstName: "Daisy", lastName: "Miller", age: "23", abcReports: 1, durationReports: 0 },
+//   { id: "5", firstName: "Ethan", lastName: "Green", age: "19", abcReports: 3, durationReports: 2 },
+//   { id: "6", firstName: "Fiona", lastName: "White", age: "20", abcReports: 0, durationReports: 2 },
+//   { id: "7", firstName: "George", lastName: "Taylor", age: "18", abcReports: 0, durationReports: 2 },
+// ];
+
+
 export const sampleStudents: Student[] = [
-  { id: "1", name: "Alice Johnson", age: "20", abcReports: 1, durationReports: 2 },
-  { id: "2", name: "Bob Smith", age: "22", abcReports: 0, durationReports: 1 },
-  { id: "3", name: "Charlie Brown", age: "21", abcReports: 1, durationReports: 2 },
-  { id: "4", name: "Daisy Miller", age: "23", abcReports: 1, durationReports: 0 },
-  { id: "5", name: "Ethan Green", age: "19", abcReports: 3, durationReports: 2 },
-  { id: "6", name: "Fiona White", age: "20", abcReports: 0, durationReports: 2 },
-  { id: "7", name: "George Taylor", age: "18", abcReports: 0, durationReports: 2 },
+  { id: "1", firstName: "Alice", lastName: "Johnson",  abcReports: 1, durationReports: 0 },
+  { id: "2", firstName: "Bob", lastName: "Smith",abcReports: 0, durationReports: 1 },
+  { id: "3", firstName: "Charlie", lastName: "Brown",abcReports: 1, durationReports: 2 },
+  { id: "4", firstName: "Daisy", lastName: "Miller", abcReports: 1, durationReports: 0 },
+  { id: "5", firstName: "Ethan", lastName: "Green", abcReports: 3, durationReports: 2 },
+  { id: "6", firstName: "Fiona", lastName: "White", abcReports: 0, durationReports: 2 },
+  { id: "7", firstName: "George", lastName: "Taylor", abcReports: 0, durationReports: 2 },
 ];
 
 
 const StudentsPage = () => {
   const [students, setStudents] = useState<Student[]>(sampleStudents);  //for current state of sampleStudents array
-
   const [deletesVisible, setDeletesVisible] = useState(false); //state for adding delete exs icons
   const [isEditStudentVisible, setEditStudentVisible] = useState(false); //state for delete modal
   const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
-
-
-
   const [isAddStudentVisible, setAddStudentVisible] = useState(false);  
   const [studentToAdd, setStudentToAdd] = useState<Student | null>(null);
 
@@ -44,16 +51,13 @@ const StudentsPage = () => {
   }, []);
 
 
-
-
   const router = useRouter();
   
 
 
 
-  const navigateToIndividualStudent = (id: string, name: string) => {
-    router.push(`/(drawer)/individual_student?id=${id}&name=${encodeURIComponent(name)}`);
-    
+  const navigateToIndividualStudent = (id: string, firstName: string, lastName: string) => {
+    router.push(`/(drawer)/individual_student?id=${id}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`);
   };
   
   
@@ -84,6 +88,8 @@ const StudentsPage = () => {
     setStudents((prevStudents) => [...prevStudents, studentWithId]); 
     setAddStudentVisible(false); // Close the modal after adding the student
   };
+
+  
 
   const closeAddStudent = () => {
     setAddStudentVisible(false);
@@ -142,15 +148,15 @@ const StudentsPage = () => {
 
 
       {/* Student Cards Grid */}
-      <View className="flex-row flex-wrap justify-start gap-x-24 gap-y-8 mb-8">
-          {students.map((student) => (
+      <View style={{ columnGap: 18 }} className="flex-row flex-wrap justify-start gap-y-8 mb-8">
+        {students.map((student) => (
             <View key={student.id} style={{ width: 243 }} >
-                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id, student.name)}>
+                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id, student.firstName, student.lastName)}>
                    <StudentCard student={student} />
                 </TouchableOpacity>
 
               
-            
+          
             
             {/* code for deleting a student card */}
             {deletesVisible &&

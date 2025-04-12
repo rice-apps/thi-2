@@ -18,20 +18,22 @@ interface AddStudentProps {
 }
 
 export default function AddAStudent({ visible, onClose, onAdd }: AddStudentProps) {
-  const [studentName, setStudentName] = useState('');
-  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
 
   const handleSubmit = () => {
-    if (studentName.trim()) {
+    if (firstName && lastName) {
       const newStudent: Student = {
         id: Math.random().toString(),  
-        name: studentName,
-        age: "20", 
+        firstName: firstName,
+        lastName: lastName,
         abcReports: 0, 
         durationReports: 0,
       };
       onAdd(newStudent); 
-      setStudentName('');
+      setFirstName('');
+      setLastName('');
     } else {
       console.log('Please enter a student name');
     }
@@ -52,10 +54,18 @@ export default function AddAStudent({ visible, onClose, onAdd }: AddStudentProps
 
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 20, paddingLeft: 10, borderRadius: 5 }}
-            placeholder="Student Name"
-            value={studentName}
-            onChangeText={setStudentName}
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
           />
+
+          <TextInput
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 20, paddingLeft: 10, borderRadius: 5 }}
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+
 
           <View style={{ marginTop: 20, flexDirection: 'row'}}>
             <TouchableOpacity onPress={onClose}>

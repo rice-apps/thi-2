@@ -5,7 +5,7 @@ import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 interface EditStudentProps {
   visible: boolean;
   onClose: () => void;
-  student: { id: string; name: string } | null;
+  student: { id: string; firstName: string; lastName: string} | null;
   onDelete: () => void;
 }
 
@@ -16,7 +16,7 @@ export default function EditAStudent({ visible, onClose, student, onDelete }: Ed
         <View style={{ width: '40%', backgroundColor: 'white', padding: 20, borderRadius: 5 }}>
           {student && (
             <>
-              <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Delete {student.name}?</Text>
+              <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Delete {student.firstName} {student.lastName}?</Text>
               <Text style={{ fontSize: 15 }}>
                 You will lose all history associated with this student. This action cannot be undone.
               </Text>

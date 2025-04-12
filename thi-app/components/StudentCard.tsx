@@ -4,7 +4,7 @@ import { Text, View, Image, Pressable } from "react-native";
 
 
 export const StudentCard = ({ student }: StudentProps) => {
-  const { name, abcReports, durationReports } = student;
+  const { id, firstName, lastName, abcReports, durationReports } = student;
   const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
   return (
@@ -19,7 +19,7 @@ export const StudentCard = ({ student }: StudentProps) => {
 
 
       {/* Student Name */}
-      <Text className="text-lg font-bold text-center mt-[30px]">{name}</Text>
+      <Text className="text-lg font-bold text-center mt-[30px]">{firstName} {lastName}</Text>
 
       {/* Divider Line */}
       <View className="border-b border-gray-300 w-[80%] my-2" />

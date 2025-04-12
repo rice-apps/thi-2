@@ -1,11 +1,12 @@
 export type Student = {
-    id: string;
-    name: string;
-    age: string;
-    abcReports: number;
-    durationReports: number;
+  id: string;
+  firstName: string;
+  lastName: string;
+  abcReports: number;
+  durationReports: number;
   };
-  
+
+
 export interface StudentProps {
     student: Student;
   }

@@ -3,8 +3,8 @@
 
 export interface Student {
     id: string;
-    name: string;
-    age: string;
+    firstName: string;
+    lastName: string;
     abcReports: number;
     durationReports: number;
   }
