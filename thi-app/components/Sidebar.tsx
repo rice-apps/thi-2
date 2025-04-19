@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { View, Image, Dimensions, Pressable, ViewStyle } from "react-native";
 import Animated, {
   SharedValue,
@@ -11,14 +11,55 @@ import Animated, {
 } from "react-native-reanimated";
 import {
   Entypo,
-  FontAwesome,
+  // FontAwesome,
   FontAwesome6,
   MaterialIcons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import SidebarTab, { dynamicIconSize } from "@/components/SidebarTab";
+import SidebarTab from "@/components/SidebarTab";
 
-// Sidebar state, dimensions, and customization
+interface ScreenDimensions {
+  width: number;
+  height: number;
+}
+
+// Create a dimensions hook
+export const useDimensions = (): ScreenDimensions => {
+  const [dimensions, setDimensions] = useState({
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
+  });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({
+        width: window.width,
+        height: window.height
+      });
+    });
+    
+    return () => subscription.remove();
+  }, []);
+
+  return dimensions;
+};
+
+// Calculate sidebar widths based on dimensions
+export const calculateSidebarWidths = (dimensions: ScreenDimensions) => {
+  const openWidth = Math.max(
+    dimensions.width * 0.18,
+    Math.min(dimensions.width, dimensions.height) * 0.25
+  );
+  
+  const closedWidth = Math.max(
+    dimensions.width * 0.02,
+    Math.min(dimensions.width, dimensions.height) * 0.05
+  );
+  
+  return { openWidth, closedWidth };
+};
+
+// Default sidebar state, dimensions, and customization
 export const SidebarContext = createContext({
   isSidebarOpen: true,
   toggleSidebar: () => {},
@@ -69,6 +110,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
   const { isSidebarOpen, openSidebarWidth, closedSidebarWidth } = useSidebarContext();
   const enteringAnimation = FadeInLeft.duration(transitionDuration / 1.5).easing(transitionEasing);
   const exitingAnimation = FadeOutLeft.duration(transitionDuration).easing(transitionEasing);
+  const dimensions = useDimensions();
 
   // Sidebar slide interpolation
   const sidebarStyle = useAnimatedStyle(() => ({
@@ -85,7 +127,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
       style={[
         sidebarStyle,
         {
-          height: Dimensions.get("window").height,
+          height: dimensions.height,
           zIndex: 1, // Overlays over main content
         },
       ]}
@@ -93,7 +135,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
       <View
         className="flex-1 justify-center bg-white"
         style={{
-          height: Dimensions.get("window").height,
+          height: dimensions.height,
           width: openSidebarWidth + closedSidebarWidth,
         }}
       >
@@ -124,7 +166,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
               <View
                 className="flex-col items-start justify-between"
                 style={{
-                  height: Dimensions.get("window").height * 0.45,
+                  height: dimensions.height * 0.45,
                   width: openSidebarWidth,
                 }}
               >
@@ -135,7 +177,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 <SidebarTab
                   iconSet={FontAwesome6}
                   iconName="user-large"
-                  iconSize={dynamicIconSize() - 3}
+                  iconSizeModifier={-3}
                   label="Students"
                 />
 
@@ -162,7 +204,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 {/* Padding */}
                 <View className="flex-col items-start justify-between"
                   style={{
-                    height: Dimensions.get("window").height * 0.2,
+                    height: dimensions.height * 0.2,
                     width: openSidebarWidth,
                   }}/>
 
@@ -181,7 +223,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
                 <SidebarTab
                   iconSet={Entypo}
                   iconName="log-out"
-                  iconSize={dynamicIconSize() - 1}
+                  iconSizeModifier={-1}
                   label="Sign out"
                   useActiveColor={false}
                   tabWidth={openSidebarWidth * 0.7}
@@ -193,7 +235,7 @@ const Sidebar = ({ animatedValue }: { animatedValue: SharedValue<number> }) => {
           {/* Bottom padding */}
           <View
             className="flex-1 flex-shrink-1"
-            style={{ maxHeight: Dimensions.get("window").height * 0.06 }}
+            style={{ maxHeight: dimensions.height * 0.06 }}
           />
         </View>
       </View>
