@@ -154,23 +154,13 @@ const StudentsPage = () => {
             
             {/* code for deleting a student card */}
             {deletesVisible &&
-              (<TouchableOpacity onPress={() => handleOpenEditModal(student)}
-            
-                  style={{ position: 'absolute', top: -10, right: -10, 
-                  }}>
-
-                    <View style={{ position: 'relative' }}>
-                      <AntDesign name="closecircle" size={30} color="white"
-                        style={{
-                          position: "absolute",
-                          shadowColor: "black",
-                          borderRadius: 200,
-                          // shadowOffset: {width: 2, height: 1},
-                          shadowRadius: 5
-                        }}
-                      />
-                      <AntDesign name= "close" size = {30} color = "#105366" position= "absolute"></AntDesign>
-                  </View>
+              (<TouchableOpacity
+                onPress={() => handleOpenEditModal(student)}
+                style={{ position: 'absolute', top: -15, right: -15 }}
+              >
+                <View className="w-8 h-8 rounded-full bg-white justify-center items-center shadow-md">
+                  <AntDesign name="close" size={18} color="#105366" />
+                </View>
               </TouchableOpacity>)}
               
             </View>

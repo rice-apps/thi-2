@@ -16,7 +16,7 @@ export default function EditAStudent({ visible, onClose, student, onDelete }: Ed
         <View style={{ width: '40%', backgroundColor: 'white', padding: 20, borderRadius: 5 }}>
           {student && (
             <>
-              <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Delete {student.name}?</Text>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>Delete {student.name}?</Text>
               <Text style={{ fontSize: 15 }}>
                 You will lose all history associated with this student. This action cannot be undone.
               </Text>
