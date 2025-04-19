@@ -4,6 +4,7 @@ export type Student = {
     age: string;
     abcReports: number;
     durationReports: number;
+    avatar: string;
   };
 
   export type Teacher = {

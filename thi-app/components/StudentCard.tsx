@@ -4,15 +4,14 @@ import { Text, View, Image, Pressable } from "react-native";
 
 
 export const StudentCard = ({ student }: StudentProps) => {
-  const { name, abcReports, durationReports } = student;
-  const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+  const { name, abcReports, durationReports, avatar } = student;
 
   return (
     <View className="bg-white rounded-lg shadow-md shadow-black mb-4 items-center overflow-hidden elevation-3">
       {/* Blue Header Section */}
       <View className="bg-[rgba(16,83,102,0.6)] h-[70px] w-full items-center justify-center">
         <Image
-          source={{ uri: randomImageUrl }}
+          source={{ uri: avatar }}
           className="w-[60px] h-[60px] rounded-full absolute top-[35px] border-[3px] border-white"
         />
       </View>
