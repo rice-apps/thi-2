@@ -51,8 +51,8 @@ const StudentsPage = () => {
 
 
 
-  const navigateToIndividualStudent = (id: string, name: string) => {
-    router.push(`/(drawer)/individual_student?id=${id}&name=${encodeURIComponent(name)}`);
+  const navigateToIndividualStudent = (id: string, name: string, avatar: string) => {
+    router.push(`/(drawer)/individual_student?id=${id}&name=${encodeURIComponent(name)}&avatar=${avatar}`);
     
   };
   
@@ -101,7 +101,7 @@ const StudentsPage = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="px-16" showsVerticalScrollIndicator={true}>
+      <ScrollView className="px-12 py-8" showsVerticalScrollIndicator={true}>
         {/* Title Section */}
         <Text className="text-3xl font-bold mb-8 mt-8">Students</Text>
         <View className="flex-row justify-between items-center mb-5">
@@ -145,7 +145,7 @@ const StudentsPage = () => {
       <View className="flex-row flex-wrap justify-start gap-x-24 gap-y-8 mb-8">
           {students.map((student) => (
             <View key={student.id} style={{ width: 243 }} >
-                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id, student.name)}>
+                <TouchableOpacity onPress={ () =>navigateToIndividualStudent(student.id, student.name, student.avatar)}>
                    <StudentCard student={student} />
                 </TouchableOpacity>
 

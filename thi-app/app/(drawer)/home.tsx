@@ -25,9 +25,9 @@ const homePage = () => {
     } = useContext(TimerContext);
 
     return (
-        <SafeAreaView className="flex-1 scrollabale">
+        <SafeAreaView>
             <ScrollView className="px-12 py-8">
-                <Text className="text-3xl font-bold mb-8">
+                <Text className="text-3xl font-bold mb-8 mt-8">
                     Welcome, {teacherName}!
                 </Text>
 

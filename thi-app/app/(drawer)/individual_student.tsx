@@ -7,13 +7,11 @@ import Filter from "@/screens/student_modals/Filter";
 import ExcelExport from "@/screens/student_modals/ExcelExport";
 import { useRouter } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
-import { imageUrls} from "@/types";
 
 
 const IndividualStudent = () => {
   const router = useRouter();
-  const { id, name } = useLocalSearchParams<{ id: string, name: string }>();
-  const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+  const { id, name, avatar } = useLocalSearchParams<{ id: string, name: string, avatar: string }>();
 
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -125,23 +123,23 @@ const IndividualStudent = () => {
   );
 
   return (
-    <ScrollView>
-      <View className="flex-1 p-8">
-        <TouchableOpacity onPress={backToStudentsPage} className="p-2 flex-row items-center">
+    <ScrollView className="px-12 py-8">
+        <TouchableOpacity onPress={backToStudentsPage} className="p-2 flex-row items-center mt-6">
           <AntDesign name="left" size={24} color="#105366" />
           <Text className="ml-2 text-lg font-bold text-[#105366]">Back To Students</Text>
         </TouchableOpacity>
 
         {/* Title and Add Data Button */}
-        <View className="flex-row justify-between items-center mb-8">
+        <View className="flex-row justify-between items-center mb-8 mt-8">
 
-          <Text className="text-3xl font-bold">
+          <View className="flex-row">
             <Image
-              source={{ uri: randomImageUrl }}
-              style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
-            /> 
-              #{id}: {name}
-          </Text>
+                source={{ uri: avatar }}
+                style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
+                className="mr-6"
+              /> 
+            <Text className="text-3xl font-bold ml-6 pt-2">#{id}: {name}</Text>
+          </View>
 
           <TouchableOpacity onPress={() => setModalVisible(true)}
             className="bg-[#105366] p-2 rounded flex-row items-center"
@@ -210,7 +208,6 @@ const IndividualStudent = () => {
         <StudentForm visible={isModalVisible} onClose={closeModal} onSubmit={handleAddData} />
         <Filter visible={isFilterVisible} onClose={closeFilter} />
         <ExcelExport visible={isExportVisible} onClose={closeExport} />
-      </View>
     </ScrollView>
   );
 };
