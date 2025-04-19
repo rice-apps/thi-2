@@ -10,18 +10,18 @@ import { useRouter } from 'expo-router';
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Student } from "@/types";
+import { Student, imageUrls } from "@/types";
 
 
 
 export const sampleStudents: Student[] = [
-  { id: "1", name: "Alice Johnson", age: "20", abcReports: 1, durationReports: 2 },
-  { id: "2", name: "Bob Smith", age: "22", abcReports: 0, durationReports: 1 },
-  { id: "3", name: "Charlie Brown", age: "21", abcReports: 1, durationReports: 2 },
-  { id: "4", name: "Daisy Miller", age: "23", abcReports: 1, durationReports: 0 },
-  { id: "5", name: "Ethan Green", age: "19", abcReports: 3, durationReports: 2 },
-  { id: "6", name: "Fiona White", age: "20", abcReports: 0, durationReports: 2 },
-  { id: "7", name: "George Taylor", age: "18", abcReports: 0, durationReports: 2 },
+  { id: "1", name: "Alice Johnson", age: "20", abcReports: 1, durationReports: 2 , avatar: imageUrls[0]},
+  { id: "2", name: "Bob Smith", age: "22", abcReports: 0, durationReports: 1, avatar: imageUrls[1] },
+  { id: "3", name: "Charlie Brown", age: "21", abcReports: 1, durationReports: 2, avatar: imageUrls[2]},
+  { id: "4", name: "Daisy Miller", age: "23", abcReports: 1, durationReports: 0, avatar: imageUrls[3] },
+  { id: "5", name: "Ethan Green", age: "19", abcReports: 3, durationReports: 2, avatar: imageUrls[4] },
+  { id: "6", name: "Fiona White", age: "20", abcReports: 0, durationReports: 2, avatar: imageUrls[5] },
+  { id: "7", name: "George Taylor", age: "18", abcReports: 0, durationReports: 2, avatar: imageUrls[2] },
 ];
 
 

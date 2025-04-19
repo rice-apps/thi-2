@@ -8,7 +8,7 @@ import {
   StyleSheet,
   ScrollView
 } from 'react-native';
-import {Student} from "./types"
+import { Student, imageUrls } from '@/types';
 
 
 interface AddStudentProps {
@@ -29,6 +29,7 @@ export default function AddAStudent({ visible, onClose, onAdd }: AddStudentProps
         age: "20", 
         abcReports: 0, 
         durationReports: 0,
+        avatar: imageUrls[Math.floor(Math.random() * imageUrls.length)]
       };
       onAdd(newStudent); 
       setStudentName('');
