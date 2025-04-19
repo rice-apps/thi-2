@@ -8,6 +8,9 @@ import ExcelExport from "@/screens/student_modals/ExcelExport";
 import { useRouter } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import { imageUrls} from "@/types";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import AddSchedule from "@/components/AddSchedule";
+import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 
 
 const IndividualStudent = () => {
@@ -15,12 +18,24 @@ const IndividualStudent = () => {
   const { id, name } = useLocalSearchParams<{ id: string, name: string }>();
   const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
-
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [isExportVisible, setExportVisible] = useState(false);
+  const [isAddScheduleVisible, setAddScheduleVisible] = useState(false);
   const [dataEntriesABC, setDataEntriesABC] = useState<any[]>([]);
   const [dataEntriesDuration, setDataEntriesDuration] = useState<any[]>([]);
+  const [deletesVisible, setDeletesVisible] = useState(false);
+  const [imageToDeleteIdx, setImageToDeleteIdx] = useState<number | null>(null);
+  const [isImageDeleteModalVisible, setIsImageDeleteModalVisible] = useState(false);
+
+
+  const deleteScheduleImage = (index: number) => {
+    setImageURL((prev) => prev.filter((_, i) => i !== index));
+  };
+  
+
+  const [imageURLs, setImageURL] = useState<string[]>([]);
+
 
   //this will eventually be a API fetch call
   const handleAddData = (newData: any) => {
@@ -46,6 +61,9 @@ const IndividualStudent = () => {
   };
   const closeExport = () => {
     setExportVisible(false);
+  };
+  const closeAddSchedule = () => {
+    setAddScheduleVisible(false);
   };
 
   const deleteABCData = (index: number) => {
@@ -198,7 +216,7 @@ const IndividualStudent = () => {
         </View>
 
         {/* Duration Data Table */}
-        <View>
+        <View className="mb-8">
           {renderDurationHeader()}
           <FlatList
             data={dataEntriesDuration}
@@ -207,11 +225,69 @@ const IndividualStudent = () => {
           />
         </View>
 
+        {/* Visual Schedule Section */}
+        <View className="flex-row justify-between items-center mb-8">
+          <Text className="text-2xl font-bold mb-4">Visual Schedule</Text>
+
+          <View className="flex-row space-x-4">
+          <TouchableOpacity className="bg-[#6F97A2] p-2 rounded mr-2 flex-row items-center"
+             onPress={() => setDeletesVisible(prev => !prev)}>
+              <MaterialCommunityIcons name="pencil" size={16} color="white" />
+              <Text className="text-white font-bold ml-1">Edit Schedule</Text>
+            </TouchableOpacity>
+            
+          <TouchableOpacity className="bg-[#105366] p-2 rounded mr-2 flex-row items-center"
+            onPress={() => {setAddScheduleVisible(true)}}>
+              <AntDesign name="plus" size={16} color="white" />
+              <Text className="text-white font-bold ml-1">Add Schedule</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      
+        <View className="flex-row flex-wrap justify-center gap-x-24 gap-y-8 mb-8">
+  {imageURLs.map((url, idx) => (
+    <View key={idx} style={{ position: 'relative' }}>
+      <Image
+        source={{ uri: url }}
+        style={{ width: 295, height: 236, borderRadius: 8 }}
+        resizeMode="cover"
+      />
+
+      {deletesVisible && (
+        <TouchableOpacity
+          onPress={() => deleteScheduleImage(idx)}
+          style={{ position: 'absolute', top: -10, right: -10 }}
+        >
+          <View style={{ position: 'relative' }}>
+            <AntDesign
+              name="closecircle"
+              size={30}
+              color="white"
+              style={{ position: "absolute", borderRadius: 200 }}
+            />
+            <AntDesign
+              name="close"
+              size={28}
+              color="#105366"
+              style={{ position: "absolute" }}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
+    </View>
+  ))}
+</View>
+
+
+
         {/* Modals */}
         <StudentForm visible={isModalVisible} onClose={closeModal} onSubmit={handleAddData} />
         <Filter visible={isFilterVisible} onClose={closeFilter} />
         <ExcelExport visible={isExportVisible} onClose={closeExport} />
+        <AddSchedule visible={isAddScheduleVisible} onClose={closeAddSchedule}   setImageURL={setImageURL}    imageURL={imageURLs}/>
       </View>
+      
+      
     </ScrollView>
   );
 };
