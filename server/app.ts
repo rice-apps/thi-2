@@ -41,7 +41,7 @@ async function run() {
 
     // });
     app.listen(3002, () => {
-      console.log(`App listening at http://localhost:3002`);
+      console.log(`App listening at http://localhost:3000`);
     });
   } catch (error) {
     console.log(error);
