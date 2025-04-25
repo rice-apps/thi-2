@@ -6,7 +6,7 @@ export default function TimerPage() {
   return (
     <SafeAreaView className="flex-1">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="px-12 py-8">
-        <Text className="text-3xl font-bold mb-8 text-left">Timer</Text>
+        <Text className="text-3xl font-bold mb-8 mt-8">Timer</Text>
         <View className="flex-1 items-center justify-center">
           <Timer />
         </View>

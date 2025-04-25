@@ -7,6 +7,10 @@ const StudentValidation = require("./student.validation");
 const DurationValidation = require("./student.validation");
 
 module.exports = {
+  AuthValidation,
+  jwtAuthen,
+  jwtAuthenStrategy,
+};
     authValidation,
     AbcValidation,
     jwtAuthen,

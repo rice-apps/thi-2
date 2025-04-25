@@ -12,7 +12,7 @@ export const StudentCard = ({ student }: StudentProps) => {
       {/* Blue Header Section */}
       <View className="bg-[rgba(16,83,102,0.6)] h-[70px] w-full items-center justify-center">
         <Image
-          source={{ uri: randomImageUrl }}
+          source={{ uri: avatar }}
           className="w-[60px] h-[60px] rounded-full absolute top-[35px] border-[3px] border-white"
         />
       </View>

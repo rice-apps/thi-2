@@ -4,8 +4,5 @@ const abcModel = require("./abc");
 const StudentModel = require("./student");
 
 module.exports = {
-    Account: AccountModel,
-    Duration: DurationModel,
-    Abc: abcModel,
-    Student: StudentModel,
+  Account: AccountModel,
 };

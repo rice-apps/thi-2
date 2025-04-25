@@ -2,9 +2,11 @@ import Sidebar, {
     SidebarContext,
     useSidebarContext,
     useTransitionCustomization,
+    useDimensions,
+    calculateSidebarWidths,
 } from "@/components/Sidebar";
 import { Slot } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dimensions, SafeAreaView, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -15,6 +17,10 @@ import Animated, {
 } from "react-native-reanimated";
 
 const DrawerLayout = () => {
+    // Get reactive dimensions
+    const dimensions = useDimensions();
+    // Calculate sidebar widths based on current dimensions
+    const { openWidth, closedWidth } = calculateSidebarWidths(dimensions);
     // Sidebar state, dimensions, and transition settings
     const { transitionEasing, transitionDuration } =
         useTransitionCustomization();
@@ -22,20 +28,11 @@ const DrawerLayout = () => {
         new Promise((resolve) => setTimeout(resolve, ms));
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    const {
-        openSidebarWidth,
-        closedSidebarWidth,
-        activeIconTextColor,
-        defaultIconTextColor,
-        activeTabColor,
-        defaultTabColor,
-        buttonColor,
-        buttonSize,
-    } = useSidebarContext();
+    const contextValues = useSidebarContext();
     // Tie animations to initial sidebar state (currently set to open)
     const sidebarAnimatedValue = useSharedValue(isSidebarOpen ? 1 : 0);
     const mainScreenWidth = useSharedValue(
-        Dimensions.get("window").width - (openSidebarWidth + closedSidebarWidth)
+        dimensions.width - (openWidth + closedWidth)
     );
 
     const toggleSidebar = async () => {
@@ -70,9 +67,9 @@ const DrawerLayout = () => {
     const transitionMainScreen = () => {
         mainScreenWidth.value = withTiming(
             isSidebarOpen
-                ? Dimensions.get("window").width - closedSidebarWidth
+                ? Dimensions.get("window").width - closedWidth
                 : Dimensions.get("window").width -
-                      (openSidebarWidth + closedSidebarWidth),
+                      (openWidth + closedWidth),
             {
                 duration: transitionDuration,
                 easing: transitionEasing,
@@ -97,16 +94,11 @@ const DrawerLayout = () => {
         <SafeAreaView>
             <SidebarContext.Provider
                 value={{
+                    ...contextValues,
                     isSidebarOpen,
                     toggleSidebar,
-                    openSidebarWidth,
-                    closedSidebarWidth,
-                    activeIconTextColor,
-                    defaultIconTextColor,
-                    activeTabColor,
-                    defaultTabColor,
-                    buttonColor,
-                    buttonSize,
+                    openSidebarWidth: openWidth,
+                    closedSidebarWidth : closedWidth,
                 }}
             >
                 <GestureDetector gesture={swipeGesture}>
@@ -121,7 +113,7 @@ const DrawerLayout = () => {
                                 {
                                     position: "absolute",
                                     right: 0,
-                                    height: Dimensions.get("window").height,
+                                    height: dimensions.height,
                                     zIndex: 0, // Covered by sidebar layer
                                 },
                             ]}

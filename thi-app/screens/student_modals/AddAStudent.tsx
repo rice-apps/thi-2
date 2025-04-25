@@ -38,6 +38,7 @@ export default function AddAStudent({ visible, onClose, onAdd }: AddStudentProps
         lastName: lastName,
         abcReports: 0, 
         durationReports: 0,
+        avatar: imageUrls[Math.floor(Math.random() * imageUrls.length)]
       };
       onAdd(newStudent); 
       setFirstName('');

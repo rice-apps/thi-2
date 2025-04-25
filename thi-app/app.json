@@ -1,55 +1,55 @@
 {
-  "expo": {
-    "name": "thi-app",
-    "slug": "thi-app",
-    "version": "1.0.0",
-    "orientation": "landscape",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true,
-      "userInterfaceStyle": "automatic",
-      "requireFullScreen": true,
-      "bundleIdentifier": "com.mwlawlor.nativewind-expo-router"
-    },
-    "android": {
-      "userInterfaceStyle": "automatic",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-font",
-        {
-          "fonts": ["./assets/fonts/Jost-VariableFont_wght.tff"]
+    "expo": {
+        "name": "thi-app",
+        "slug": "thi-app",
+        "version": "1.0.0",
+        "orientation": "landscape",
+        "icon": "./assets/images/icon.png",
+        "scheme": "myapp",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "splash": {
+            "image": "./assets/images/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true,
+            "userInterfaceStyle": "automatic",
+            "requireFullScreen": true,
+            "bundleIdentifier": "com.mwlawlor.nativewind-expo-router"
+        },
+        "android": {
+            "userInterfaceStyle": "automatic",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            }
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/images/favicon.png"
+        },
+        "plugins": [
+            "expo-router",
+            [
+                "expo-font",
+                {
+                    "fonts": ["./assets/fonts/Jost-VariableFont_wght.tff"]
+                }
+            ],
+            [
+                "expo-screen-orientation",
+                {
+                    "initialOrientation": "LANDSCAPE_LEFT"
+                }
+            ]
+        ],
+        "experiments": {
+            "tsconfigPaths": true,
+            "typedRoutes": true
         }
-      ],
-      [
-        "expo-screen-orientation",
-        {
-          "initialOrientation": "LANDSCAPE_LEFT"
-        }
-      ]
-    ],
-    "experiments": {
-      "tsconfigPaths": true,
-      "typedRoutes": true
     }
-  }
 }

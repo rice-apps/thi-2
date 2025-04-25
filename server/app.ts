@@ -3,8 +3,11 @@ const HttpStatus = require("http-status-codes");
 require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
-const port = process.env.PORT;
 
+//const rateLimit = require("express-rate-limit");
+const { MongoClient, ServerApiVersion } = require("mongodb");
+const port = process.env.PORT;
+//const port = 3000;
 const { default: mongoose } = require("mongoose");
 
 const uri =
@@ -33,13 +36,19 @@ async function run() {
 
         app.use([notFoundHandle, responseHandle]);
 
-        app.listen(port, () => {
-            console.log(`App listening at http://localhost:${port}`);
-        });
-    } catch (error) {
-        console.log(error);
-    }
+    // app.listen(port, () => {
+    //   console.log(`App listening at http://localhost:${port}`);
+
+    // });
+    app.listen(8080, () => {
+      console.log(`App listening at http://localhost:8080`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+run().catch(console.dir);
 
 const notFoundHandle = (req: Request, res: Response, next: NextFunction) => {
     next({

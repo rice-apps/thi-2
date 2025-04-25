@@ -1,32 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { RelativePathString, useRouter, useSegments } from "expo-router";
-import { View, Text, TouchableOpacity, Dimensions, DimensionValue } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, DimensionValue, LayoutChangeEvent } from "react-native";
 import { Icon } from "@expo/vector-icons/build/createIconSet";
 import { useSidebarContext } from "@/components/Sidebar";
-
-// Dynamic icon resizing
-export function dynamicIconSize(): number {
-  const { closedSidebarWidth } = useSidebarContext();
-  let size;
-  const height = Dimensions.get("window").height;
-  const outerContainerHeight = closedSidebarWidth;
-
-  if (height >= 800 && height > outerContainerHeight) {
-    size = 32; // lg:text-2xl
-  } else if (height >= 600 && height > outerContainerHeight) {
-    size = 24; // md:text-xl
-  } else {
-    size = 16; // default for small phones
-  }
-  return size;
-}
 
 // Define props for sidebar tab
 interface SidebarTabProps {
   iconSet: Icon<any, string>;
   iconName: string;
   iconSize?: number;
+  iconSizeModifier?: number,
   label: string;
   useActiveColor?: boolean;
   tabWidth?: DimensionValue;
@@ -36,11 +20,13 @@ interface SidebarTabProps {
 const SidebarTab = ({
   iconSet: Icon,
   iconName,
-  iconSize = dynamicIconSize(),
+  iconSize,// = dynamicIconSize(),
+  iconSizeModifier = 0,
   label,
   useActiveColor = true,
   tabWidth = "100%",
 }: SidebarTabProps) => {
+
   // Sidebar details
   const {
     closedSidebarWidth,
@@ -49,6 +35,7 @@ const SidebarTab = ({
     activeTabColor,
     defaultTabColor,
   } = useSidebarContext();
+
   // Screen routing details
   const router = useRouter();
   const [currentScreen, setCurrentScreen] = useState<string>("");
@@ -56,10 +43,53 @@ const SidebarTab = ({
   const tabName = label === "Sign out" ? "" : label.toLowerCase();
   const directory = "/" + tabName;
   const isActive = currentScreen.includes(tabName);
+
+  // Track dimensions
+  const [dimensions, setDimensions] = useState({
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
+  });
+  
+  // Listen for dimension changes
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({
+        width: window.width,
+        height: window.height
+      });
+    });
+    
+    return () => subscription.remove();
+  }, []);
+  
   // Sidebar tab details
-  const tabHeight = Dimensions.get("window").height * 0.08;
+  const tabHeight = dimensions.height * 0.11;
+  const effectiveSidebarWidth = Math.max(closedSidebarWidth, dimensions.width * 0.02); // Ensure icons are properly sized in landscape
   const tabIconTextColor = useActiveColor && isActive ? activeIconTextColor : defaultIconTextColor;
   const tabButtonColor = useActiveColor && isActive ? activeTabColor : defaultTabColor;
+
+  // Create state to measure actual container dimensions
+  const [iconContainerSize, setIconContainerSize] = useState<number>(0);
+
+  // Handle icon container layout to get actual dimensions
+  const onIconContainerLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    const containerSize = Math.min(width, height);
+    setIconContainerSize(containerSize);
+  };
+  
+  // Calculate base icon size based on measured container dimensions
+  const calculateBaseIconSize = () => {
+    // If container size is not yet measured, use a safer estimate
+    if (iconContainerSize === 0) {
+      return Math.floor(effectiveSidebarWidth * 0.6);
+    }
+    // Use 83% of the container size for the icon
+    return Math.floor(iconContainerSize * .83);
+  };
+
+  const baseSize = calculateBaseIconSize();
+  const dynamicSize = iconSize !== undefined ? iconSize : baseSize + iconSizeModifier;
 
   // Set current screen name (e.g. "students" for (drawer)/students)
   useFocusEffect(
@@ -82,9 +112,10 @@ const SidebarTab = ({
       >
         <View
           className="justify-items-center items-center aspect-square"
-          style={{ height: closedSidebarWidth }}
+          style={{ height: effectiveSidebarWidth }}
+          onLayout={onIconContainerLayout}
         >
-          <Icon name={iconName} size={iconSize} style={{ color: tabIconTextColor }} />
+          <Icon name={iconName} size={dynamicSize} style={{ color: tabIconTextColor }} />
         </View>
         <View className="justify-items-center items-center pl-2 pb-1">
           <Text className="font-jost font-bold lg:text-2xl" style={{ color: tabIconTextColor }}>
