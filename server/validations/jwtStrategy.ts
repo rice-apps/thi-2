@@ -1,4 +1,4 @@
-const { AccountModel } = require("../models");
+// const { AccountModel } = require("../models");
 const { ErrorResponse } = require("../helper");
 const HttpStatus = require("http-status-codes");
 

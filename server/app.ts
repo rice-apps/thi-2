@@ -40,8 +40,8 @@ async function run() {
     //   console.log(`App listening at http://localhost:${port}`);
 
     // });
-    app.listen(8080, () => {
-      console.log(`App listening at http://localhost:8080`);
+    app.listen(3002, () => {
+      console.log(`App listening at http://localhost:3002`);
     });
   } catch (error) {
     console.log(error);
