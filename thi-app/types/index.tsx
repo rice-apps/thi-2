@@ -1,18 +1,33 @@
 export type Student = {
-    id: string;
-    name: string;
-    age: string;
-    abcReports: number;
-    durationReports: number;
-    avatar: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  abcReports: number;
+  durationReports: number;
+  // avatar: string;
   };
 
-  export type Teacher = {
-    name: string;
-    email: string;
-    students: Student[];
-  };
+
+//   OLD INCOMING CHANGE:
+//   id: string;
+//   name: string;
+//   age: string;
+//   abcReports: number;
+//   durationReports: number;
+//   avatar: string;
+// };
+
+// export type Teacher = {
+//   name: string;
+//   email: string;
+//   students: Student[];
+// >>>>>>> f3c35084d5b38858f4d051dd6c8745c20ce14db0
+// };
+
+
+
   
+
 export interface StudentProps {
     student: Student;
   }

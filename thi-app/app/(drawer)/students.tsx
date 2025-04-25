@@ -106,6 +106,7 @@ const StudentsPage = () => {
         lastName: savedStudent.last_name,
         abcReports: savedStudent.abc_reports ?? 0,
         durationReports: savedStudent.duration_reports ?? 0,
+        // avatar: 
       };
       setStudents((prevStudents) => [...prevStudents, formattedStudent]); 
       setAddStudentVisible(false); 
